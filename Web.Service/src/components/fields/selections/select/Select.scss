@@ -1,0 +1,129 @@
+.selection-select-field  {
+    width: 100%;
+    padding: 1vh 0vw;
+
+    .select-input {
+        width: 100%;
+        min-height: 30px;
+        border: 1px solid #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        
+        .label {
+            position: absolute;
+            font-size: 16px;
+            transition: ease;
+            transition-duration: 0.5s;
+        }
+    
+        .label.top {
+            background-color: #fff;
+            padding: 0vh 0.5vw;
+            top: calc(0% - 5px);
+            font-size: 10px;
+            left: 2%;
+        }
+    
+        .label.center {
+            top: 38%;
+            left: calc(30px + 2vw);
+        }
+
+        .select-click {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(30px + 2vh);
+            width: calc(20px + 2vw);
+            background-color: #ecf0f1;
+            border-top-left-radius: var(--app-border);
+            border-bottom-left-radius: var(--app-border);
+            cursor: pointer;
+
+            svg > path {
+                stroke: white;
+            }
+        }
+
+        .select-values {
+            flex: 1;
+            display: flex;
+            overflow: auto;
+            width: 100%;
+            height: calc(30px + 2vh);
+            align-items: center;
+
+            .select-value {
+                background-color: #ecf0f1;
+                margin: 0px 5px;
+                height: 35px;
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                .select-value-action {
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-width: 20px;
+                    height: 30px;
+                    border-right: 1px solid #fff;
+                }
+                .select-value-data {
+                    width: auto;
+                    padding: 0vh 0.5vw;
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: nowrap;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+
+    .select-input.error {
+        border: 1px solid #FF0000;
+
+        .label {
+            color: #FF0000;
+        }
+
+        .select-click {
+            background-color: #c49c9c;
+        }
+    }
+
+    .option-input {
+        border: 1px solid #000;
+        padding: 0vw 1vw;
+        width: calc(100% - 2vw);
+        
+        .option-search {
+            width: 100%;
+        }
+        
+        .options {
+            padding: 1vh 0vw;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+
+            .option {
+                padding: 1vh 1vw;
+                width: calc(100% - 2vw);
+                min-height: 30px;
+                cursor: pointer;
+                line-height: 30px;
+            }
+            .option:hover {
+                background-color: #ecf0f1;;
+            }
+            .option.unset {
+                cursor: not-allowed;
+            }
+        }
+    }
+}

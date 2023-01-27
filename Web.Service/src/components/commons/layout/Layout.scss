@@ -1,0 +1,41 @@
+.layout-common {
+    padding-top: 1vh;
+    width: 100%;
+    height: calc(100% - 1vh);
+
+    .layout-view-modes {
+        width: 100%;
+        min-width: 300px;
+        height: 35px;
+        overflow-x: auto;
+
+        .layout-view-mode {
+            width: calc(120px - 2vw);
+            padding: 1vh 1vw;
+            margin: 0vh 0.5vw;
+            text-align: center;
+
+            border-top-left-radius: var(--app-border);
+            border-top-right-radius: var(--app-border);
+        }
+
+        .layout-view-mode.selected {
+            color: #fff;
+            background-color: #323232;
+            cursor: not-allowed;
+        }
+
+        .layout-view-mode.unselected {
+            color: #fff;
+            background-color: #323232;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+    }
+
+    .layout-content {
+        background-color: #323232;
+        width: 100%;
+        height: calc(100% - 35px);
+    }
+}

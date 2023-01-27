@@ -1,0 +1,28 @@
+﻿namespace Authentication.Repositories.Queries
+{
+    public class AuthorizationSql
+    {
+        protected static string AuthorizatedSql = @"
+SELECT
+	COUNT(*) AS `AUTHORIZED`
+FROM `AUTH` `A`
+
+INNER JOIN `AUTHXENTERPRISE` `AE` ON `AE`.`AUTHID` = `A`.`AUTHID`
+INNER JOIN `AUTHXPERMISSION` `AP` ON `AP`.`AUTHID` = `A`.`AUTHID`
+
+INNER JOIN `ENTERPRISE` `E` ON `E`.`ENTERPRISEID` = `AE`.`ENTERPRISEID`
+INNER JOIN `PERMISSION` `P` ON `P`.`PERMISSIONID` = `AP`.`PERMISSIONID`
+
+WHERE
+		 `A`.`DELETED_AT` IS NULL
+	AND `AE`.`DELETED_AT` IS NULL
+    AND `AP`.`DELETED_AT` IS NULL
+	AND  `E`.`DELETED_AT` IS NULL
+    AND  `P`.`DELETED_AT` IS NULL
+    
+    AND  `A`.`AUTHID` = @USERID
+    AND  `E`.`ENTERPRISEID` = @ENTERPRISEID
+    AND UPPER(`P`.`PERMISSIONNAME`) = UPPER(@PERMISSIONNAME)
+";
+    }
+}

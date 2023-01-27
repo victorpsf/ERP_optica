@@ -1,0 +1,30 @@
+[
+  {
+    "protocol": "http",
+    "domain": "localhost",
+    "port": 8080,
+    "name": "webservice",
+    "prefix": "wb"
+  },
+  {
+    "protocol": "http",
+    "domain": "localhost",
+    "port": 5260,
+    "name": "authentication",
+    "prefix": "au"
+  },
+  {
+    "protocol": "http",
+    "domain": "localhost",
+    "port": 5183,
+    "name": "api",
+    "prefix": "ap"
+  },
+  {
+    "protocol": "http",
+    "domain": "localhost",
+    "port": 5001,
+    "name": "cadastro",
+    "prefix": "cd"
+  }
+]

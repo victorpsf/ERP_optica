@@ -1,0 +1,62 @@
+.inputs-field {
+    width: 100%;
+    padding: 1vh 0vw;
+}
+
+.input-field {
+    position: relative;
+    width: calc(100% - 2vw);
+    padding: 1vh 1vw;
+    min-height: 30px;
+    border: 1px solid #000;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .label {
+        position: absolute;
+        font-size: 16px;
+        transition: ease;
+        transition-duration: 0.5s;
+    }
+
+    .label.top {
+        background-color: #fff;
+        padding: 0vh 0.5vw;
+        top: calc(0% - 5px);
+        font-size: 10px;
+        left: 2%;
+    }
+
+    .label.center {
+        top: 19px;
+        left: calc(5px + 1vw);
+    }
+
+    .input {
+        width: 100%;
+        height: 30px;
+        border: none;
+        outline: 0;
+    }
+
+    .input.icon {
+        width: calc(100% - 20px);
+    }
+}
+
+.input-field.error {
+    border: 1px solid #ff0000;
+    
+    .label { color: #ff0000; }
+    .input { color: #ff0000; }
+
+    svg > path { stroke: #ff0000; }
+}
+
+.error-messages {
+    margin-top: 0.5vh;
+    color: #ff0000;
+    font-size: 9px;
+}

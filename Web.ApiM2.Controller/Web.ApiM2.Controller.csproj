@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application.Library\Application.Library.csproj" />
+    <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
+    <ProjectReference Include="..\Shared.Services\Shared.Services.csproj" />
+    <ProjectReference Include="..\Web.ApiM2.Controller.Models\Web.ApiM2.Controller.Models.csproj" />
+    <ProjectReference Include="..\Web.ApiM2.Repositories\Web.ApiM2.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
