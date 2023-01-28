@@ -1,4 +1,5 @@
 ﻿using Application.Database;
+using Application.Database.Interfaces;
 using Authentication.Repositories;
 
 namespace Application.Core
@@ -12,7 +13,7 @@ namespace Application.Core
 
         public void ConfigureService(IServiceCollection services)
         {
-            services.AddScoped<DbMysqlClientFactory>();
+            services.AddScoped<IAuthenticationDatabase, AuthenticationDatabase>(options => DatabaseFactory.CreateAuthenticationDatabase(this.Configuration));
             services.AddScoped<AuthenticationRepository>();
             services.AddScoped<AuthorizationRepository>();
         }

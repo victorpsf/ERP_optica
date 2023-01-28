@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application.Database\Application.Database.csproj" />
+    <ProjectReference Include="..\Application.Database.Interfaces\Application.Database.Interfaces.csproj" />
     <ProjectReference Include="..\Authentication.Controller.Models\Authentication.Controller.Models.csproj" />
     <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
   </ItemGroup>

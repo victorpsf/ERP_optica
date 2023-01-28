@@ -79,8 +79,5 @@ WHERE
     AND `C`.`AUTHID` = @AUTHID
     AND `C`.`CODETYPE` = @CODETYPE
 ";
-        protected static string CreateRelationUserCodeSql = @"INSERT INTO `AUTHCODE` (`AUTHID`, `CODEID`) VALUES (@AUTHID, @CODEID)";
-
-        protected static string ChangeUserCodeSql = @"UPDATE `CODE` `C` SET `C`.`USAGED_AT` = @USAGED_AT, `C`.`SENDED_AT` = @SENDED_AT WHERE `C`.`CODEID` = @CODEID";
     }
 }
