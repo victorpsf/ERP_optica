@@ -7,6 +7,7 @@ using Serilog;
 using Shared.Services;
 using System.Net;
 using static Application.Library.ControllerModels;
+using static Application.Library.Security.SecurityModels;
 using static Authentication.Repositories.Rules.AuthenticationRules;
 
 namespace Authentication.Controller

@@ -1,6 +1,7 @@
 ﻿using Authentication.Controller.Models;
 using static Application.Library.ControllerModels;
 using Shared.Services;
+using static Application.Library.Security.SecurityModels;
 
 namespace Authentication.Controller
 {
