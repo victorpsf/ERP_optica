@@ -1,13 +1,13 @@
-﻿using Application.Database;
+﻿using Application.Database.Interfaces;
 using Web.ApiM2.Repositories.Queries;
 
 namespace Web.ApiM2.Repositories
 {
     public partial class PersonPhysicalRepository: PersonPhysicalSql
     {
-        private readonly DbMysqlClientFactory Factory;
+        private readonly IM2Database Factory;
 
-        public PersonPhysicalRepository(DbMysqlClientFactory factory)
+        public PersonPhysicalRepository(IM2Database factory)
         { this.Factory = factory; }
     }
 }

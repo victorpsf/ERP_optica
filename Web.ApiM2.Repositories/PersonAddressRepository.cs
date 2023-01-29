@@ -1,12 +1,12 @@
-﻿using Application.Database;
+﻿using Application.Database.Interfaces;
 using Web.ApiM2.Repositories.Queries;
 
 namespace Web.ApiM2.Repositories
 {
     public partial class PersonAddressRepository: PersonAddressSql
     {
-        private readonly DbMysqlClientFactory Factory;
+        private readonly IM2Database Factory;
 
-        public PersonAddressRepository(DbMysqlClientFactory factory) { this.Factory = factory; }
+        public PersonAddressRepository(IM2Database factory) { this.Factory = factory; }
     }
 }
