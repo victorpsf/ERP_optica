@@ -7,7 +7,7 @@ namespace Shared.Services
 {
     public class LoggedUser
     {
-        private readonly AuthenticationRepository repository;
+        private readonly AuthorizationRepository repository;
         private readonly JwtService jwtService;
         public HttpContext? context { get; }
         private LoggedUserDto? identifier;
@@ -31,7 +31,7 @@ namespace Shared.Services
             }
         }
 
-        public LoggedUser(IHttpContextAccessor httpContextAcessor, AuthenticationRepository repository, JwtService jwtService)
+        public LoggedUser(IHttpContextAccessor httpContextAcessor, AuthorizationRepository repository, JwtService jwtService)
         {
             this.repository = repository;
             this.jwtService = jwtService;

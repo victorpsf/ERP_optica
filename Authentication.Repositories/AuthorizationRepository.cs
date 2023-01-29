@@ -5,9 +5,9 @@ namespace Authentication.Repositories
 {
     public partial class AuthorizationRepository: AuthorizationSql
     {
-        private readonly IAuthenticationDatabase factory;
+        private readonly IPermissionDatabase factory;
 
-        public AuthorizationRepository(IAuthenticationDatabase factory)
+        public AuthorizationRepository(IPermissionDatabase factory)
         { this.factory = factory; }
     }
 }

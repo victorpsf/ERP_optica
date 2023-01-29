@@ -2,22 +2,6 @@
 {
     public class AuthenticationSql
     {
-        protected static string FindUserByIdSql = @"
-SELECT
-	`A`.`AUTHID` AS `USERID`,
-    `AE`.`ENTERPRISEID` AS `ENTERPRISEID`
-FROM `AUTH` AS `A`
-INNER JOIN `AUTHXENTERPRISE` `AE` ON `AE`.`AUTHID` = `A`.`AUTHID`
-INNER JOIN `ENTERPRISE` `E` ON `E`.`ENTERPRISEID` = `AE`.`ENTERPRISEID`
-WHERE
-         `A`.`AUTHID`       = @USERID
-	AND `AE`.`ENTERPRISEID` = @ENTERPRISEID
-
-    AND  `E`.`DELETED_AT` IS NULL
-    AND  `A`.`DELETED_AT` IS NULL
-	AND `AE`.`DELETED_AT` IS NULL
-";
-
         protected static string FindUserSql = @"
 SELECT
     `A`.`AUTHID`        AS `USERID`,
