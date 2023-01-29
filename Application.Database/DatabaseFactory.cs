@@ -11,4 +11,10 @@ public class DatabaseFactory {
 
     public static PermissionDatabase CreatePermissionDatabase (IConfiguration configuration) 
         => new PermissionDatabase(configuration.GetSection("ConnectionStrings:MySqlConnectionPermission").Value ?? string.Empty, 22000);
+
+    public static M1Database M1Database(IConfiguration configuration)
+        => new M1Database(configuration.GetSection("ConnectionStrings:MySqlConnectionM1").Value ?? string.Empty, 22000);
+
+    public static M2Database M2Database(IConfiguration configuration)
+        => new M2Database(configuration.GetSection("ConnectionStrings:MySqlConnectionM2").Value ?? string.Empty, 22000);
 }

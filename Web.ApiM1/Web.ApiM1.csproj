@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
+    <ProjectReference Include="..\Application.Database.Interfaces\Application.Database.Interfaces.csproj" />
+    <ProjectReference Include="..\Application.Database\Application.Database.csproj" />
     <ProjectReference Include="..\Web.ApiM1.Controller\Web.ApiM1.Controller.csproj" />
     <ProjectReference Include="..\Web.ApiM1.Repositories\Web.ApiM1.Repositories.csproj" />
   </ItemGroup>

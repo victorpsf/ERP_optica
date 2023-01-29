@@ -1,12 +1,12 @@
-﻿using Application.Database;
+﻿using Application.Database.Interfaces;
 using Web.ApiM1.Repositories.Queries;
 
 namespace Web.ApiM1.Repositories
 {
     public partial class EnterpriseRepository : EnterpriseSql
     {
-        private readonly DbMysqlClientFactory Factory;
+        private readonly IM1Database Factory;
 
-        public EnterpriseRepository(DbMysqlClientFactory factory) { this.Factory = factory; }
+        public EnterpriseRepository(IM1Database factory) { this.Factory = factory; }
     }
 }

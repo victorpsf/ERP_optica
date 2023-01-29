@@ -1,4 +1,6 @@
 ﻿using Application.Core;
+using Application.Database;
+using Application.Database.Interfaces;
 using Web.ApiM1.Repositories;
 
 namespace Web.ApiM1
@@ -9,6 +11,7 @@ namespace Web.ApiM1
 
         public static void AnotherServices(IServiceCollection services, StartupCore context, IConfiguration configuration)
         {
+            services.AddScoped<IM1Database, M1Database>(options => DatabaseFactory.M1Database(configuration));
             services.AddScoped<EnterpriseRepository>();
         }
     }
