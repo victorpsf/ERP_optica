@@ -16,6 +16,8 @@
     <ProjectReference Include="..\Application.Core\Application.Core.csproj" />
     <ProjectReference Include="..\Application.Library\Application.Library.csproj" />
     <ProjectReference Include="..\Authentication.Controller\Authentication.Controller.csproj" />
+    <ProjectReference Include="..\Application.Database\Application.Database.csproj" />
+    <ProjectReference Include="..\Application.Database.Interfaces\Application.Database.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,4 +8,7 @@ namespace Application.Database;
 public class DatabaseFactory {
     public static AuthenticationDatabase CreateAuthenticationDatabase (IConfiguration configuration) 
         => new AuthenticationDatabase(configuration.GetSection("ConnectionStrings:MySqlConnectionAuthentication").Value ?? string.Empty, 22000);
+
+    public static PermissionDatabase CreatePermissionDatabase (IConfiguration configuration) 
+        => new PermissionDatabase(configuration.GetSection("ConnectionStrings:MySqlConnectionPermission").Value ?? string.Empty, 22000);
 }

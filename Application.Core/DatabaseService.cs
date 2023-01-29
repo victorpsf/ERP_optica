@@ -13,8 +13,7 @@ namespace Application.Core
 
         public void ConfigureService(IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationDatabase, AuthenticationDatabase>(options => DatabaseFactory.CreateAuthenticationDatabase(this.Configuration));
-            services.AddScoped<AuthenticationRepository>();
+            services.AddScoped<IPermissionDatabase, PermissionDatabase>(options => DatabaseFactory.CreatePermissionDatabase(this.Configuration));
             services.AddScoped<AuthorizationRepository>();
         }
 

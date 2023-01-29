@@ -19,18 +19,20 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddCors(options =>
-            // {
-            //     options.AddPolicy(
-            //         name: "_myAllowSpecificOrigins",
-            //         policy =>
-            //         {
-            //             policy.WithOrigins("localhost:3000");
-            //             policy.AllowAnyMethod();
-            //             policy.AllowAnyHeader();
-            //         }
-            //     );
-            // });
+#if RELEASE
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "_myAllowSpecificOrigins",
+                    policy =>
+                    {
+                        policy.WithOrigins("localhost:3000");
+                        policy.AllowAnyMethod();
+                        policy.AllowAnyHeader();
+                    }
+                );
+            });
+#endif
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -45,8 +47,10 @@
         public void Configure(IApplicationBuilder app, IHostEnvironment environment)
         {
             app.UseRouting();
-            // app.UseHttpsRedirection();
-            // app.UseCors("_myAllowSpecificOrigins");
+#if RELEASE
+            app.UseHttpsRedirection();
+            app.UseCors("_myAllowSpecificOrigins");
+#endif
             app.UseAuthentication();
             app.UseAuthorization();
 

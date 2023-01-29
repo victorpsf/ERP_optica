@@ -1,0 +1,18 @@
+{
+    "Secret": {
+        "Key": "[SECRET]"
+    },
+    "ConnectionStrings": {
+        "MySqlConnectionAuthentication": "[CONNECTIONSTRING]",
+        "MySqlConnectionPermission": "[CONNECTIONSTRING]"
+    },
+    "Token": {
+        "Minutes": "[MINUTES]"
+    },
+    "Smtp": {
+        "User": "[USER]",
+        "Password": "[PWD]",
+        "Host": "[HOST]",
+        "Port": "[PORT]"
+    }
+}
