@@ -1,4 +1,4 @@
-import { BufferToIntArray } from './binary'
+import { BufferTo, BufferToIntArray } from './binary'
 import { FileData } from '@/models/FileModels'
 
 class File {
@@ -14,7 +14,7 @@ class File {
 
     upload (file = new Blob([])) {
         return new Promise((resolve, reject) => {
-            var fileReader = new FileReader();
+            const fileReader = new FileReader();
 
             fileReader.onloadend = function (event) {
                 resolve(event.target.result);
@@ -28,13 +28,13 @@ class File {
         });
     }
 
-    async ReadFiles (callback) {
+    async ReadFiles (callback, encoding) {
         if (this.el.files == null) return;
 
         for (const file of this.el.files) {
             try {
                 const buffer = await this.upload(file);
-                callback(new FileData(file, BufferToIntArray(buffer), 1))
+                callback(new FileData(file, BufferTo(buffer, encoding), encoding, 1))
             }
 
             catch {

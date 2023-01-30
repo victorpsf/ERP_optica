@@ -12,12 +12,12 @@ using static Web.ApiM2.Controller.Models.PersonDocumentModels;
 namespace Web.ApiM2.Controller
 {
     [Authorize(Policy = nameof(PermissionModels.DocumentPermission.AccessDocument))]
-    public partial class PersonDocumentController: ControllerBase
+    public partial class DocumentController: ControllerBase
     {
         private readonly PersonDocumentRepository Repository;
         private readonly LoggedUser LoggedUser;
 
-        public PersonDocumentController(PersonDocumentRepository repository, LoggedUser loggedUser) { 
+        public DocumentController(PersonDocumentRepository repository, LoggedUser loggedUser) { 
             this.Repository = repository;
             this.LoggedUser = loggedUser;
         }

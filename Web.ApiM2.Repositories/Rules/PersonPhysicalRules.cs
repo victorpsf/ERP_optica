@@ -2,18 +2,18 @@
 
 namespace Web.ApiM2.Repositories.Rules
 {
-    public static class PersonPhysicalRules
+    public static class PersonRules
     {
-        public class FindPersonPhysicalRule
+        public class FindPersonRule
         {
-            public int Input { get; set; }
+            public PersonModels.FindPerson Input { get; set; } = new PersonModels.FindPerson();
             public int UserId { get; set; }
             public int EnterpriseId { get; set; }
         }
 
-        public class CreatePersonPhysicalRule
+        public class CreatePersonRule
         {
-            public PersonPhysicalModels.CreatePersonPhysical Input { get; set; } = new PersonPhysicalModels.CreatePersonPhysical();
+            public PersonModels.CreatePerson Input { get; set; } = new PersonModels.CreatePerson();
             public int UserId { get; set; }
             public int EnterpriseId { get; set; }
         }

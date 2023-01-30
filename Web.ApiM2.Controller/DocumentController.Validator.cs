@@ -3,7 +3,7 @@ using static Web.ApiM2.Controller.Models.PersonDocumentModels;
 
 namespace Web.ApiM2.Controller
 {
-    public partial class PersonDocumentController
+    public partial class DocumentController
     {
         public void Validate(Application.Library.DocumentModels.DocumentType type, string Value, List<Failure> Errors)
         {

@@ -1,29 +1,27 @@
 ﻿using Application.Library;
 using Dapper;
 using Serilog;
+using System.Collections.Generic;
 using System.Data;
-using static Web.ApiM2.Repositories.Rules.PersonPhysicalRules;
+using static Web.ApiM2.Repositories.Rules.PersonRules;
 
 namespace Web.ApiM2.Repositories
 {
     public partial class PersonPhysicalRepository
     {
-        public PersonModels.PersonPhysicalDto? Find(FindPersonPhysicalRule business)
+        public List<PersonModels.PersonDto> Find(FindPersonRule business)
         {
-            PersonModels.PersonPhysicalDto? result = null;
-            var parameters = new DynamicParameters();
-
-            parameters.Add(name: "@PERSONID", value: business.Input, direction: ParameterDirection.Input);
-            parameters.Add(name: "@ENTERPRISEID", value: business.EnterpriseId, direction: ParameterDirection.Input);
+            this.CreateParameter(business, FindPersonPhysicalSql, out DynamicParameters parameters, out string QuerySql);
+            var result = new List<PersonModels.PersonDto> ();
 
             this.Factory.Connect();
             try
             {
-                result = this.Factory.Find<PersonModels.PersonPhysicalDto>(new DatabaseModels.BancoArgument
+                result = this.Factory.ExecuteReader<PersonModels.PersonDto>(new DatabaseModels.BancoArgument
                 {
-                    Sql = FindPersonPhysicalSql,
+                    Sql = QuerySql,
                     Parameter = parameters
-                });
+                }).ToList();
             }
 
             catch (Exception ex)

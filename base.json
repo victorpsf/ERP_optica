@@ -4,7 +4,9 @@
     },
     "ConnectionStrings": {
         "MySqlConnectionAuthentication": "[CONNECTIONSTRING]",
-        "MySqlConnectionPermission": "[CONNECTIONSTRING]"
+        "MySqlConnectionPermission": "[CONNECTIONSTRING]",
+        "MySqlConnectionM1": "[CONNECTIONSTRING]",
+        "MySqlConnectionM2": "[CONNECTIONSTRING]"
     },
     "Token": {
         "Minutes": "[MINUTES]"

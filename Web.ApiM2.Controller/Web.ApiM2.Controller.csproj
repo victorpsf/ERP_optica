@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Library\Application.Library.csproj" />
+    <ProjectReference Include="..\Application.Messages\Application.Messages.csproj" />
     <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
     <ProjectReference Include="..\Shared.Services\Shared.Services.csproj" />
     <ProjectReference Include="..\Web.ApiM2.Controller.Models\Web.ApiM2.Controller.Models.csproj" />

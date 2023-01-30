@@ -1,5 +1,5 @@
 ﻿using static Application.Library.PersonModels;
-using static Web.ApiM2.Repositories.Rules.PersonPhysicalRules;
+using static Web.ApiM2.Repositories.Rules.PersonRules;
 using Serilog;
 using Dapper;
 using System.Data;
@@ -9,18 +9,14 @@ namespace Web.ApiM2.Repositories
 {
     public partial class PersonPhysicalRepository
     {
-        public int Save(CreatePersonPhysicalRule business)
+        public int Save(CreatePersonRule business)
         {
             this.Factory.Connect();
             int id = 0;
 
             try
             {
-                var parameters = new DynamicParameters();
-
-                parameters.Add(name: "@NAME", value: business.Input.Name, direction: ParameterDirection.Input);
-                parameters.Add(name: "@BIRTHDATE", value: business.Input.BirthDate, direction: ParameterDirection.Input);
-                parameters.Add(name: "@ENTERPRISEID", value: business.EnterpriseId, direction: ParameterDirection.Input);
+                var parameters = this.CreateParameter(business);
 
                 id = this.Factory.Execute<int>(new BancoExecuteArgument
                 {
@@ -34,7 +30,7 @@ namespace Web.ApiM2.Repositories
                     this.Factory.ControlData(new BancoCommitArgument
                     {
                         Control = DmlType.Insert,
-                        Entity = EntityType.PersonPhysical,
+                        Entity = (EntityType) business.Input.PersonType,
                         EntityId = id,
                         EnterpriseId = business.EnterpriseId,
                         UserId = business.UserId

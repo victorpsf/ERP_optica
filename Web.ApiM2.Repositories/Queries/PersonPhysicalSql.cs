@@ -3,23 +3,26 @@
     public class PersonPhysicalSql
     {
         protected static string CreatePersonPhysicalSql = @"
-INSERT INTO `PERSONPHYSICAL`
-    (`NAME`, `BIRTHDATE`, `ENTERPRISEID`)
+INSERT INTO `PERSON`
+    (`NAME`, `CALLNAME`, `PERSONTYPE`, `CREATEDATE`, `ENTERPRISEID`)
 VALUES 
-    (@NAME, @BIRTHDATE, @ENTERPRISEID)
+    (@NAME, @CALLNAME, @PERSONTYPE, @CREATEDAT, @ENTERPRISEID)
 ";
 
         protected static string FindPersonPhysicalSql = @"
 SELECT
-	`PP`.`PERSONID` 	AS `ID`,
-    `PP`.`NAME` 		AS `NAME`,
-    `PP`.`BIRTHDATE` 	AS `BIRTHDATE`
+	`P`.`PERSONID` 	AS `ID`,
+    `P`.`NAME`         AS `NAME`, 
+    `P`.`CALLNAME`     AS `CALLNAME`, 
+    `P`.`PERSONTYPE`   AS `PERSONTYPE`, 
+    `P`.`CREATEDATE`   AS `CREATEDAT`
 FROM
-	`PERSONPHYSICAL` AS `PP`
+	`PERSON` AS `P`
 WHERE
-		`PP`.`PERSONID`     = @PERSONID
-    AND `PP`.`ENTERPRISEID` = @ENTERPRISEID
-	AND `PP`.`DELETED_AT` IS NULL
+        `P`.`ENTERPRISEID` = @ENTERPRISEID
+	AND `P`.`DELETED_AT` IS NULL
+    
+    {0}
 ";
     }
 }

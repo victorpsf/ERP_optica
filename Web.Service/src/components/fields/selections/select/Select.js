@@ -42,10 +42,6 @@ const SelectField = {
     },
 
     computed: {
-        labelPosition: function () {
-            return ['label', 'UI-border', (this.values && this.values.length > 0) ? 'top': 'center']
-        },
-
         optionValue: function () {
             const { multiple = false } = (this.rule || { multiple: false });
             const { values = [], initial = [] } = (this.options || { values: [], initial: [] });

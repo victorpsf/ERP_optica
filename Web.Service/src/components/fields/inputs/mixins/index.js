@@ -42,10 +42,6 @@ const InputMixin = {
     },
 
     computed: {
-        labelPosition: function () {
-            return ['label', 'UI-border', (this.value && this.value.length > 0) ? 'top': 'center'];
-        },
-
         inputClass: function () {
             return ['input-field', 'UI-border', (this.errorMessages.length) ? 'error': '']
         },

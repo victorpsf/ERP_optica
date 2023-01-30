@@ -2,16 +2,22 @@ export class FileData {
     lastModified = 0;
     success = 0;
     name = "";
-    size = 0;
+    data = {
+        encoding: 'base64',
+        value: null,
+        size: 0
+    }
     type = '';
-    bytes = []
 
-    constructor(file = new File([], ''), bytes = [], success = 0) {
+    constructor(file = new File([], ''), data = null, encoding = 'base64', success = 0) {
         this.lastModified = file.lastModified;
         this.name = file.name; 
-        this.size = file.size; 
         this.type = file.type; 
+        this.data = {
+            size: file.size,
+            encoding,
+            value: data
+        };
         this.success = success; 
-        this.bytes = bytes;
     }
 }
