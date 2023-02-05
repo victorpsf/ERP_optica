@@ -3,40 +3,39 @@ using Microsoft.AspNetCore.Http;
 using static Application.Library.AuthenticationModels;
 using static Application.Library.JwtModels;
 
-namespace Shared.Services
+namespace Shared.Services;
+
+public class LoggedUser
 {
-    public class LoggedUser
+    private readonly AuthorizationRepository repository;
+    private readonly JwtService jwtService;
+    public HttpContext? context { get; }
+    private LoggedUserDto? identifier;
+
+    public LoggedUserDto Identifier
     {
-        private readonly AuthorizationRepository repository;
-        private readonly JwtService jwtService;
-        public HttpContext? context { get; }
-        private LoggedUserDto? identifier;
-
-        public LoggedUserDto Identifier
+        get
         {
-            get
+            if (this.context is null) throw new Exception("Unautorized");
+            if (this.identifier is null)
             {
-                if (this.context is null) throw new Exception("Unautorized");
-                if (this.identifier is null)
-                {
-                    string token = this.context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last<string>() ?? string.Empty;
+                string token = this.context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last<string>() ?? string.Empty;
 
-                    this.jwtService.Read(token, out ClaimIdentifier claim);
-                    this.identifier = this.repository.Find(claim);
+                this.jwtService.Read(token, out ClaimIdentifier claim);
+                this.identifier = this.repository.Find(claim);
 
-                    if (this.identifier is null) throw new Exception("Unautorized");
-                }
-
-                return this.identifier;
+                if (this.identifier is null) throw new Exception("Unautorized");
             }
-        }
 
-        public LoggedUser(IHttpContextAccessor httpContextAcessor, AuthorizationRepository repository, JwtService jwtService)
-        {
-            this.repository = repository;
-            this.jwtService = jwtService;
-
-            this.context = httpContextAcessor.HttpContext;
+            return this.identifier;
         }
+    }
+
+    public LoggedUser(IHttpContextAccessor httpContextAcessor, AuthorizationRepository repository, JwtService jwtService)
+    {
+        this.repository = repository;
+        this.jwtService = jwtService;
+
+        this.context = httpContextAcessor.HttpContext;
     }
 }

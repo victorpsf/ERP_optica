@@ -1,4 +1,6 @@
-﻿namespace Application.Core
+﻿using Shared.Services;
+
+namespace Application.Core
 {
     public delegate void ConfigureAnotherServices(IServiceCollection services, StartupCore context, IConfiguration configuration);
 
@@ -36,6 +38,7 @@
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<UserLanguage>();
 
             DatabaseService.Instance(this.configuration).ConfigureService(services);
             SecurityService.Instance(this.configuration).ConfigureService(services);

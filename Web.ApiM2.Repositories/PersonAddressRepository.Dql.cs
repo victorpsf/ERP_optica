@@ -1,6 +1,5 @@
-﻿namespace Web.ApiM2.Repositories
+﻿namespace Web.ApiM2.Repositories;
+
+public partial class PersonAddressRepository
 {
-    public partial class PersonAddressRepository
-    {
-    }
 }

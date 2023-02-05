@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.Messages;
+
+public enum MessagesEnum
+{
+    INVALID_INPUT,
+    NAME_RULE,
+    NAME_RULE_LENGTH,
+    CALLNAME_RULE,
+    CALLNAME_RULE_LENGTH,
+    BIRTHDATE_RULE,
+    BIRTHDATE_RULE_LENGTH,
+    CREATEDAT_RULE_LENGTH,
+    INVALID_PERSON_TYPE,
+    PERSONID_IS_NULLABLE_OR_ZERO,
+
+    ERRO_DOCUMENTID_IS_NULL_OR_ZERO,
+    ERRO_DOCUMENTTYPE_EXISTS,
+    ERRO_DOCUMENT_NOT_EXISTS,
+    ERRO_DOCUMENT_TYPE_NOT_INFORMED,
+    ERRO_DOCUMENT_TYPE_INVALID,
+    ERRO_DOCUMENT_VALUE_NOT_INFORMED,
+    ERRO_DOCUMENT_PERSON_NOT_INFORMED,
+}

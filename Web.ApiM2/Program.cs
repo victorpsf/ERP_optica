@@ -1,5 +1,6 @@
 using Serilog;
 using Application.Core;
+using Shared.Services;
 
 namespace Web.ApiM2
 {

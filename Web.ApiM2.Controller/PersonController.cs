@@ -15,11 +15,13 @@ public partial class PersonController: ControllerBase
 {
     private readonly PersonPhysicalRepository Repository;
     private readonly LoggedUser LoggedUser;
+    private readonly Messages messages;
 
-    public PersonController(PersonPhysicalRepository repository, LoggedUser loggedUser)
+    public PersonController(PersonPhysicalRepository repository, LoggedUser loggedUser, UserLanguage language)
     {
         this.Repository = repository;
         this.LoggedUser = loggedUser;
+        this.messages = Messages.Create(language.language);
     }
 
     [Authorize(Policy = nameof(PermissionModels.PersonPhysicalPermission.CreatePersonPhysical))]
@@ -43,8 +45,11 @@ public partial class PersonController: ControllerBase
         {
             switch (error.Message)
             {
+                case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.INVALID_INPUT) });
+                    break;
                 case "PERSONID_IS_NULLABLE_OR_ZERO":
-                    output.Errors.Add(new Failure { Message = PersonMessages.PtBr.PERSONID_IS_NULLABLE_OR_ZERO });
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.PERSONID_IS_NULLABLE_OR_ZERO) });
                     break;
                 default:
                     Log.Error(string.Format("PersonPhysicalController.Create :: {0}", error.Message));

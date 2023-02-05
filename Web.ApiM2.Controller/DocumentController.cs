@@ -1,4 +1,5 @@
 ﻿using Application.Library;
+using Application.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -9,79 +10,85 @@ using static Application.Library.ControllerModels;
 using static Application.Library.DocumentModels;
 using static Web.ApiM2.Controller.Models.PersonDocumentModels;
 
-namespace Web.ApiM2.Controller
+namespace Web.ApiM2.Controller;
+
+[Authorize(Policy = nameof(PermissionModels.DocumentPermission.AccessDocument))]
+public partial class DocumentController: ControllerBase
 {
-    [Authorize(Policy = nameof(PermissionModels.DocumentPermission.AccessDocument))]
-    public partial class DocumentController: ControllerBase
-    {
-        private readonly PersonDocumentRepository Repository;
-        private readonly LoggedUser LoggedUser;
+    private readonly PersonDocumentRepository Repository;
+    private readonly LoggedUser LoggedUser;
+    private readonly Messages messages;
 
-        public DocumentController(PersonDocumentRepository repository, LoggedUser loggedUser) { 
-            this.Repository = repository;
-            this.LoggedUser = loggedUser;
-        }
-
-        [Authorize(Policy = nameof(PermissionModels.DocumentPermission.CreateDocument)), Authorize(Policy = nameof(PermissionModels.DocumentPermission.UpdateDocument))]
-        [HttpPost]
-        public RequestResult<DocumentDto, List<Failure>> CreateV1([FromBody] CreatePersonDocumentInput input)
-        {
-            var output = new RequestResult<DocumentDto, List<Failure>> { Errors = new List<Failure>() };
-
-            try
-            {
-                this.Validate(input, output.Errors);
-                int personDocumentId = this.Repository.Save(new Repositories.Rules.PersonDocumentRules.CreatePersonDocumentRule
-                {
-                    Input = input,
-                    PersonType = PersonModels.PersonType.Physical,
-                    UserId = this.LoggedUser.Identifier.UserId,
-                    EnterpriseId = this.LoggedUser.Identifier.EnterpriseId
-                });
-            }
-
-            catch(Exception ex)
-            {
-                switch(ex.Message)
-                {
-                    default:
-                        Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
-                        break;
-                }
-            }
-
-            return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
-        }
-
-        [Authorize(Policy = nameof(PermissionModels.DocumentPermission.CreateDocument)), Authorize(Policy = nameof(PermissionModels.DocumentPermission.UpdateDocument))]
-        [HttpPost]
-        public RequestResult<DocumentDto, List<Failure>> CreateV2([FromBody] CreatePersonDocumentInput input)
-        {
-            var output = new RequestResult<DocumentDto, List<Failure>> { Errors = new List<Failure>() };
-
-            try
-            {
-                this.Validate(input, output.Errors);
-                int personDocumentId = this.Repository.Save(new Repositories.Rules.PersonDocumentRules.CreatePersonDocumentRule
-                {
-                    Input = input,
-                    PersonType = PersonModels.PersonType.Juridical,
-                    UserId = this.LoggedUser.Identifier.UserId,
-                    EnterpriseId = this.LoggedUser.Identifier.EnterpriseId
-                });
-            }
-
-            catch (Exception ex)
-            {
-                switch (ex.Message)
-                {
-                    default:
-                        Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
-                        break;
-                }
-            }
-
-            return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
-        }
+    public DocumentController(PersonDocumentRepository repository, LoggedUser loggedUser, UserLanguage language) { 
+        this.Repository = repository;
+        this.LoggedUser = loggedUser;
+        this.messages = Messages.Create(language.language);
     }
+
+    [Authorize(Policy = nameof(PermissionModels.DocumentPermission.CreateDocument)), Authorize(Policy = nameof(PermissionModels.DocumentPermission.UpdateDocument))]
+    [HttpPost]
+    public RequestResult<DocumentDto, List<Failure>> Create([FromBody] CreatePersonDocumentInput input)
+    {
+        var output = new RequestResult<DocumentDto, List<Failure>> { Errors = new List<Failure>() };
+
+        try
+        {
+            this.Validate(input, output.Errors);
+            int personDocumentId = this.Repository.Save(
+                new Repositories.Rules.PersonDocumentRules.CreatePersonDocumentRule
+                {
+                    Input = input,
+                    PersonType = input.PersonType,
+                    UserId = this.LoggedUser.Identifier.UserId,
+                    EnterpriseId = this.LoggedUser.Identifier.EnterpriseId
+                }
+            );
+        }
+
+        catch(Exception ex)
+        {
+            switch(ex.Message)
+            {
+                case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.INVALID_INPUT) });
+                    break;
+                default:
+                    Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
+                    break;
+            }
+        }
+
+        return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
+    }
+
+    //[Authorize(Policy = nameof(PermissionModels.DocumentPermission.CreateDocument)), Authorize(Policy = nameof(PermissionModels.DocumentPermission.UpdateDocument))]
+    //[HttpPost]
+    //public RequestResult<DocumentDto, List<Failure>> CreateV2([FromBody] CreatePersonDocumentInput input)
+    //{
+    //    var output = new RequestResult<DocumentDto, List<Failure>> { Errors = new List<Failure>() };
+
+    //    try
+    //    {
+    //        //this.Validate(input, output.Errors);
+    //        //int personDocumentId = this.Repository.Save(new Repositories.Rules.PersonDocumentRules.CreatePersonDocumentRule
+    //        //{
+    //        //    Input = input,
+    //        //    PersonType = PersonModels.PersonType.Juridical,
+    //        //    UserId = this.LoggedUser.Identifier.UserId,
+    //        //    EnterpriseId = this.LoggedUser.Identifier.EnterpriseId
+    //        //});
+    //    }
+
+    //    catch (Exception ex)
+    //    {
+    //        switch (ex.Message)
+    //        {
+    //            default:
+    //                Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
+    //                break;
+    //        }
+    //    }
+
+    //    return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
+    //}
 }
