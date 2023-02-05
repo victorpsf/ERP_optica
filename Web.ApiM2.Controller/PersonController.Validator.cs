@@ -10,26 +10,26 @@ public partial class PersonController
     private void ValidatePersonPhysical(PersonModels.PersonInput input, List<Failure> Errors)
     {
         if (string.IsNullOrEmpty(input.CallName) == false)
-        { if (!(input.CallName.Length > 12 && input.CallName.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.CALLNAME_RULE_LENGTH), Field = "CallName" }); }
+        { if (!(input.CallName.Length > 12 && input.CallName.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_CALLNAME_RULE_LENGTH), Field = "CallName" }); }
 
         if (input.CreatedAt.HasValue)
         {
-            if (input.CreatedAt.IsLowerOrEqual(120) == false) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.BIRTHDATE_RULE_LENGTH), Field = "CreatedAt" });
+            if (input.CreatedAt.IsLowerOrEqual(120) == false) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_BIRTHDATE_RULE_LENGTH), Field = "CreatedAt" });
         }
 
-        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.BIRTHDATE_RULE), Field = "CreatedAt" });
+        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_BIRTHDATE_RULE), Field = "CreatedAt" });
     }
 
     private void ValidatePersonJuridical(PersonModels.PersonInput input, List<Failure> Errors)
     {
         if (string.IsNullOrEmpty(input.CallName) == false)
-        { if (!(input.CallName.Length > 12 && input.CallName.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.CALLNAME_RULE_LENGTH), Field = "CallName" }); }
+        { if (!(input.CallName.Length > 12 && input.CallName.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_CALLNAME_RULE_LENGTH), Field = "CallName" }); }
 
-        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.CALLNAME_RULE), Field = "CallName" });
+        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_CALLNAME_RULE), Field = "CallName" });
 
         if (input.CreatedAt.HasValue)
         {
-            if (input.CreatedAt.IsLowerOrEqual(120) == false) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.CREATEDAT_RULE_LENGTH), Field = "CreatedAt" });
+            if (input.CreatedAt.IsLowerOrEqual(120) == false) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_CREATEDAT_RULE_LENGTH), Field = "CreatedAt" });
         }
     }
 
@@ -39,9 +39,9 @@ public partial class PersonController
 
 
         if (string.IsNullOrEmpty(input.Name) == false)
-        { if (!(input.Name.Length > 12 && input.Name.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.NAME_RULE_LENGTH), Field = "Name" }); }
+        { if (!(input.Name.Length > 12 && input.Name.Length < 500)) Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_NAME_RULE_LENGTH), Field = "Name" }); }
 
-        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.NAME_RULE), Field = "Name" });
+        else Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_NAME_RULE), Field = "Name" });
 
         switch (input.PersonType)
         {
@@ -52,7 +52,7 @@ public partial class PersonController
                 this.ValidatePersonJuridical(input, Errors);
                 break;
             default:
-                Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.INVALID_PERSON_TYPE), Field = "PersonType" });
+                Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_INVALID_PERSON_TYPE), Field = "PersonType" });
                 break;
         }
 

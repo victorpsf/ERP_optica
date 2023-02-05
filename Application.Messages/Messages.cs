@@ -21,7 +21,7 @@ public class Messages
     private MultiLanguage GetLang() => this.Lang switch
     {
         LanguageEnum.PTBR => new Ptbr(),
-        _ => new MultiLanguage(),
+        _ => new Ptbr(),
     };
 
     public string GetMessage(MessagesEnum stack)
@@ -30,8 +30,9 @@ public class Messages
         {
             PropertyInfo? propertie = null;
             string message = string.Empty;
+            PropertyInfo[] properties = this.Language.GetType().GetProperties();
 
-            foreach (PropertyInfo prop in this.Language.GetType().GetProperties())
+            foreach (PropertyInfo prop in properties)
             {
                 if (prop.Name == stack.ToString())
                 {
@@ -40,7 +41,8 @@ public class Messages
                 }
             }
 
-            if (propertie != null || propertie?.GetValue(this.Language, null) is null) throw new NotImplementedException();
+            // || propertie?.GetValue(this.Language, null) is null
+            if (propertie is null) throw new NotImplementedException();
             message = propertie?.GetValue(this.Language, null).ToString();
             if (message is null) throw new NotImplementedException();
             return message;

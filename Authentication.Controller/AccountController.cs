@@ -1,4 +1,5 @@
-﻿using Authentication.Controller.Models;
+﻿using Application.Messages;
+using Authentication.Controller.Models;
 using Authentication.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,14 @@ namespace Authentication.Controller
         private readonly AuthenticationRepository Repository;
         private readonly JwtService Jwt;
         private readonly IConfiguration Configuration;
+        private readonly Messages messages;
 
-        public AccountController(AuthenticationRepository repository, JwtService jwt, IConfiguration configuration)
+        public AccountController(AuthenticationRepository repository, JwtService jwt, IConfiguration configuration, UserLanguage language)
         {
             this.Repository = repository;
             this.Jwt = jwt;
             this.Configuration = configuration;
+            this.messages = Messages.Create(language.language);
         }
 
         [AllowAnonymous]
@@ -82,15 +85,18 @@ namespace Authentication.Controller
                 {
                     case "USER_AND_KEY_INVALID":
                     case "USER_AND_KEY_AND_CODE_INVALID":
-                        output.Errors.Add(new Failure { Message = Messages.USER_AND_KEY_AND_CODE_INVALID });
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_USER_AND_KEY_AND_CODE_INVALID) });
+                        break;
+                    case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_INVALID_INPUT) });
                         break;
                     case "USER_DONT_FOUND":
-                        output.Errors.Add(new Failure { Message = Messages.USER_DONT_FOUND });
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_USER_DONT_FOUND) });
                         break;
                     case "VALIDATION_FAILURE":
                         break;
                     case "NOT_POSSIBLE_CREATE_CODE":
-                        output.Errors.Add(new Failure { Message = Messages.NOT_POSSIBLE_CREATE_CODE });
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_NOT_POSSIBLE_CREATE_CODE) });
                         break;
                     default:
                         Log.Error(string.Format("AccountController.SingIn :: {0}", ex.Message));
@@ -132,11 +138,14 @@ namespace Authentication.Controller
                 switch (ex.Message)
                 {
                     case "USER_AND_KEY_AND_CODE_INVALID":
-                        output.Errors.Add(new Failure { Message = "Usuário, senha ou código inválido" });
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_USER_AND_KEY_AND_CODE_INVALID) });
+                        break;
+                    case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_INVALID_INPUT) });
                         break;
                     case "USER_AND_KEY_INVALID":
                     case "USER_DONT_FOUND":
-                        output.Errors.Add(new Failure { Message = "Usuário ou senha inválido" });
+                        output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_USER_DONT_FOUND) });
                         break;
                     case "VALIDATION_FAILURE":
                         break;

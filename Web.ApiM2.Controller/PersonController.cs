@@ -46,10 +46,10 @@ public partial class PersonController: ControllerBase
             switch (error.Message)
             {
                 case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
-                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.INVALID_INPUT) });
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_INVALID_INPUT) });
                     break;
                 case "PERSONID_IS_NULLABLE_OR_ZERO":
-                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.PERSONID_IS_NULLABLE_OR_ZERO) });
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_PERSON_PERSONID_IS_NULLABLE_OR_ZERO) });
                     break;
                 default:
                     Log.Error(string.Format("PersonPhysicalController.Create :: {0}", error.Message));

@@ -50,7 +50,13 @@ public partial class DocumentController: ControllerBase
             switch(ex.Message)
             {
                 case "ERRO_INVALID_INPUT_VALIDATION_FAILURE":
-                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.INVALID_INPUT) });
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_INVALID_INPUT) });
+                    break;
+                case "ERRO_DOCUMENTTYPE_EXISTS":
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_DOCUMENTTYPE_EXISTS) });
+                    break;
+                case "ERRO_DOCUMENT_NOT_EXISTS":
+                    output.Errors.Add(new Failure { Message = this.messages.GetMessage(MessagesEnum.ERRO_DOCUMENT_NOT_EXISTS) });
                     break;
                 default:
                     Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
@@ -60,35 +66,4 @@ public partial class DocumentController: ControllerBase
 
         return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
     }
-
-    //[Authorize(Policy = nameof(PermissionModels.DocumentPermission.CreateDocument)), Authorize(Policy = nameof(PermissionModels.DocumentPermission.UpdateDocument))]
-    //[HttpPost]
-    //public RequestResult<DocumentDto, List<Failure>> CreateV2([FromBody] CreatePersonDocumentInput input)
-    //{
-    //    var output = new RequestResult<DocumentDto, List<Failure>> { Errors = new List<Failure>() };
-
-    //    try
-    //    {
-    //        //this.Validate(input, output.Errors);
-    //        //int personDocumentId = this.Repository.Save(new Repositories.Rules.PersonDocumentRules.CreatePersonDocumentRule
-    //        //{
-    //        //    Input = input,
-    //        //    PersonType = PersonModels.PersonType.Juridical,
-    //        //    UserId = this.LoggedUser.Identifier.UserId,
-    //        //    EnterpriseId = this.LoggedUser.Identifier.EnterpriseId
-    //        //});
-    //    }
-
-    //    catch (Exception ex)
-    //    {
-    //        switch (ex.Message)
-    //        {
-    //            default:
-    //                Log.Error(string.Format("PersonDocumentController.CreateV1 :: {0}", ex.Message));
-    //                break;
-    //        }
-    //    }
-
-    //    return output.Errors.Any() ? output.SetStatusCode(HttpStatusCode.BadRequest): output;
-    //}
 }

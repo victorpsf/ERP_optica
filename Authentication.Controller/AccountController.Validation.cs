@@ -2,6 +2,7 @@
 using static Application.Library.ControllerModels;
 using Shared.Services;
 using static Application.Library.Security.SecurityModels;
+using Application.Messages;
 
 namespace Authentication.Controller
 {
@@ -9,25 +10,21 @@ namespace Authentication.Controller
     {
         private void Validate(AccountModels.SingInInput input, List<Failure> Errors)
         {
-            if (input is null)
-            {
-                Errors.Add(new Failure { Message = "Formato de valores não informado" });
-                throw new Exception("VALIDATION_FAILURE");
-            }
+            if (input is null) throw new Exception("ERRO_INVALID_INPUT_VALIDATION_FAILURE");
 
-            if (string.IsNullOrEmpty(input.Name)) Errors.Add(new Failure { Field = "Name", Message = "Usuário não informado" });
+            if (string.IsNullOrEmpty(input.Name)) Errors.Add(new Failure { Field = "Name", Message = this.messages.GetMessage(MessagesEnum.ERRO_NAME_NOT_INFORMED) });
             else
             {
-                if (!(input.Name.Length > 5)) Errors.Add(new Failure { Field = "Name", Message = "Nome do usuário muito curto" });
+                if (!(input.Name.Length > 5)) Errors.Add(new Failure { Field = "Name", Message = this.messages.GetMessage(MessagesEnum.ERRO_NAME_RULE_LENGTH) });
             }
 
-            if (string.IsNullOrEmpty(input.Key)) Errors.Add(new Failure { Field = "Key", Message = "Senha não informada" });
+            if (string.IsNullOrEmpty(input.Key)) Errors.Add(new Failure { Field = "Key", Message = this.messages.GetMessage(MessagesEnum.ERRO_KEY_NOT_INFORMED) });
             else
             {
-                if (!(input.Key.Length > 12)) Errors.Add(new Failure { Field = "Key", Message = "Senha muito curta" });
+                if (!(input.Key.Length > 12)) Errors.Add(new Failure { Field = "Key", Message = this.messages.GetMessage(MessagesEnum.ERRO_KEY_RULE_LENGTH) });
             }
 
-            if (!(input.EnterpriseId > 0)) Errors.Add(new Failure { Field = "EnterpriseId", Message = "Empresa não informada" });
+            if (!(input.EnterpriseId > 0)) Errors.Add(new Failure { Field = "EnterpriseId", Message = this.messages.GetMessage(MessagesEnum.ERRO_ENTERPRISE_NOT_INFORMED) });
 
             if (Errors.Any()) throw new Exception("VALIDATION_FAILURE");
         }
@@ -54,19 +51,15 @@ namespace Authentication.Controller
 
         private void Validate(AccountModels.ResendEmailInput input, List<Failure> Errors)
         {
-            if (input is null)
-            {
-                Errors.Add(new Failure { Message = "Formato de valores não informado" });
-                throw new Exception("VALIDATION_FAILURE");
-            }
+            if (input is null) throw new Exception("ERRO_INVALID_INPUT_VALIDATION_FAILURE");
 
-            if (string.IsNullOrEmpty(input.Name)) Errors.Add(new Failure { Field = "Name", Message = "Usuário não informado" });
+            if (string.IsNullOrEmpty(input.Name)) Errors.Add(new Failure { Field = "Name", Message = this.messages.GetMessage(MessagesEnum.ERRO_NAME_NOT_INFORMED) });
             else
             {
-                if (!(input.Name.Length > 5)) Errors.Add(new Failure { Field = "Name", Message = "Nome do usuário muito curto" });
+                if (!(input.Name.Length > 5)) Errors.Add(new Failure { Field = "Name", Message = this.messages.GetMessage(MessagesEnum.ERRO_NAME_RULE_LENGTH)});
             }
 
-            if (!(input.EnterpriseId > 0)) Errors.Add(new Failure { Field = "EnterpriseId", Message = "Empresa não informada" });
+            if (!(input.EnterpriseId > 0)) Errors.Add(new Failure { Field = "EnterpriseId", Message = this.messages.GetMessage(MessagesEnum.ERRO_ENTERPRISE_NOT_INFORMED) });
         }
     }
 }
