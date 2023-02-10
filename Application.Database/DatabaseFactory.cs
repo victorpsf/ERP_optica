@@ -1,3 +1,4 @@
+using Application.Database.Interfaces;
 using Dapper;
 using MySql.Data.MySqlClient;
 using System.Data;
@@ -17,4 +18,7 @@ public class DatabaseFactory {
 
     public static M2Database M2Database(IConfiguration configuration)
         => new M2Database(configuration.GetSection("ConnectionStrings:MySqlConnectionM2").Value ?? string.Empty, 22000);
+
+    public static ITestDatabase TestDatabase(IConfiguration configuration)
+        => new TestDatabase(configuration.GetSection("ConnectionStrings:MySqlConnectionTest").Value ?? string.Empty, 22000);
 }
