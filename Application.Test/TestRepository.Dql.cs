@@ -8,4 +8,8 @@ namespace Application.Test;
 
 public partial class TestRepository
 {
+    protected string CodeSql = @"
+SELECT
+FROM CODE C
+";
 }

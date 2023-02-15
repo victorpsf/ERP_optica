@@ -10,11 +10,11 @@ public class Program
 
     public static Program Create() => new Program();
 
-    public Task<int> Handle()
+    public async Task<int> Handle()
     {
-        string token = AuthenticationTest.Create(this.TestConfig).Execute();
+        string token = await AuthenticationTest.Create(this.TestConfig).Execute();
 
-        return Task.FromResult(0);
+        return 0;
     }
 
     public static async Task<int> Main(string[] args) => await Create().Handle();
