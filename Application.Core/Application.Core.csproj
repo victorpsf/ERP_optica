@@ -7,26 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
-    <PackageReference Include="Serilog" Version="2.12.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="6.1.0-dev-00281" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Database\Application.Database.csproj" />
-    <ProjectReference Include="..\Application.Database.Interfaces\Application.Database.Interfaces.csproj" />
-    <ProjectReference Include="..\Shared.Services\Shared.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Microsoft.AspNetCore.Builder" />
-    <Using Include="Microsoft.AspNetCore.Hosting" />
-    <Using Include="Microsoft.AspNetCore.Http" />
-    <Using Include="Microsoft.AspNetCore.Routing" />
-    <Using Include="Microsoft.Extensions.Configuration" />
-    <Using Include="Microsoft.Extensions.DependencyInjection" />
-    <Using Include="Microsoft.Extensions.Hosting" />
-    <Using Include="Microsoft.Extensions.Logging" />
+    <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
+    <ProjectReference Include="..\Application.Middleware\Application.Middleware.csproj" />
+    <ProjectReference Include="..\Application.Repositories\Application.Repositories.csproj" />
+    <ProjectReference Include="..\Application.Repository.Interfaces\Application.Repository.Interfaces.csproj" />
+    <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
 
 </Project>

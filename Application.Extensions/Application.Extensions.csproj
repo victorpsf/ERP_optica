@@ -8,13 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.32.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application.Extensions\Application.Extensions.csproj" />
-    <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
     <ProjectReference Include="..\Application.Models\Application.Models.csproj" />
   </ItemGroup>
 
