@@ -1,5 +1,7 @@
-﻿using Application.Repository.Interfaces;
+﻿using Application.Interfaces;
+using Application.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using static Application.Repositories.Rules.PermissionRules;
 
 namespace Application.Middleware;
 
@@ -13,10 +15,10 @@ public class PermissionRequirements: IAuthorizationRequirement
 
 public class Permission: AuthorizationHandler<PermissionRequirements>
 {
-    private readonly LoggedUser Authentication;
+    private readonly ILoggedUser Authentication;
     private readonly IPermissionRepository Repository;
 
-    public Permission(LoggedUser Authentication, IPermissionRepository Repository)
+    public Permission(ILoggedUser Authentication, IPermissionRepository Repository)
     {
         this.Repository = Repository;
         this.Authentication = Authentication;
@@ -26,10 +28,10 @@ public class Permission: AuthorizationHandler<PermissionRequirements>
     {
         try
         {
-            context.Fail();
-            //if (this.Repository.VerifyPermission(this.Authentication.Identifier, dependecy.Permission))
-            //    context.Succeed(requirement: dependecy);
-            //else
+            if (this.Repository.VerifyPermission(new VerifyPermissionRule { loggedUserDto = this.Authentication.Identifier, Permission = dependecy.Permission }))
+                context.Succeed(requirement: dependecy);
+            else
+                context.Fail();
         }
 
         catch (Exception error)

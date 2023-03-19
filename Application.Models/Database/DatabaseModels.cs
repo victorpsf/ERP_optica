@@ -54,8 +54,12 @@ public static class DatabaseModels
     {
         public List<Parameter> parameters { get; } = new List<Parameter>();
 
-        public void Add(string field, object? value, ParameterDirection direction) => 
+        public static ParameterCollection GetInstance () => new ParameterCollection();
+        public ParameterCollection Add(string field, object? value, ParameterDirection direction)
+        {
             this.parameters.Add(new Parameter { Field = field, Value = value, Direction = direction });
+            return this;
+        }
     }
 
     public class BancoArgument

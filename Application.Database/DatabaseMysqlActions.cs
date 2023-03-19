@@ -39,21 +39,9 @@ public class DatabaseMysqlActions
     {
         if (this.Connection?.State != ConnectionState.Closed)
             this.Connection?.Close();
+        this.Connection = null;
         this.Transaction = null;
     }
-
-    public void Refresh()
-    {
-        if (this.Connection?.State != ConnectionState.Closed)
-        {
-            this.Rollback();
-            this.Disconnect();
-        }
-
-        this.Connect();
-    }
-
-
 
     public void ControlData(BancoCommitArgument argument)
     {

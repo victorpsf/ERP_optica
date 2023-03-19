@@ -1,11 +1,9 @@
-﻿namespace Service.Authentication;
+﻿using Application.Core;
 
-public class Startup
+namespace Service.Authentication;
+
+public class Startup: StartupCore
 {
-    public IConfiguration Configuration { get; }
-
-    public Startup(IConfiguration configuration)
-    {
-        this.Configuration = configuration;
-    }
+    public Startup(IConfiguration configuration): base(configuration)
+    { }
 }

@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Repository.Inte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Services", "Application.Services\Application.Services.csproj", "{7B68B906-F4AE-4694-A246-E70D6D89BE54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Services.Interfaces", "Application.Services.Interfaces\Application.Services.Interfaces.csproj", "{F88AF6FE-E8BF-447C-89A1-329003C93D32}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Authentication", "Service.Authentication\Service.Authentication.csproj", "{F5A92080-90DF-48F6-A4D0-BE2F4837D3DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Repositories", "Application.Repositories\Application.Repositories.csproj", "{409D815B-8841-423B-B4AC-5638D7E7FC30}"
@@ -34,8 +32,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Mensagens", "Application.Mensagens\Application.Mensagens.csproj", "{E6822D57-9D3F-4A97-8C37-AAED5D32116C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Library", "Application.Library\Application.Library.csproj", "{3F0653FD-71EA-43DF-A071-D16EDEF589E5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Security.Interfaces", "Application.Security.Interfaces\Application.Security.Interfaces.csproj", "{DDC29BB2-C935-4EB8-8849-F9074E4ADD1A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Middleware", "Application.Middleware\Application.Middleware.csproj", "{DB630E74-28BB-4D32-B380-AD6BBCC91E0E}"
 EndProject
@@ -75,10 +71,6 @@ Global
 		{7B68B906-F4AE-4694-A246-E70D6D89BE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B68B906-F4AE-4694-A246-E70D6D89BE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B68B906-F4AE-4694-A246-E70D6D89BE54}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F88AF6FE-E8BF-447C-89A1-329003C93D32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F88AF6FE-E8BF-447C-89A1-329003C93D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F88AF6FE-E8BF-447C-89A1-329003C93D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F88AF6FE-E8BF-447C-89A1-329003C93D32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5A92080-90DF-48F6-A4D0-BE2F4837D3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F5A92080-90DF-48F6-A4D0-BE2F4837D3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5A92080-90DF-48F6-A4D0-BE2F4837D3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,10 +103,6 @@ Global
 		{3F0653FD-71EA-43DF-A071-D16EDEF589E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F0653FD-71EA-43DF-A071-D16EDEF589E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F0653FD-71EA-43DF-A071-D16EDEF589E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DDC29BB2-C935-4EB8-8849-F9074E4ADD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DDC29BB2-C935-4EB8-8849-F9074E4ADD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DDC29BB2-C935-4EB8-8849-F9074E4ADD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DDC29BB2-C935-4EB8-8849-F9074E4ADD1A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DB630E74-28BB-4D32-B380-AD6BBCC91E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB630E74-28BB-4D32-B380-AD6BBCC91E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB630E74-28BB-4D32-B380-AD6BBCC91E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU

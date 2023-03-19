@@ -41,6 +41,7 @@ public class StartupCore
         services.AddHttpContextAccessor();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<IUserLanguage, UserLanguage>();
+        services.AddScoped<IAppLogger, AppLogger>();
 
         services.AddScoped<IAuthorizationDatabase, AuthorizationDatabase>(options => MysqlConnectionFactory.AuthorizationDatabase(this.Configuration));
         services.AddScoped<IPermissionDatabase, PermissionDatabase>(options => MysqlConnectionFactory.PermissionDatabase(this.Configuration));
@@ -64,7 +65,12 @@ public class StartupCore
                     x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(BinaryConverter.ToBytesView(this.Configuration.GetSection(JwtService.GetEnv("Key")).Value ?? string.Empty, Models.Security.BinaryViewModels.BinaryView.HEX)),
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                                BinaryConverter.ToBytesView(
+                                    this.Configuration.GetSection(JwtService.GetEnv("Key")).Value ?? string.Empty, 
+                                    Models.Security.BinaryViewModels.BinaryView.BASE64
+                                )
+                            ),
                         ValidateIssuer = true,
                         ValidateAudience = true
                     };

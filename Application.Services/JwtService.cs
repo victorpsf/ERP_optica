@@ -25,7 +25,7 @@ public class JwtService: IJwtService
     }
 
     private byte[] GetTokenSecret()
-    { return BinaryConverter.ToBytesView(this.Configuration.GetSection(GetEnv("Key")).Value ?? "", Models.Security.BinaryViewModels.BinaryView.HEX); }
+    { return BinaryConverter.ToBytesView(this.Configuration.GetSection(GetEnv("Key")).Value ?? "", Models.Security.BinaryViewModels.BinaryView.BASE64); }
 
     private int GetTotalMinutes()
     {

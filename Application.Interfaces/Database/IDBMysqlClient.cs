@@ -6,7 +6,6 @@ public interface IDBMysqlClient
 {
     public void Connect();
     public void Disconnect();
-    public void Refresh();
     public void ControlData(BancoCommitArgument argument);
     public void CommitAndSave(BancoCommitArgument argument);
     public void Commit();
