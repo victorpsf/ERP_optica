@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["Application.Core/Application.Core.csproj", "Application.Core/"]
+COPY ["Authentication.Service/Authentication.Service.csproj", "Authentication.Service/"]
+COPY ["Authentication.Controller/Authentication.Controller.csproj", "Authentication.Controller/"]
+COPY ["Authentication.Controller.Models/Authentication.Controller.Models.csproj", "Authentication.Controller.Models/"]
+COPY ["Application.Library/Application.Library.csproj", "Application.Library/"]
+COPY ["Shared.Services/Shared.Services.csproj", "Shared.Services/"]
+COPY ["Application.Database/Application.Database.csproj", "Application.Database/"]
+COPY ["Authentication.Repositories/Authentication.Repositories.csproj", "Authentication.Repositories/"]
+COPY ["Shared.Extensions/Shared.Extensions.csproj", "Shared.Extensions/"]
+COPY ["Application.Messages/Application.Messages.csproj", "Application.Messages/"]
+RUN dotnet restore "Authentication.Service/Authentication.Service.csproj"
+COPY . .
+WORKDIR /src/Authentication.Service
+RUN dotnet build "Authentication.Service.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Authentication.Service.dll"]

@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Database.Interf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Messages", "Application.Messages\Application.Messages.csproj", "{76C5ADD4-488C-4F45-9DC5-57DFF38F5D00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Interfaces", "Application.Interfaces\Application.Interfaces.csproj", "{7C955D83-1316-4478-847D-8A3A51BF4D3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Repositories.Rules", "Authentication.Repositories.Rules\Authentication.Repositories.Rules.csproj", "{D3ED6D21-E985-4EBE-AAC3-2EE14E752722}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{76C5ADD4-488C-4F45-9DC5-57DFF38F5D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76C5ADD4-488C-4F45-9DC5-57DFF38F5D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76C5ADD4-488C-4F45-9DC5-57DFF38F5D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C955D83-1316-4478-847D-8A3A51BF4D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C955D83-1316-4478-847D-8A3A51BF4D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C955D83-1316-4478-847D-8A3A51BF4D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C955D83-1316-4478-847D-8A3A51BF4D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3ED6D21-E985-4EBE-AAC3-2EE14E752722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3ED6D21-E985-4EBE-AAC3-2EE14E752722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3ED6D21-E985-4EBE-AAC3-2EE14E752722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3ED6D21-E985-4EBE-AAC3-2EE14E752722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,7 +11,7 @@ namespace Authentication.Service
 
         private static void ConfigureAnotherServices (IServiceCollection services, StartupCore context, IConfiguration configuration) {
             services.AddScoped<IAuthenticationDatabase, AuthenticationDatabase>(options => DatabaseFactory.CreateAuthenticationDatabase(configuration));
-            services.AddScoped<AuthenticationRepository>();
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         }
     }
 }

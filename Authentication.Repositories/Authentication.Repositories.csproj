@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Database.Interfaces\Application.Database.Interfaces.csproj" />
+    <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
     <ProjectReference Include="..\Authentication.Controller.Models\Authentication.Controller.Models.csproj" />
+    <ProjectReference Include="..\Authentication.Repositories.Rules\Authentication.Repositories.Rules.csproj" />
     <ProjectReference Include="..\Shared.Extensions\Shared.Extensions.csproj" />
   </ItemGroup>
 
