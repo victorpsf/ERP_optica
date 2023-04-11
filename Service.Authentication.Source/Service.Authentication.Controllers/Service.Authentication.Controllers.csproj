@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
-    <ProjectReference Include="..\Application.Models\Application.Models.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Application.Interfaces\Application.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

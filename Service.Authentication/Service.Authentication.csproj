@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.Core\Application.Core.csproj" />
+    <ProjectReference Include="..\Service.Authentication.Source\Service.Authentication.Controllers\Service.Authentication.Controllers.csproj" />
   </ItemGroup>
 
 </Project>

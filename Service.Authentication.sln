@@ -5,49 +5,50 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{BED20EC9-227B-4ADD-AF18-1BB00D20B889}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Interfaces", "Application\Application.Interfaces\Application.Interfaces.csproj", "{30085267-A40D-454E-A248-FF2DD41A9296}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Interfaces", "Application\Application.Interfaces\Application.Interfaces.csproj", "{30085267-A40D-454E-A248-FF2DD41A9296}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Controller.Models", "Application\Application.Controller.Models\Application.Controller.Models.csproj", "{A8B88AEA-5F49-42AA-95A0-0BE932014F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Controller.Models", "Application\Application.Controller.Models\Application.Controller.Models.csproj", "{A8B88AEA-5F49-42AA-95A0-0BE932014F97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Core", "Application\Application.Core\Application.Core.csproj", "{D2A24A95-26DF-43D9-A493-D2F346B307C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Core", "Application\Application.Core\Application.Core.csproj", "{D2A24A95-26DF-43D9-A493-D2F346B307C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Daos", "Application\Application.Daos\Application.Daos.csproj", "{B2B077D1-F765-4576-8F5D-D9B8D91F13B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Daos", "Application\Application.Daos\Application.Daos.csproj", "{B2B077D1-F765-4576-8F5D-D9B8D91F13B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Database", "Application\Application.Database\Application.Database.csproj", "{4C9993DF-60B4-42AF-962F-1FAB134AAE20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Database", "Application\Application.Database\Application.Database.csproj", "{4C9993DF-60B4-42AF-962F-1FAB134AAE20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Dtos", "Application\Application.Dtos\Application.Dtos.csproj", "{4E435FA4-0BAE-4971-97B6-28B40F20F74E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Dtos", "Application\Application.Dtos\Application.Dtos.csproj", "{4E435FA4-0BAE-4971-97B6-28B40F20F74E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Exceptions", "Application\Application.Exceptions\Application.Exceptions.csproj", "{8565692F-4E5F-45DF-8D96-AB84E1456749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Exceptions", "Application\Application.Exceptions\Application.Exceptions.csproj", "{8565692F-4E5F-45DF-8D96-AB84E1456749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Extensions", "Application\Application.Extensions\Application.Extensions.csproj", "{D732DCFE-3F77-42E2-A68F-E3CE42B5833F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Extensions", "Application\Application.Extensions\Application.Extensions.csproj", "{D732DCFE-3F77-42E2-A68F-E3CE42B5833F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Library", "Application\Application.Library\Application.Library.csproj", "{A1E163EC-091E-4943-8BDC-B3BF54BC81A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Library", "Application\Application.Library\Application.Library.csproj", "{A1E163EC-091E-4943-8BDC-B3BF54BC81A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Mensagens", "Application\Application.Mensagens\Application.Mensagens.csproj", "{0DC93AC4-DBBE-4375-AE59-E50769CF62EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Mensagens", "Application\Application.Mensagens\Application.Mensagens.csproj", "{0DC93AC4-DBBE-4375-AE59-E50769CF62EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Middleware", "Application\Application.Middleware\Application.Middleware.csproj", "{131643EA-9458-4DF6-8E55-AB61F0BD9CF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Middleware", "Application\Application.Middleware\Application.Middleware.csproj", "{131643EA-9458-4DF6-8E55-AB61F0BD9CF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Models", "Application\Application.Models\Application.Models.csproj", "{83D395D7-7B18-490B-9A93-4F6702B0B0E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Models", "Application\Application.Models\Application.Models.csproj", "{83D395D7-7B18-490B-9A93-4F6702B0B0E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Repositories", "Application\Application.Repositories\Application.Repositories.csproj", "{D7CF400B-2577-411F-9548-478C7CF930C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Repositories", "Application\Application.Repositories\Application.Repositories.csproj", "{D7CF400B-2577-411F-9548-478C7CF930C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Repositories.Rules", "Application\Application.Repositories.Rules\Application.Repositories.Rules.csproj", "{45469DD8-8A85-487C-8F1E-EFC8A11D5878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Repositories.Rules", "Application\Application.Repositories.Rules\Application.Repositories.Rules.csproj", "{45469DD8-8A85-487C-8F1E-EFC8A11D5878}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Repository.Interfaces", "Application\Application.Repository.Interfaces\Application.Repository.Interfaces.csproj", "{BA7A6749-6F88-4461-8F16-DDC9C4732119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Repository.Interfaces", "Application\Application.Repository.Interfaces\Application.Repository.Interfaces.csproj", "{BA7A6749-6F88-4461-8F16-DDC9C4732119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Security", "Application\Application.Security\Application.Security.csproj", "{B7888D8E-D573-4022-8C50-A162B05B4070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Security", "Application\Application.Security\Application.Security.csproj", "{B7888D8E-D573-4022-8C50-A162B05B4070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Services", "Application\Application.Services\Application.Services.csproj", "{DE5E67BE-98BE-4B03-8EE9-723712A36916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Services", "Application\Application.Services\Application.Services.csproj", "{DE5E67BE-98BE-4B03-8EE9-723712A36916}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Authentication", "Service.Authentication\Service.Authentication.csproj", "{AEBCF8FD-E90D-4530-800C-A6EC90F10A29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Authentication", "Service.Authentication\Service.Authentication.csproj", "{AEBCF8FD-E90D-4530-800C-A6EC90F10A29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service.Authentication.Source", "Service.Authentication.Source", "{19236C5E-3CEA-4A1A-836A-8187C19DB0A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Authentication.Controllers", "Service.Authentication.Source\Service.Authentication.Controllers\Service.Authentication.Controllers.csproj", "{0577682B-00E5-47E6-93C8-12121D93C6B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{30085267-A40D-454E-A248-FF2DD41A9296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -122,6 +123,13 @@ Global
 		{AEBCF8FD-E90D-4530-800C-A6EC90F10A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEBCF8FD-E90D-4530-800C-A6EC90F10A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEBCF8FD-E90D-4530-800C-A6EC90F10A29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0577682B-00E5-47E6-93C8-12121D93C6B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0577682B-00E5-47E6-93C8-12121D93C6B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0577682B-00E5-47E6-93C8-12121D93C6B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0577682B-00E5-47E6-93C8-12121D93C6B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{30085267-A40D-454E-A248-FF2DD41A9296} = {BED20EC9-227B-4ADD-AF18-1BB00D20B889}
@@ -141,5 +149,9 @@ Global
 		{BA7A6749-6F88-4461-8F16-DDC9C4732119} = {BED20EC9-227B-4ADD-AF18-1BB00D20B889}
 		{B7888D8E-D573-4022-8C50-A162B05B4070} = {BED20EC9-227B-4ADD-AF18-1BB00D20B889}
 		{DE5E67BE-98BE-4B03-8EE9-723712A36916} = {BED20EC9-227B-4ADD-AF18-1BB00D20B889}
+		{0577682B-00E5-47E6-93C8-12121D93C6B1} = {19236C5E-3CEA-4A1A-836A-8187C19DB0A4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DB74B56-A5D8-4213-8189-84BC1FF9B5A0}
 	EndGlobalSection
 EndGlobal

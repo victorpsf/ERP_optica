@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
-    <ProjectReference Include="..\Application.Models\Application.Models.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -42,6 +42,7 @@ public class StartupCore
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<IUserLanguage, UserLanguage>();
         services.AddScoped<IAppLogger, AppLogger>();
+        services.AddScoped<ISmtpService, SmtpService>();
 
         services.AddScoped<IAuthorizationDatabase, AuthorizationDatabase>(options => MysqlConnectionFactory.AuthorizationDatabase(this.Configuration));
         services.AddScoped<IPermissionDatabase, PermissionDatabase>(options => MysqlConnectionFactory.PermissionDatabase(this.Configuration));
@@ -50,6 +51,7 @@ public class StartupCore
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ILoggedUser, LoggedUser>();
+        services.AddScoped<IAppControllerServices, AppControllerServices>();
 
         services.AddAuthentication(
                 x =>
@@ -62,13 +64,13 @@ public class StartupCore
                 {
                     x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
-                    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(
                                 BinaryConverter.ToBytesView(
-                                    this.Configuration.GetSection(JwtService.GetEnv("Key")).Value ?? string.Empty, 
-                                    Models.Security.BinaryViewModels.BinaryView.BASE64
+                                    this.Configuration.GetSection(JwtService.GetEnv("Key")).Value ?? string.Empty,
+                                    BinaryViewModels.BinaryView.BASE64
                                 )
                             ),
                         ValidateIssuer = true,
