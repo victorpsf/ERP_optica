@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Mysqlx.Expr;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 
@@ -6,21 +7,30 @@ namespace Application.Database.Connections;
 
 public class MysqlConnectionFactory
 {
-    private static string GetEnvKey(string Identifier)
-    {
 #if DEBUG
-        return $"ConnectionStrings:{Identifier}";
+    private static string prefix = "ConnectionStrings:";
 #elif RELEASE
-        return $"Env{Identifier}";
+    private static string prefix = "Env";
 #endif
-    }
 
-    public static AuthorizationDatabase AuthorizationDatabase(IConfiguration configuration)
+
+    private static string GetConnectionString(IConfiguration configuration, string Identifier)
+        => configuration.GetSection($"{prefix}{Identifier}").Value ?? string.Empty;
+
+    private static int GetTimeout(IConfiguration configuration) 
     {
-        Console.WriteLine(configuration.GetSection(GetEnvKey("MySqlConnectionAuthorization")).Value);
-        return new AuthorizationDatabase(configuration.GetSection(GetEnvKey("MySqlConnectionAuthorization")).Value ?? string.Empty, 22000);
+        string value = configuration.GetSection($"{prefix}ConnectionTimeout").Value ?? string.Empty;
+
+        try
+        { return Convert.ToInt32(value); }
+
+        catch
+        { return 22000; }
     }
 
-    public static PermissionDatabase PermissionDatabase(IConfiguration configuration)
-        => new PermissionDatabase(configuration.GetSection(GetEnvKey("MySqlConnectionPermission")).Value ?? string.Empty, 22000);
+    public static AuthenticationDatabase AuthenticationDatabase(IConfiguration configuration)
+        => new AuthenticationDatabase(GetConnectionString(configuration, "MySqlConnectionAuthentication"), GetTimeout(configuration));
+
+    public static AuthorizationDatabase AuthorizationDatabase(IConfiguration configuration) =>
+        new AuthorizationDatabase(GetConnectionString(configuration, "MySqlConnectionAuthorization"), GetTimeout(configuration));
 }

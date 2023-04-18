@@ -4,7 +4,7 @@
     },
     "ConnectionStrings": {
         "MySqlConnectionAuthentication": "[CONNECTIONSTRING]",
-        "MySqlConnectionPermission": "[CONNECTIONSTRING]",
+        "MySqlConnectionAuthorization": "[CONNECTIONSTRING]",
         "MySqlConnectionM1": "[CONNECTIONSTRING]",
         "MySqlConnectionM2": "[CONNECTIONSTRING]"
     },

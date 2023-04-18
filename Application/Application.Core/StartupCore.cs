@@ -47,7 +47,6 @@ public class StartupCore
         services.AddScoped<ISmtpService, SmtpService>();
 
         services.AddScoped<IAuthorizationDatabase, AuthorizationDatabase>(options => MysqlConnectionFactory.AuthorizationDatabase(this.Configuration));
-        services.AddScoped<IPermissionDatabase, PermissionDatabase>(options => MysqlConnectionFactory.PermissionDatabase(this.Configuration));
 
         services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();

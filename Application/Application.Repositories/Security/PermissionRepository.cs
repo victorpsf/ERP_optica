@@ -5,9 +5,9 @@ namespace Application.Repositories.Security;
 
 public partial class PermissionRepository: IPermissionRepository
 {
-    protected IPermissionDatabase db;
+    protected IAuthorizationDatabase db;
 
-    public PermissionRepository(IPermissionDatabase db)
+    public PermissionRepository(IAuthorizationDatabase db)
     {
         this.db = db;
     }
