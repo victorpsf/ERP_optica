@@ -1,11 +1,12 @@
 ﻿using Application.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Serilog.Core;
 using static Application.Models.Controller.ValidationModels;
 using static Application.Models.MultiLanguageModels;
 
 namespace Application.Library;
 
-public class ModelValidation
+public class ModelValidation: IModelValidation
 {
     protected readonly IConfiguration configuration;
 
@@ -19,6 +20,13 @@ public class ModelValidation
             value = value 
         };
 
+    public AppValidateRule GetRule(AppValidateRuleEnum rule, MessagesEnum stack)
+        => new AppValidateRule
+        {
+            Rule = rule,
+            Stack = stack
+        };
+
     public AppValidate GetValidationRule(string attribute, params AppValidateRule[] rules)
         => new AppValidate
         {
@@ -27,10 +35,11 @@ public class ModelValidation
         };
 
 
-    public AppValidationResult Validate<T>(T model, IMessage message, params AppValidate[] rules) where T : class
+    public AppValidationResult Validate<T>(T model, IAppControllerServices services, params AppValidate[] rules) where T : class
          => ModelValidator<T>.GetInstance(
              model,
-             message,
+             services.message,
+             services.logger,
              new List<AppValidate>(rules)
-         ).Validate();
+         ).Validate(rules);
 }

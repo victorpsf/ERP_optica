@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Application.Middleware\Application.Middleware.csproj" />
     <ProjectReference Include="..\Application.Repositories\Application.Repositories.csproj" />
     <ProjectReference Include="..\Application.Repository.Interfaces\Application.Repository.Interfaces.csproj" />
+    <ProjectReference Include="..\Application.Security\Application.Security.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
   </ItemGroup>
 

@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using Application.Library;
 using Microsoft.AspNetCore.Authorization;
 using Application.Models.Security;
+using Application.Interfaces.Security;
+using Application.Security;
 
 namespace Application.Core;
 
@@ -51,6 +53,10 @@ public class StartupCore
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ILoggedUser, LoggedUser>();
+        services.AddScoped<IHash, Hash>();
+        services.AddScoped<IPbkdf2Security, Pbkdf2Security>();
+        services.AddScoped<IAppSecurity, AppSecurity>();
+        services.AddScoped<IModelValidation, ModelValidation>();
         services.AddScoped<IAppControllerServices, AppControllerServices>();
 
         services.AddAuthentication(

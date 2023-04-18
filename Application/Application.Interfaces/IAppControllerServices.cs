@@ -1,11 +1,15 @@
-﻿namespace Application.Interfaces;
+﻿using Application.Interfaces.Security;
+
+namespace Application.Interfaces;
 
 public interface IAppControllerServices
 {
-    public IJwtService jwt { get; }
-    public IAppLogger logger { get; }
-    public ILoggedUser loggedUser { get; }
-    public IMessage message { get; }
-    public IUserLanguage userLanguage { get; }
-    public ISmtpService smtpService { get; }
+    IJwtService jwt { get; }
+    IAppLogger logger { get; }
+    ILoggedUser loggedUser { get; }
+    IMessage message { get; }
+    IUserLanguage userLanguage { get; }
+    ISmtpService smtpService { get; }
+    IModelValidation validation { get; }
+    IAppSecurity security { get; }
 }

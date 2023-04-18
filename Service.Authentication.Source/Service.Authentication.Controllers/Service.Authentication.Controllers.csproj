@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Application.Controller.Models\Application.Controller.Models.csproj" />
+    <ProjectReference Include="..\..\Application\Application.Exceptions\Application.Exceptions.csproj" />
     <ProjectReference Include="..\..\Application\Application.Interfaces\Application.Interfaces.csproj" />
   </ItemGroup>
 

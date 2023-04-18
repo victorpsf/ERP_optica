@@ -11,6 +11,10 @@ namespace Application.Mensagens
         public string INVALID_INPUT { get; } = "Dado de entrada inválido";
 
         #region Authentication
+        public string ERRO_LOGIN_NAME_REQUIRED { get; } = "Usuário não informado";
+        public string ERRO_LOGIN_KEY_REQUIRED { get; } = "Senha não informada";
+        public string ERRO_LOGIN_ENTERPRISEID_REQUIRED { get; } = "Empresa não informada";
+
         public string ERRO_USER_AND_KEY_AND_CODE_INVALID { get; } = "Usuário, senha ou código inválido";
         public string ERRO_USER_DONT_FOUND { get; } = "Usuário, senha inválido";
         public string ERRO_NOT_POSSIBLE_CREATE_CODE { get; } = "Não foi possível realizar sua solicitação de login, tente novamente após 5 minutos, se persistir contate o suporte";

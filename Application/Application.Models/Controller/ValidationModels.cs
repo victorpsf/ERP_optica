@@ -14,17 +14,14 @@ public static class ValidationModels
 
     public class AppValidationResult
     {
-        public bool Failed { get; set; }
+        public bool Failed { get => this.Erros.Any(); }
         public List<AppError> Erros = new List<AppError>();
 
         public AppValidationResult()
         { }
 
         public AppValidationResult(List<AppError> erros)
-        {
-            this.Failed = erros.Any();
-            this.Erros = erros;
-        }
+        { this.Erros = erros; }
     }
 
     public enum AppValidateRuleEnum
@@ -37,7 +34,7 @@ public static class ValidationModels
     public class AppValidateRule
     {
         public AppValidateRuleEnum Rule { get; set; }
-        public MessagesEnum Stack { get; set; } = string.Empty;
+        public MessagesEnum Stack { get; set; }
         public int? value { get; set; }
     }
 
