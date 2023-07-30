@@ -14,17 +14,20 @@ public class BaseControllerServices: IBaseControllerServices
     public IJwtService jwtService { get; }
     public IAppLogger logger { get; }
     public ISmtpService smtpService { get; }
+    public IAttributeValidationBase validator { get; }
 
     public BaseControllerServices(
         ILoggedUser loggedUser,
         IJwtService jwtService,
         IAppLogger logger,
-        ISmtpService smtpService
+        ISmtpService smtpService,
+        IAttributeValidationBase validator
     )
     {
         this.logger = logger;
         this.loggedUser = loggedUser;
         this.jwtService = jwtService;
         this.smtpService = smtpService;
+        this.validator = validator;
     }
 }

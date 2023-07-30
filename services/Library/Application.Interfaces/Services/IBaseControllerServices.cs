@@ -11,4 +11,5 @@ public interface IBaseControllerServices
     public IJwtService jwtService { get; }
     public IAppLogger logger { get; }
     public ISmtpService smtpService { get; }
+    public IAttributeValidationBase validator { get; }
 }

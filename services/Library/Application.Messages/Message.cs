@@ -23,13 +23,15 @@ public class Message: IMessage
 
     public static Message Create(LanguageEnum lang) => new Message(lang);
 
-    public string GetMessage(MessagesEnum stack)
+    public string GetMessage(MessagesEnum stack) => GetMessage(stack.ToString());
+
+    public string GetMessage(string stack)
     {
         try
         {
             var results = this.Language.GetType()
                 .GetProperties()
-                .Where(a => a.Name.ToUpperInvariant() == stack.ToString().ToUpperInvariant())
+                .Where(a => a.Name.ToUpperInvariant() == stack.ToUpperInvariant())
                 .Select(a => a.GetValue(this.Language, null))
                 .Where(a => a is not null)
                 .Select(a => a?.ToString() ?? string.Empty)

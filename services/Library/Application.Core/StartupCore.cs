@@ -1,7 +1,6 @@
 ﻿using Application.Base.Models;
 using Application.Database;
 using Application.Database.Connections;
-using Application.Extensions;
 using Application.Interfaces.Connections;
 using Application.Interfaces.RepoServices;
 using Application.Interfaces.Repositories;
@@ -145,6 +144,7 @@ public class StartupCore
         services.AddScoped<ISmtpService, SmtpService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ILoggedUser, LoggedUser>();
+        services.AddScoped<IAttributeValidationBase, AttributeValidationBase>();
         services.AddScoped<IBaseControllerServices, BaseControllerServices>();
 
         this.configureDatabases(services);
@@ -168,6 +168,8 @@ public class StartupCore
 
         app.UseEndpoints(endpoint =>
         {
+            Console.WriteLine(this.Prefix);
+            Console.WriteLine(this.Pattern);
             endpoint.MapControllers();
             endpoint.MapControllerRoute(
                 name: this.Prefix,
