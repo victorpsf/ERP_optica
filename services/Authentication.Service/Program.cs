@@ -1,5 +1,4 @@
 using Application.Core;
-using Authentication.Service;
 using Serilog;
 
 namespace Authentication.Service;
