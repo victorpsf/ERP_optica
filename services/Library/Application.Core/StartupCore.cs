@@ -168,8 +168,6 @@ public class StartupCore
 
         app.UseEndpoints(endpoint =>
         {
-            Console.WriteLine(this.Prefix);
-            Console.WriteLine(this.Pattern);
             endpoint.MapControllers();
             endpoint.MapControllerRoute(
                 name: this.Prefix,
