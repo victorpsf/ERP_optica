@@ -4,5 +4,5 @@ namespace Application.Interfaces.Services;
 
 public interface IAttributeValidationBase
 {
-    bool validate<T>(T model, out List<ControllerBaseModels.ValidationError> errors) where T : class, new();
+    bool validate<T, B>(T model, ControllerBaseModels.RequestResult<B> output) where T : class, new();
 }

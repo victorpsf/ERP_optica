@@ -9,4 +9,7 @@ public class BusinessException: Exception
 
     public BusinessException(Exception? innerException, BusinessExceptionEnum? stack) : this(innerException?.Message, innerException, stack)
     { }
+
+    public BusinessException(string message) : this(message, null, null)
+    { }
 }

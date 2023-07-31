@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Authentication.Service.Controller.Models;
+namespace Authentication.Service.Controllers.Models;
 
-public static class AuthModels
+public static class AccountModels
 {
     public class SingInInput
     {
@@ -19,5 +19,11 @@ public static class AuthModels
 
         [MaxLength(9, ErrorMessage = "ERROR_SING_IN_CODE_OUT_OF_RANGE")]
         public string? Code { get; set; }
+    }
+
+    public class SingInOutput
+    {
+        public DateTime Expire { get; set; }
+        public string Token { get; set; } = string.Empty;
     }
 }

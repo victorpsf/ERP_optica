@@ -11,5 +11,16 @@ public static class ControllerBaseModels
     public class RequestResult<T> {
         public List<ValidationError>? Errors { get; set; }
         public T? Result { get; set; }
+
+        public bool Failed()
+            => this.Errors is not null && this.Errors.Any();
+
+        public RequestResult<T> addError(string Message, string Propertie)
+        {
+            if (this.Errors is null)
+                this.Errors = new List<ValidationError>();
+            this.Errors.Add(new ValidationError { Message = Message, Propertie = Propertie });
+            return this;
+        }
     }
 }

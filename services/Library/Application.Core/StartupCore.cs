@@ -80,6 +80,9 @@ public class StartupCore
                     services.AddScoped<IAppAuthorizationRepository, AppAuthorizationRepository>();
                     services.AddScoped<IAppAuthorizationRepoService, AppAuthorizationRepoService>();
                     break;
+                case DatabaseName.AUTHENTICATE:
+                    services.AddScoped<IAuthenticateDatabase, AuthenticateDatabase>(options => factory.AuthenticateDatabaseConnection());
+                    break;
             }
 
         }

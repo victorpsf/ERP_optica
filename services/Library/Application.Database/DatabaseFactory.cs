@@ -32,7 +32,10 @@ public class DatabaseFactory
         => new AuthenticationDatabase(this.GetConnectionString("AuthenticationDatabase"), this.GetTimeout("AuthenticationDatabase"));
 
     public AuthorizationDatabase AuthorizationDatabaseConnection()
-    => new AuthorizationDatabase(this.GetConnectionString("AuthorizationDatabase"), this.GetTimeout("AuthorizationDatabase"));
+        => new AuthorizationDatabase(this.GetConnectionString("AuthorizationDatabase"), this.GetTimeout("AuthorizationDatabase"));
+
+    public AuthenticateDatabase AuthenticateDatabaseConnection()
+        => new AuthenticateDatabase(this.GetConnectionString("AuthenticateDatabase"), this.GetTimeout("AuthenticateDatabase"));
 
     public static DatabaseFactory GetInstance(IAppConfigurationManager appConfigurationManager) 
         => new DatabaseFactory(appConfigurationManager);

@@ -14,10 +14,8 @@ public class AttributeValidationBase: IAttributeValidationBase
         this.loggedUser = loggedUser;
     }
 
-    public bool validate<T>(T model, out List<ControllerBaseModels.ValidationError> errors) where T : class, new()
+    public bool validate<T, B>(T model, ControllerBaseModels.RequestResult<B> output) where T : class, new()
     {
-        errors = new List<ControllerBaseModels.ValidationError>();
-
         foreach (PropertyInfo info in model.GetType().GetProperties())
             try
             {
@@ -28,17 +26,11 @@ public class AttributeValidationBase: IAttributeValidationBase
                     continue;
 
                 foreach (ValidationResult result in results)
-                    errors.Add(
-                        new ControllerBaseModels.ValidationError { 
-                            Message = this.loggedUser.message.GetMessage(result.ErrorMessage ?? string.Empty), 
-                            Propertie = info.Name 
-                        }
-                    );
+                    output.addError(this.loggedUser.message.GetMessage(result.ErrorMessage ?? string.Empty), info.Name);
             }
 
-            catch
-            { }
+            catch { }
 
-        return errors.Any();
+        return !output.Failed();
     }
 }

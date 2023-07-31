@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Utils", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Service", "Authentication.Service\Authentication.Service.csproj", "{7631BF97-5F81-4E6C-9063-6EA275E62F3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Dtos", "Application.Dtos\Application.Dtos.csproj", "{8C5D734D-E182-4F03-B026-81B7BA55CCA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{7631BF97-5F81-4E6C-9063-6EA275E62F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7631BF97-5F81-4E6C-9063-6EA275E62F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7631BF97-5F81-4E6C-9063-6EA275E62F3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C5D734D-E182-4F03-B026-81B7BA55CCA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C5D734D-E182-4F03-B026-81B7BA55CCA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C5D734D-E182-4F03-B026-81B7BA55CCA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C5D734D-E182-4F03-B026-81B7BA55CCA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3EB57E68-9DEF-4F0A-A3D2-B0180155DB17} = {FE7E5BF3-96B1-4F39-A50D-3C6C3D867AB3}
