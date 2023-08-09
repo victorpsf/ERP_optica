@@ -30,7 +30,6 @@ public class AccountController: ControllerBase
     {
         var output = new ControllerBaseModels.RequestResult<AccountModels.SingInOutput>();
 
-
         try
         {
             if (!this.baseControllerServices.validator.validate(data, output))
