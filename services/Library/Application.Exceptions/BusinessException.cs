@@ -1,15 +1,17 @@
-﻿namespace Application.Exceptions;
+﻿using Application.Base.Models;
+
+namespace Application.Exceptions;
 
 public class BusinessException: Exception
 {
-    public BusinessExceptionEnum? Stack { get; }
+    public MultiLanguageModels.MessagesEnum? Stack { get; }
 
-    public BusinessException(string? message, Exception? innerException, BusinessExceptionEnum? stack) : base(message, innerException)
+    public BusinessException(string? message, Exception? innerException, MultiLanguageModels.MessagesEnum? stack) : base(message, innerException)
     { this.Stack = stack; }
 
-    public BusinessException(Exception? innerException, BusinessExceptionEnum? stack) : this(innerException?.Message, innerException, stack)
+    public BusinessException(Exception? innerException, MultiLanguageModels.MessagesEnum? stack) : this(innerException?.Message, innerException, stack)
     { }
 
-    public BusinessException(string message) : this(message, null, null)
+    public BusinessException(MultiLanguageModels.MessagesEnum stack) : this(null, stack)
     { }
 }

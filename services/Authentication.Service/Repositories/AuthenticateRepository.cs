@@ -17,13 +17,54 @@ public class AuthenticateRepository
     }
 
     public AccountDtos.UserDto? Find(AuthenticateRules.SingInRule rule)
-    {
-        return this.db.Find<AccountDtos.UserDto>(new BancoArgument
+        => this.db.Find<AccountDtos.UserDto>(new BancoArgument
         {
             Sql = AuthenticateQueries.FindUserSql,
             Parameter = ParameterCollection.GetInstance()
                 .Add("@LOGIN", rule.Login, ParameterDirection.Input)
                 .Add("@ENTERPRISEID", rule.EnterpriseId, ParameterDirection.Input)
         });
+
+    public AccountDtos.CodeDto? Find(AuthenticateRules.CodeRule rule)
+        => this.db.Find<AccountDtos.CodeDto>(new BancoArgument
+        {
+            Sql = AuthenticateQueries.FindCodeSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
+        });
+
+    public AccountDtos.CodeDto Create(AuthenticateRules.CodeRule rule)
+    {
+        var codeId = this.db.Execute<int>(new BancoExecuteArgument
+        {
+            Sql = AuthenticateQueries.CreateCodeSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input),
+            Output = "@CODEID"
+        });
+
+        var code = this.db.Find<AccountDtos.CodeDto>(new BancoArgument
+        {
+            Sql = AuthenticateQueries.FindCodeWithKeySql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@CODEID", codeId, ParameterDirection.Input)
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
+        });
+
+        if (code is null)
+            throw new Exception();
+
+        return code;
     }
+
+    public void Delete(AuthenticateRules.CodeRule rule)
+        => this.db.Execute(new BancoArgument
+        {
+            Sql = AuthenticateQueries.DeleteCodeSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
+        });
 }

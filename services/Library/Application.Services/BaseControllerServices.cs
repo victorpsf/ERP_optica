@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Security;
+﻿using Application.Interfaces.Messages;
+using Application.Interfaces.Security;
 using Application.Interfaces.Services;
 using Application.Security;
 using static Application.Base.Models.SecurityModels;
@@ -15,6 +16,9 @@ public class BaseControllerServices: IBaseControllerServices
     public IAppLogger logger { get; }
     public ISmtpService smtpService { get; }
     public IAttributeValidationBase validator { get; }
+
+    public string getMessage(Base.Models.MultiLanguageModels.MessagesEnum? stack)
+        => this.loggedUser.message.GetMessage(stack);
 
     public BaseControllerServices(
         ILoggedUser loggedUser,

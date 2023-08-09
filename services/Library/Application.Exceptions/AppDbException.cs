@@ -1,12 +1,17 @@
-﻿namespace Application.Exceptions;
+﻿using Application.Base.Models;
+
+namespace Application.Exceptions;
 
 public class AppDbException: Exception
 {
-    public AppDbExceptionEnum Stack { get; }
+    public MultiLanguageModels.MessagesEnum? Stack { get; }
 
-    public AppDbException(AppDbExceptionEnum stack, string? message, Exception? innerException) : base(message, innerException)
+    public AppDbException(MultiLanguageModels.MessagesEnum? stack, string? message, Exception? innerException) : base(message, innerException)
     { this.Stack = stack; }
 
-    public AppDbException(AppDbExceptionEnum stack, Exception? innerException) : this(stack, innerException?.Message, innerException)
+    public AppDbException(MultiLanguageModels.MessagesEnum? stack, Exception? innerException) : this(stack, innerException?.Message, innerException)
+    { }
+
+    public AppDbException(MultiLanguageModels.MessagesEnum? stack): this(stack, null)
     { }
 }

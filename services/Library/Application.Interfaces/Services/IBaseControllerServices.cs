@@ -12,4 +12,6 @@ public interface IBaseControllerServices
     public IAppLogger logger { get; }
     public ISmtpService smtpService { get; }
     public IAttributeValidationBase validator { get; }
+
+    public string getMessage(Base.Models.MultiLanguageModels.MessagesEnum? stack);
 }

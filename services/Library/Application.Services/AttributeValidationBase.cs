@@ -31,6 +31,6 @@ public class AttributeValidationBase: IAttributeValidationBase
 
             catch { }
 
-        return !output.Failed();
+        return !output.Failed;
     }
 }

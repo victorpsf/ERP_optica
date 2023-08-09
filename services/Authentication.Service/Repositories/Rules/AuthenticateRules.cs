@@ -7,4 +7,10 @@ public static class AuthenticateRules
         public string Login { get; set; } = string.Empty;
         public int EnterpriseId { get; set; }
     }
+
+    public class CodeRule
+    {
+        public int AuthId { get; set; }
+        public int CodeType { get; set; }
+    }
 }

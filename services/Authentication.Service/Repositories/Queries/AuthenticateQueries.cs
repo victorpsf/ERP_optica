@@ -19,4 +19,51 @@ WHERE
     AND A1.NAME = @LOGIN
     AND E1.ENTERPRISEID = @ENTERPRISEID
 ";
+
+    public static string FindCodeSql = @"
+SELECT 
+    C1.CODEID       AS CODEID,
+    C1.AUTHID       AS AUTHID,
+    C1.CODE         AS CODE,
+    C1.CODETYPE     AS CODETYPE,
+    C1.EXPIRE_IN    AS EXPIREIN
+FROM 
+    CODE AS C1
+WHERE
+        C1.AUTHID = @AUTHID
+";
+
+    public static string FindCodeWithKeySql = @"
+SELECT 
+    C1.CODEID       AS CODEID,
+    C1.AUTHID       AS AUTHID,
+    C1.CODE         AS CODE,
+    C1.CODETYPE     AS CODETYPE,
+    C1.EXPIRE_IN    AS EXPIREIN
+FROM 
+    CODE AS C1
+WHERE
+        C1.CODEID = @CODEID
+";
+
+    public static string CreateCodeSql = @"
+INSERT INTO CODE
+    (AUTHID, CODETYPE)
+VALUES 
+    (@AUTHID, @CODETYPE)
+";
+
+    public static string DeleteCodeSql = @"
+SELECT 
+    C1.CODEID       AS CODEID,
+    C1.AUTHID       AS AUTHID,
+    C1.CODE         AS CODE,
+    C1.CODETYPE     AS CODETYPE,
+    C1.EXPIRE_IN    AS EXPIREIN
+FROM 
+    CODE AS C1
+WHERE
+        C1.AUTHID = @AUTHID
+    AND C1.CODETYPE = @CODETYPE
+";
 }

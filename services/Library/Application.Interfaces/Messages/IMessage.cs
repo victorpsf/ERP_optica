@@ -4,7 +4,7 @@ namespace Application.Interfaces.Messages;
 
 public interface IMessage
 {
-    string GetMessage(MessagesEnum stack);
+    string GetMessage(MessagesEnum? stack);
     string GetMessage(string stack);
 }
 

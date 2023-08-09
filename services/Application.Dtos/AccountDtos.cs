@@ -8,4 +8,19 @@ public static class AccountDtos
         public string Password { get; set; } = string.Empty;
         public int EnterpriseId { get; set; }
     }
+
+    public enum CodeTypeEnum
+    {
+        AUTHENTICATION = 1,
+        FORGOTTEN = 2
+    }
+
+    public class CodeDto
+    {
+        public int CodeId { get; set; }
+        public int AuthId { get; set; }
+        public string Code { get; set; } = string.Empty;
+        public CodeTypeEnum CodeType { get; set; }
+        public DateTime ExpireIn { get; set; }
+    }
 }

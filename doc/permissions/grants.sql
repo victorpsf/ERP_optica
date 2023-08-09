@@ -18,3 +18,4 @@ GRANT SELECT ON ERP_OPTICA.PERSON           TO 'AuthorizationUser'@'%';
 GRANT SELECT ON ERP_OPTICA.AUTH             TO 'AuthenticateUser'@'%';
 GRANT SELECT ON ERP_OPTICA.AUTHXENTERPRISE  TO 'AuthenticateUser'@'%';
 GRANT SELECT ON ERP_OPTICA.ENTERPRISE       TO 'AuthenticateUser'@'%';
+GRANT SELECT, INSERT, DELETE ON ERP_OPTICA.CODE       TO 'AuthenticateUser'@'%';

@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Base.Models;
+using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Application.Interfaces.RepoServices;
 using Application.Interfaces.Repositories;
@@ -25,20 +26,20 @@ public class AppAuthorizationRepoService: IAppAuthorizationRepoService
         { this.db.Connect(); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.ConnectionFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
 
 
         try
         { count = this.AppAuthorizationRepository.CountPermission(rule); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.CommandExecutionFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
 
         try
         { this.db.Disconnect(); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.DisconnectFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
 
         return count > 0;
     }

@@ -23,7 +23,7 @@ public class Message: IMessage
 
     public static Message Create(LanguageEnum lang) => new Message(lang);
 
-    public string GetMessage(MessagesEnum stack) => GetMessage(stack.ToString());
+    public string GetMessage(MessagesEnum? stack) => GetMessage(stack.ToString() ?? string.Empty);
 
     public string GetMessage(string stack)
     {

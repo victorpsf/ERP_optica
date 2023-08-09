@@ -1,4 +1,5 @@
-﻿using Application.Exceptions;
+﻿using Application.Base.Models;
+using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Application.Interfaces.RepoServices;
 using Application.Interfaces.Repositories;
@@ -26,23 +27,23 @@ public class AppAuthenticationRepoService: IAppAuthenticationRepoService
         { this.db.Connect(); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.ConnectionFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
 
 
         try
         { loggedUser = this.AppAuthenticationRepository.Find(rule); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.CommandExecutionFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
 
         try
         { this.db.Disconnect(); }
 
         catch (Exception ex)
-        { throw new AppDbException(AppDbExceptionEnum.DisconnectFailed, ex); }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
 
         if (loggedUser is null)
-            throw new BusinessException(null, BusinessExceptionEnum.DontFindClaimUser);
+            throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_DONT_FIND_CLAIM_USER);
 
         return loggedUser;
     }
