@@ -54,13 +54,7 @@ VALUES
 ";
 
     public static string DeleteCodeSql = @"
-SELECT 
-    C1.CODEID       AS CODEID,
-    C1.AUTHID       AS AUTHID,
-    C1.CODE         AS CODE,
-    C1.CODETYPE     AS CODETYPE,
-    C1.EXPIRE_IN    AS EXPIREIN
-FROM 
+DELETE FROM 
     CODE AS C1
 WHERE
         C1.AUTHID = @AUTHID
