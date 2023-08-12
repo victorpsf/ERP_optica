@@ -57,7 +57,10 @@ public class AuthenticateRepoService
             this.db.Commit();
         }
         catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
+        {
+            this.db.Rollback();
+            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); 
+        }
 
         try { this.db.Disconnect(); }
         catch (Exception ex)
@@ -69,7 +72,6 @@ public class AuthenticateRepoService
     public AccountDtos.CodeDto? Find(AuthenticateRules.CodeRule rule)
     {
         AccountDtos.CodeDto? code = null;
-        Exception? err = null;
 
         try { this.db.Connect(); }
         catch (Exception ex)
@@ -78,17 +80,11 @@ public class AuthenticateRepoService
         try
         { code = this.repository.Find(rule); }
         catch (Exception ex)
-        {
-            this.db.Rollback();
-            err = ex;
-        }
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
 
         try { this.db.Disconnect(); }
         catch (Exception ex)
         { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-        if (err is not null && code is null)
-            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, err);
 
         return code;
     }
@@ -118,5 +114,25 @@ public class AuthenticateRepoService
 
         if (err is not null)
             throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, err);
+    }
+
+    public AccountDtos.ResendDto? Find(AuthenticateRules.ResendCodeRule rule)
+    {
+        AccountDtos.ResendDto? code = null;
+
+        try { this.db.Connect(); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
+
+        try
+        { code = this.repository.Find(rule); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
+
+        try { this.db.Disconnect(); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+
+        return code;
     }
 }

@@ -34,6 +34,16 @@ public class AuthenticateRepository
                 .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
         });
 
+    public AccountDtos.ResendDto? Find(AuthenticateRules.ResendCodeRule rule)
+        => this.db.Find<AccountDtos.ResendDto>(new BancoArgument
+        {
+            Sql = AuthenticateQueries.ResendCodeSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@LOGIN", rule.Login, ParameterDirection.Input)
+                .Add("@ENTERPRISEID", rule.EnterpriseId, ParameterDirection.Input)
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
+        });
+
     public AccountDtos.CodeDto Create(AuthenticateRules.CodeRule rule)
     {
         var codeId = this.db.Execute<int>(new BancoExecuteArgument

@@ -13,7 +13,7 @@ using Application.Extensions;
 namespace Authentication.Service.Controllers;
 
 [AllowAnonymous]
-public class AccountController: ControllerBase
+public partial class AccountController: ControllerBase
 {
     private readonly IBaseControllerServices baseControllerServices;
     private readonly AuthenticateRepoService service;
@@ -57,7 +57,8 @@ public class AccountController: ControllerBase
 
             if (code is null)
             {
-                this.service.Create(rule);
+                var created = this.service.Create(rule);
+                this.SendCodeEmail(created, user);
                 return Ok(output.addResult(new AccountModels.SingInOutput { CodeSended = true }));
             }
 
@@ -65,6 +66,7 @@ public class AccountController: ControllerBase
                 return BadRequest(output.addError(this.baseControllerServices.getMessage(null), "Code"));
 
             this.service.Delete(rule);
+            this.SendAuthenticatedEmail(code, user);
             this.baseControllerServices.jwtService.Write(new JwtModels.ClaimIdentifier
             {
                 UserId = user.UserId.ToString(),
@@ -91,5 +93,46 @@ public class AccountController: ControllerBase
         }
 
         return output.Failed ? BadRequest(output): Ok(output);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public IActionResult ResendCode([FromBody] AccountModels.ResendCodeInput data)
+    {
+        var output = new ControllerBaseModels.RequestResult<AccountModels.SendedOutput>();
+
+        try
+        {
+            if (!this.baseControllerServices.validator.validate(data, output))
+                return BadRequest(output);
+
+            var code = this.service.Find(new AuthenticateRules.ResendCodeRule
+            {
+                Login = this.baseControllerServices.NewHash(SecurityModels.AppHashAlgorithm.SHA512)
+                    .Update(data.Name ?? string.Empty, BinaryManagerModels.BinaryView.Base64),
+                EnterpriseId = data.EnterpriseId ?? default,
+                CodeType = AccountDtos.CodeTypeEnum.AUTHENTICATION.intValue()
+            });
+
+            if (code is not null)
+            {
+                this.SendResendCodeEmail(code);
+                output.addResult(new AccountModels.SendedOutput { sended = DateTime.UtcNow });
+            }
+        }
+
+        catch (BusinessException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+
+        catch (AppDbException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+
+        catch (Exception ex)
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.getMessage(null), null);
+        }
+
+        return output.Failed ? BadRequest(output) : Ok(output);
     }
 }
