@@ -1,3 +1,43 @@
 .field-input-group {
     
 }
+
+.field-m1 {
+    width: calc(100% - 4%);
+    padding: 2%;
+
+    .field-m1-content {
+        position: relative;
+        border: 1px solid #aaa;
+        border-radius: 3px;
+
+        .field-m1-label {
+            position: absolute;
+        }
+
+        .field-m1-label.center {
+            top: 24%;
+            left: 3%;
+        }
+
+        .field-m1-label.top {
+            top: -17%;
+            left: 2%;
+            font-size: 10px;
+            background-color: #fff;
+            padding: 0% 1%;
+            transition: ease 0.5s;
+        }
+
+        .field-m1-input {
+            width: calc(100% - 4%);
+            padding: 2%;
+
+            input {
+                border: none;
+                width: 100%;
+                outline: 0;
+            }
+        }
+    }
+}
