@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Application.Base.Models.JwtModels;
 using Application.Extensions;
+using static Authentication.Service.Repositories.Rules.AuthenticateRules;
 
 namespace Authentication.Service.Controllers;
 
@@ -132,6 +133,29 @@ public partial class AccountController: ControllerBase
             this.baseControllerServices.logger.PrintsTackTrace(ex);
             output.addError(this.baseControllerServices.getMessage(null), null);
         }
+
+        return output.Failed ? BadRequest(output) : Ok(output);
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult GetEnterprises([FromQuery] object data)
+    {
+        var output = new ControllerBaseModels.RequestResult<List<AccountDtos.EnterpriseDto>>();
+
+        try
+        {
+            output.addResult(this.service.getEnterprises(new AuthenticateRules.EnterpriseRule { }));
+        }
+
+        catch (BusinessException ex) 
+        { }
+
+        catch (AppDbException ex) 
+        { }
+
+        catch (Exception ex) 
+        { }
 
         return output.Failed ? BadRequest(output) : Ok(output);
     }

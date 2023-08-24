@@ -3,7 +3,6 @@ using Application.Dtos;
 using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Authentication.Service.Repositories.Rules;
-using System.Data;
 
 namespace Authentication.Service.Repositories.Services;
 
@@ -134,5 +133,25 @@ public class AuthenticateRepoService
         { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
 
         return code;
+    }
+
+    public List<AccountDtos.EnterpriseDto> getEnterprises(AuthenticateRules.EnterpriseRule rule)
+    {
+        List<AccountDtos.EnterpriseDto> enterprises = new List<AccountDtos.EnterpriseDto>();
+
+        try { this.db.Connect(); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
+
+        try
+        { enterprises.AddRange(this.repository.Get(rule)); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
+
+        try { this.db.Disconnect(); }
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+
+        return enterprises;
     }
 }

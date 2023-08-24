@@ -77,4 +77,7 @@ public class AuthenticateRepository
                 .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
                 .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
         });
+
+    public List<AccountDtos.EnterpriseDto> Get(AuthenticateRules.EnterpriseRule rule)
+        => this.db.ExecuteReader<AccountDtos.EnterpriseDto>(new BancoArgument { Sql = AuthenticateQueries.EnterprisesSql }).ToList();
 }

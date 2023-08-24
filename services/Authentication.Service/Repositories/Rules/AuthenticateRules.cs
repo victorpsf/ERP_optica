@@ -20,4 +20,9 @@ public static class AuthenticateRules
         public int EnterpriseId { get; set; }
         public int CodeType { get; set; }
     }
+
+    public class EnterpriseRule
+    {
+
+    }
 }

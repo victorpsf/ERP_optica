@@ -31,4 +31,10 @@ public static class AccountDtos
         public string Code { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
     }
+
+    public class EnterpriseDto
+    {
+        public int EnterpriseId { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
 }

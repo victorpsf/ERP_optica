@@ -8,6 +8,7 @@
                 <div class="login-content-fields">
                     <input-field label="Usuário" v-model="inputs.Name" />
                     <password-field label="Senha" v-model="inputs.Password" />
+                    <selected-field label="Empresa" />
                 </div>
                 <div class="login-content-actions">
                     <button

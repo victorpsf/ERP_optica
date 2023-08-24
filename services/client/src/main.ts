@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import Main from './views/Main/Main.vue'
 import './registerServiceWorker'
 import router from './router'
+import './main.scss'
 
 import components from './components'
 

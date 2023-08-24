@@ -104,4 +104,12 @@ WHERE
     AND E1.ENTERPRISEID = @ENTERPRISEID
     AND C2.CODETYPE     = @CODETYPE
 ";
+
+    public static string EnterprisesSql = @"
+SELECT 
+    E.ENTERPRISEID, 
+    E.NAME
+FROM 
+    ENTERPRISE AS E
+";
 }
