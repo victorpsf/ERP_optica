@@ -127,7 +127,6 @@ public class StartupCore
 
     public void ConfigureServices(IServiceCollection services)
     {
-#if RELEASE
         if (this.EnableCors)
             services.AddCors(options =>
                 options.AddPolicy("_myAllowSpecificOrigins", policy =>
@@ -137,7 +136,6 @@ public class StartupCore
                     policy.WithOrigins(this.origin ?? "");
                 })
             );
-#endif
 
         services.AddControllers();
         services.AddHttpContextAccessor();
@@ -161,9 +159,11 @@ public class StartupCore
         app.UseRouting();
 #if RELEASE
         app.UseHttpsRedirection();
+#endif
         if (this.EnableCors)
             app.UseCors("_myAllowSpecificOrigins");
-#endif
+        else
+            app.UseCors(a => a.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         app.UseAuthentication();
         app.UseAuthorization();
 

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using static Application.Base.Models.JwtModels;
 using Application.Extensions;
 using static Authentication.Service.Repositories.Rules.AuthenticateRules;
+using static Application.Dtos.AccountDtos;
 
 namespace Authentication.Service.Controllers;
 
@@ -141,11 +142,11 @@ public partial class AccountController: ControllerBase
     [AllowAnonymous]
     public IActionResult GetEnterprises([FromQuery] object data)
     {
-        var output = new ControllerBaseModels.RequestResult<List<AccountDtos.EnterpriseDto>>();
+        var output = new ControllerBaseModels.RequestResult<List<AccountDtos.EnterpriseOptionDto>>();
 
         try
         {
-            output.addResult(this.service.getEnterprises(new AuthenticateRules.EnterpriseRule { }));
+            output.addResult(this.service.getEnterprises(new AuthenticateRules.EnterpriseRule { }).Select(a => new AccountDtos.EnterpriseOptionDto { Value = a.EnterpriseId, Label = a.Name }).ToList());
         }
 
         catch (BusinessException ex) 

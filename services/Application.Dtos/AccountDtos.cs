@@ -37,4 +37,10 @@ public static class AccountDtos
         public int EnterpriseId { get; set; }
         public string Name { get; set; } = string.Empty;
     }
+
+    public class EnterpriseOptionDto
+    {
+        public int Value { get; set; }
+        public string Label { get; set; } = string.Empty;
+    }
 }
