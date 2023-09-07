@@ -5,12 +5,16 @@ import Svg from '@/components/Svg/Svg.vue'
 
 import PasswordField from "@/components/Fields/PasswordField/Password.vue";
 import StringField from "@/components/Fields/StringField/String.vue";
-import SelectField from '@/components/Fields/SelectField/Select.vue'
+import SelectField from '@/components/Fields/SelectField/Select.vue';
+
+import Form from '@/components/Views/Form/Form.vue';
 
 export default {
     install: function (app: App) {
         app.component('main-menu', Menu);
         app.component('svg-img', Svg);
+
+        app.component('form-view', Form);
 
         app.component('string-field', StringField);
         app.component('password-field', PasswordField);

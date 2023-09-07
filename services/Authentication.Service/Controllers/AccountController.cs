@@ -44,42 +44,34 @@ public partial class AccountController: ControllerBase
                 EnterpriseId = data.EnterpriseId ?? default
             });
 
+            // achou usuário ?
             if (user is null)
                 throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_USER_DONT_FOUND);
 
+            // senha confere ?
             if (!this.baseControllerServices.NewPbkdf2().Verify(user.Password, data.Password ?? string.Empty, SecurityModels.Pbkdf2HashDerivation.HMACSHA512))
                 throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PASSWORD_INCORRECT);
 
-            var rule = new AuthenticateRules.CodeRule
-            {
-                AuthId = user.UserId,
-                CodeType = AccountDtos.CodeTypeEnum.AUTHENTICATION.intValue()
-            };
+            var rule = new AuthenticateRules.CodeRule { AuthId = user.UserId, CodeType = AccountDtos.CodeTypeEnum.AUTHENTICATION.intValue() };
             var code = this.service.Find(rule);
 
             if (code is null)
             {
-                var created = this.service.Create(rule);
-                this.SendCodeEmail(created, user);
+                this.SendCodeEmail(this.service.Create(rule), user);
                 return Ok(output.addResult(new AccountModels.SingInOutput { CodeSended = true }));
             }
 
+            if (string.IsNullOrEmpty(data.Code))
+                return Ok(output.addResult(new AccountModels.SingInOutput { CodeSended = true }));
+
             if (data.Code != code.Code || DateTime.UtcNow > code.ExpireIn)
-                return BadRequest(output.addError(this.baseControllerServices.getMessage(null), "Code"));
+                return BadRequest(output.addError(this.baseControllerServices.getMessage(null), "Code")); // [TODO]: adicionar mensagem
 
             this.service.Delete(rule);
             this.SendAuthenticatedEmail(code, user);
-            this.baseControllerServices.jwtService.Write(new JwtModels.ClaimIdentifier
-            {
-                UserId = user.UserId.ToString(),
-                EnterpriseId = user.EnterpriseId.ToString()
-            }, out TokenCreated generated);
+            this.baseControllerServices.jwtService.Write(new JwtModels.ClaimIdentifier { UserId = user.UserId.ToString(), EnterpriseId = user.EnterpriseId.ToString() }, out TokenCreated generated);
 
-            output.addResult(new AccountModels.SingInOutput
-            {
-                Expire = generated.Expire,
-                Token = generated.Token,
-            });
+            output.addResult(new AccountModels.SingInOutput { Expire = generated.Expire, Token = generated.Token });
         }
 
         catch (BusinessException ex)

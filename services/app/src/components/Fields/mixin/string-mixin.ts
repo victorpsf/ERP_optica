@@ -13,9 +13,14 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
             required: false
         },
 
-        icon: {
+        field: {
             type: String,
-            required: false,
+            required: true
+        },
+
+        error: {
+            type: String,
+            required: false
         },
 
         options: {
@@ -33,6 +38,7 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
             if (typeof this.applyRules === 'function')
                 newValue = await this.applyRules(newValue);
 
+            this.$emit('change', { field: this.field, value: newValue });
             this.$emit('update:modelValue', newValue);
         }
     },
@@ -49,7 +55,11 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
         },
 
         hasIcon(): boolean {
-            return !!this.icon;
+            return !!this.fieldOptions.icon;
+        },
+
+        icon(): string {
+            return this.fieldOptions.icon;
         },
 
         fieldInputClass(): string[] {

@@ -1,3 +1,7 @@
+import { IFailure } from "../db/IHttp";
+
+export type Components = 'string-field' | 'password-field' | 'select-field';
+
 export interface IBaseFieldData<T, E> {
     value?: T;
     inputEl?: E;
@@ -14,6 +18,7 @@ export interface ISelectedFieldOption<T> extends ISelectFieldOption<T> {
 
 export interface ISelectOptionsFieldData {
     filter: string;
+    uuid: string;
 }
 
 export interface IStringFieldData extends IBaseFieldData<string, HTMLInputElement> { }
@@ -24,4 +29,23 @@ export interface INumberFieldData extends IBaseFieldData<number, HTMLInputElemen
 export interface ISelectFieldData extends IBaseFieldData<ISelectFieldOption<unknown>[], HTMLInputElement> {
     selectOptions: ISelectFieldOption<unknown>[];
     visible: boolean;
+    uuid: string;
+}
+
+export interface IFormViewFieldsOptions {
+    min?: number;
+    max?: number;
+    required?: boolean;
+    multiple?: boolean;
+    path?: string;
+    icon?: string;
+}
+
+export interface IFormViewFields<T> {
+    label: string;
+    value?: T;
+    component: Components;
+    field: string;
+    error?: IFailure;
+    options?: IFormViewFieldsOptions;
 }

@@ -1,8 +1,14 @@
-export interface ISingIn {
+export interface ISingInCode {
+    Code?: string;
+}
+
+export interface ISingInInput extends ISingInCode {
     Name?: string;
     Password?: string;
     EnterpriseId?: number;
-    Code?: string;
+}
+
+export interface ISingIn extends ISingInInput {
 }
 
 export interface ISingInResult {

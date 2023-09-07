@@ -1,6 +1,7 @@
 import { Options, Vue } from 'vue-class-component'
 
 import { ISelectFieldOption, ISelectOptionsFieldData, ISelectedFieldOption } from '@/interfaces/components/IField';
+import { Uuid } from '@/lib/Random';
 
 @Options({
     props: {
@@ -38,8 +39,13 @@ import { ISelectFieldOption, ISelectOptionsFieldData, ISelectedFieldOption } fro
         }
     },
 
+    mounted() {
+        this.uuid = Uuid();
+    },
+
     data: (): ISelectOptionsFieldData => ({
-        filter: ''
+        filter: '',
+        uuid: ''
     }),
 
     methods: {
@@ -59,9 +65,7 @@ import { ISelectFieldOption, ISelectOptionsFieldData, ISelectedFieldOption } fro
         },
 
         close(event: MouseEvent): void {
-            const className = (event.target as HTMLDivElement).className || '';
-            if (className.replace(/\s/g, '_').toUpperCase() === 'UI-PAGE_UI-MODAL_UI-FLEX_UI-FLEX-CONTENT-CENTER_UI-FLEX-ITEM-CENTER')
-                this.$emit('close', event);
+            if (((event.target as HTMLDivElement).id || '') == this.uuid) this.$emit('close', event);
         },
 
         addValue(event: MouseEvent, option: ISelectedFieldOption<unknown>) {

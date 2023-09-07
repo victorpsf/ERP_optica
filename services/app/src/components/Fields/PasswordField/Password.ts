@@ -5,7 +5,7 @@ import { IRefDirectiveArguments } from '@/interfaces/IDirectives';
 import { IPasswordFieldData } from '@/interfaces/components/IField';
 
 @Options({
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'change'],
 
     computed: {
         svgName(): string { return this.visible ? 'close-eye': 'open-eye'; },

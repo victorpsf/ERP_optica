@@ -8,6 +8,11 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
             required: true
         },
 
+        field: {
+            type: String,
+            required: true
+        },
+
         modelValue: {
             type: Number,
             required: false
@@ -19,7 +24,7 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
         }
     },
 
-    emits: ['update:modelvalue'],
+    emits: ['update:modelvalue', 'change'],
 
     watch: {
         async value(newValue: string, oldValue?: string): Promise<void> {
@@ -28,6 +33,7 @@ import { IBaseFieldData } from '@/interfaces/components/IField';
             if (typeof this.applyRules === 'function')
                 newValue = await this.applyRules(newValue);
 
+            this.$emit('change', { field: this.field, value: newValue });
             this.$emit('update:modelValue', newValue);
         }
     },

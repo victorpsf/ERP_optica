@@ -5,6 +5,10 @@
             <input v-ref:inpt="setRef" class="ui-text-normal" :type="inputType" v-model="value">
             <svg-img class="ui-pointer" width="20" height="20" @click="setVisible($event)" :name="svgName" />
         </div>
+
+        <div class="ui-m1-field-error" v-if="error">
+            <span>{{ error }}</span>
+        </div>
     </div>
 </template>
 

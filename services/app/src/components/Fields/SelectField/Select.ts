@@ -3,12 +3,23 @@ import { Options, Vue } from 'vue-class-component'
 
 import SelectOption from '@/components/Fields/SelectField/SelectOptions.vue'
 import Db from '@/db/base/Db'
+import { Uuid } from '@/lib/Random';
 
 @Options({
     props: {
         label: {
             type: String,
             required: true
+        },
+
+        field: {
+            type: String,
+            required: true,
+        },
+
+        error: {
+            type: String,
+            required: false
         },
 
         modelValue: {
@@ -24,10 +35,11 @@ import Db from '@/db/base/Db'
 
     components: { SelectOption },
 
-    emits: ['update:modelvalue'],
+    emits: ['update:modelvalue', 'change'],
 
     watch: {
         async value(newValue: ISelectFieldOption<unknown>[], oldValue?: ISelectFieldOption<unknown>[]): Promise<void> {
+            this.$emit('change', { field: this.field, value: newValue });
             this.$emit('update:modelValue', newValue);
         }
     },
@@ -53,6 +65,7 @@ import Db from '@/db/base/Db'
     },
 
     mounted(): void {
+        this.uuid = Uuid();
         try { 
             this.value = (typeof this.modelValue === 'object' && Array.isArray(this.modelValue)) ? this.modelValue: []; 
             this.loadOptions();
@@ -64,11 +77,13 @@ import Db from '@/db/base/Db'
         selectOptions: [],
         value: [],
         inputEl: undefined,
-        visible: false
+        visible: false,
+        uuid: ''
     }),
 
     methods: {
         isEmptyValue(): boolean { return this.value.length == 0; },
+
         async loadOptions(): Promise<void> {
             try {
                 const { data: { failed, result } } = await Db.get(this.searchPath);
@@ -78,18 +93,24 @@ import Db from '@/db/base/Db'
 
             catch (ex) { console.error(ex); }
         },
+
         applyRule(): boolean {
             return !this.isMultiple && this.value.length > 0;
         },
+
         setVisible(event: MouseEvent): void {
-            if (((event.target as HTMLDivElement).className || '').replace(/\s/g, '_').toUpperCase() !== 'UI-M2-FIELD-VALUES_UI-POINTER') return;
-            if (this.applyRule()) return;
+            if (((event.target as HTMLDivElement).id || '') === this.uuid) {
+                if (this.applyRule()) return;
+            }
+
             this.visible = !this.visible;
         },
+
         setOption(event: MouseEvent, option: ISelectFieldOption<unknown>): void {
             this.value.push(option);
             if (!this.isMultiple) this.visible = false;
         },
+
         unsetOption(event: MouseEvent, option: ISelectFieldOption<unknown>): void {
             const index = (this.value as ISelectFieldOption<unknown>[]).findIndex(
                 (a: ISelectFieldOption<unknown>) => a.value === option.value

@@ -144,6 +144,17 @@ input::-ms-clear {
 .ui-pointer { cursor: pointer; }
 .ui-pointer:hover { opacity: 0.8; }
 
+.ui-m1-field-error {
+    margin: 5px 15px;
+
+    span {
+        display: list-item;
+        list-style-type: circle;
+        font-size: 8px;
+        color: red;
+    }
+}
+
 .ui-m1-field-input {
     border-bottom: 1px solid #000;
     margin-top: 5px;

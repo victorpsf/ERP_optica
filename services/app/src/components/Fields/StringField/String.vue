@@ -10,6 +10,9 @@
                 :name="icon"
             />
         </div>
+        <div class="ui-m1-field-error" v-if="error">
+            <span>{{ error }}</span>
+        </div>
     </div>
 </template>
 
