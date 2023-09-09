@@ -46,11 +46,15 @@ public partial class AccountController: ControllerBase
 
             // achou usuário ?
             if (user is null)
-                throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_USER_DONT_FOUND);
+                return BadRequest(
+                    output.addError( this.baseControllerServices.getMessage(MultiLanguageModels.MessagesEnum.ERROR_USER_DONT_FOUND), "Name" )
+                );
 
             // senha confere ?
             if (!this.baseControllerServices.NewPbkdf2().Verify(user.Password, data.Password ?? string.Empty, SecurityModels.Pbkdf2HashDerivation.HMACSHA512))
-                throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PASSWORD_INCORRECT);
+                return BadRequest(
+                    output.addError( this.baseControllerServices.getMessage(MultiLanguageModels.MessagesEnum.ERROR_PASSWORD_INCORRECT), "Name" )
+                );
 
             var rule = new AuthenticateRules.CodeRule { AuthId = user.UserId, CodeType = AccountDtos.CodeTypeEnum.AUTHENTICATION.intValue() };
             var code = this.service.Find(rule);
@@ -65,12 +69,13 @@ public partial class AccountController: ControllerBase
                 return Ok(output.addResult(new AccountModels.SingInOutput { CodeSended = true }));
 
             if (data.Code != code.Code || DateTime.UtcNow > code.ExpireIn)
-                return BadRequest(output.addError(this.baseControllerServices.getMessage(null), "Code")); // [TODO]: adicionar mensagem
+                return BadRequest(
+                    output.addError(this.baseControllerServices.getMessage(MultiLanguageModels.MessagesEnum.ERROR_CODE_INVALID), "Code")
+                );
 
             this.service.Delete(rule);
             this.SendAuthenticatedEmail(code, user);
             this.baseControllerServices.jwtService.Write(new JwtModels.ClaimIdentifier { UserId = user.UserId.ToString(), EnterpriseId = user.EnterpriseId.ToString() }, out TokenCreated generated);
-
             output.addResult(new AccountModels.SingInOutput { Expire = generated.Expire, Token = generated.Token });
         }
 

@@ -25,20 +25,31 @@ public class Message: IMessage
 
     public string GetMessage(MessagesEnum? stack) => GetMessage(stack.ToString() ?? string.Empty);
 
+    private string? ConverToString(Object? value)
+    {
+        try
+        { return Convert.ToString(value); } 
+
+        catch 
+        { return null; }
+    }
+
     public string GetMessage(string stack)
     {
         try
         {
-            var results = this.Language.GetType()
+            var messages = this.Language.GetType()
                 .GetProperties()
                 .Where(a => a.Name.ToUpperInvariant() == stack.ToUpperInvariant())
                 .Select(a => a.GetValue(this.Language, null))
-                .Where(a => a is not null)
-                .Select(a => a?.ToString() ?? string.Empty)
-                .Where(a => !string.IsNullOrEmpty(a));
+                .Select(a => this.ConverToString(a))
+                .Where(a => !string.IsNullOrEmpty(a))
+                .ToList();
 
-            if (!results.Any()) throw new NotImplementedException();
-            return results.FirstOrDefault() ?? string.Empty;
+            if (!messages.Any()) 
+                throw new NotImplementedException();
+
+            return messages.FirstOrDefault() ?? string.Empty;
         }
 
         catch

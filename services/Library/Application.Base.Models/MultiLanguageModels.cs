@@ -27,6 +27,7 @@ public static class MultiLanguageModels
 
         ERROR_USER_DONT_FOUND,
         ERROR_PASSWORD_INCORRECT,
+        ERROR_CODE_INVALID
         #endregion
     }
 }
