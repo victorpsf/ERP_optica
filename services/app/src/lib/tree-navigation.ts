@@ -10,16 +10,16 @@ export interface IPathInfo {
 
 export interface IGetParameter<T> {
     path: string;
-    defaultValue: T | null;
-    currentObject: { [key: string]: any; };
-    prefix: string;
+    defaultValue?: T | null;
+    currentObject?: { [key: string]: any; };
+    prefix?: string;
 }
 
 export interface ISetParameter<T> {
     path: string;
     value: T | null;
-    currentObject: { [key: string]: any; };
-    prefix: string;
+    currentObject?: { [key: string]: any; };
+    prefix?: string;
 }
 
 export const pathInfo = (path: string, prefix: string = '.'): IPathInfo => {
@@ -38,11 +38,11 @@ export const get = <T> ({ path, defaultValue = null, currentObject = {}, prefix 
 
     if (typeof info.nextPath !== 'string')
         return ( (currentObject[info.currentPath] as T) || defaultValue );
-    
+
     if (IsNullOrUndefined(currentObject[info.currentPath]))
         return defaultValue;
 
-    if (Equal(currentObject[info.currentPath], currentObject.constructor))
+    if (Equal(currentObject[info.currentPath], currentObject))
         return get<T>({ path: pathJoin(info.nextPath, info.anotherPaths), defaultValue, currentObject: currentObject[info.currentPath], prefix });
 
     return defaultValue;

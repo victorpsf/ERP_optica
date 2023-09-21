@@ -17,3 +17,20 @@ export interface IFormListenEvent {
     action?: IFormViewAction;
     values?: { [key: string]: unknown };
 }
+
+export interface IScreenPermission {
+    name: string[];
+}
+
+export interface IScreens {
+    route: string;
+    name: string;
+    image: string;
+    permission?: string;
+}
+
+export interface IMainAppMenuData {
+    visible: boolean;
+    screens: IScreens[];
+    filter: string;
+}

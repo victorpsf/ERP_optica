@@ -2,7 +2,7 @@
     <div @click="close($event)" :id="uuid" class="ui-page ui-modal ui-flex ui-flex-content-center ui-flex-item-center">
         <div class="ui-part-center ui-bg-white ui-flex ui-flex-column ui-p">
             <div v-if="search">
-                <string-field label="Busca" :options="{ icon: 'search' }" v-model="filter" />
+                <string-field label="Busca" field="search" :options="{ icon: 'search' }" v-model="filter" />
             </div>
             <div :class="optionsClass">
                 <div 

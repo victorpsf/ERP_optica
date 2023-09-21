@@ -8,6 +8,7 @@ import directives from '@/directives/directives'
 
 import '@/registerServiceWorker'
 import '@/main.scss'
+import '@/component.scss'
 
 const main = createApp(Main)
 
