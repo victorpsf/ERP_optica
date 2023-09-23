@@ -8,6 +8,7 @@ public class Ptbr: MultiLanguage
     public string ERROR_SING_IN_PASSWORD_IS_NOT_INFORMED        { get; set; } = "'senha' não foi informado";
     public string ERROR_SING_IN_PASSWORD_OUT_OF_RANGE           { get; set; } = "'senha' contém mais de 350 caracteres";
     public string ERROR_SING_IN_ENTERPRISEID_IS_NOT_INFORMED    { get; set; } = "'empresa' não foi informado";
+    public string ERROR_SING_IN_CODE_IS_NOT_INFORMED            { get; set; } = "'código' não informado";
     public string ERROR_SING_IN_CODE_OUT_OF_RANGE               { get; set; } = "'código' não é válido";
 
     public string ERROR_USER_DONT_FOUND                         { get; set; } = "'usuário' ou 'senha' incorreta";

@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.Services;
 using Application.Interfaces.Utils;
-using Microsoft.Extensions.Configuration;
 using static Application.Base.Models.SmtpServiceModels;
 
 namespace Application.Services;

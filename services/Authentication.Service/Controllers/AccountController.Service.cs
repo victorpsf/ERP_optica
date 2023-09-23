@@ -6,6 +6,7 @@ public partial class AccountController
 {
     private Task SendCodeEmail(AccountDtos.CodeDto userCode, AccountDtos.UserDto user)
     {
+#if RELEASE
         var sendedAt = DateTime.UtcNow;
         this.sendEmail(new string[] { user.Email },
             "Solicitação de acesso",
@@ -15,11 +16,13 @@ public partial class AccountController
 <i>Criptografamos seu usuário para sua segurança, se sua conta foi violada realize uma solicitação ao suporte da sua empresa para criar uma nova conta o mais rápido possível.</i>
 "
         );
+#endif
         return Task.CompletedTask;
     }
 
     private Task SendAuthenticatedEmail(AccountDtos.CodeDto userCode, AccountDtos.UserDto user)
     {
+#if RELEASE
         var usagedAt = DateTime.UtcNow;
         this.sendEmail(
             new string[] { user.Email },
@@ -30,21 +33,24 @@ public partial class AccountController
 <i>Criptografamos seu usuário para sua segurança, se sua conta foi violada realize uma solicitação ao suporte da sua empresa para criar uma nova conta o mais rápido possível.</i>
 "
         );
+#endif
         return Task.CompletedTask;
     }
 
-    private Task SendResendCodeEmail(AccountDtos.ResendDto resend)
+    private Task SendResendCodeEmail(AccountDtos.CodeDto userCode, AccountDtos.UserDto user)
     {
+#if RELEASE
         var sendedAt = DateTime.UtcNow;
         this.sendEmail(
-            new string[] { resend.Email },
+            new string[] { user.Email },
             "Solicitação de acesso",
             @$"
 <h1>Foi soliticato um novo envio do código para acesso no dia {sendedAt.ToString("yyyy/MM/dd hh:mm")} UTC</h1>
-<p>Se esta solicitação foi realizara por você utilize o código {resend.Code} caso contrario entre em contato com a equipe de suporte da sua empresa, sua conta pode ter sido violada.</p>
+<p>Se esta solicitação foi realizara por você utilize o código {userCode.Code} caso contrario entre em contato com a equipe de suporte da sua empresa, sua conta pode ter sido violada.</p>
 <i>Criptografamos seu usuário para sua segurança, se sua conta foi violada realize uma solicitação ao suporte da sua empresa para criar uma nova conta o mais rápido possível.</i>
 "
         );
+#endif
 
         return Task.CompletedTask;
     }

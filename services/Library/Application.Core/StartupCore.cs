@@ -2,6 +2,7 @@
 using Application.Database;
 using Application.Database.Connections;
 using Application.Interfaces.Connections;
+using Application.Interfaces.Middleware;
 using Application.Interfaces.RepoServices;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
@@ -28,6 +29,7 @@ public class StartupCore
     public string? prefix;
     public bool disableCors = false;
     public string? origin;
+    public AppBackgroundJob backgroundJob;
 
     private string Prefix { get => this.prefix is not null ? this.prefix : "api"; }
     private string Pattern { get => (this.Prefix == "api" ? "/api" : $"/{this.Prefix}") + "/{controller}/{action}"; }
@@ -46,6 +48,7 @@ public class StartupCore
     { 
         this.configuration = configuration;
         this.configuationManager = AppConfigurationManager.GetInstance(configuration);
+        this.backgroundJob = new AppBackgroundJob();
     }
 
     public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames): this(configuration)
@@ -127,6 +130,7 @@ public class StartupCore
 
     public void ConfigureServices(IServiceCollection services)
     {
+        var temporaryCache = new AppHostTemporaryCache();
         if (this.EnableCors)
             services.AddCors(options =>
                 options.AddPolicy("_myAllowSpecificOrigins", policy =>
@@ -147,6 +151,11 @@ public class StartupCore
         services.AddScoped<ILoggedUser, LoggedUser>();
         services.AddScoped<IAttributeValidationBase, AttributeValidationBase>();
         services.AddScoped<IBaseControllerServices, BaseControllerServices>();
+        services.AddSingleton(temporaryCache);
+        services.AddScoped<IHostCache, HostCache>();
+
+        this.backgroundJob.RegistryJob(() => temporaryCache.UnsetValue());
+        this.backgroundJob.On(1000);
 
         this.configureDatabases(services);
         this.configureAuthentication(services);

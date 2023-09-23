@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Messages;
+﻿using Application.Interfaces.Middleware;
 using Application.Interfaces.Security;
 using Application.Interfaces.Services;
 using Application.Security;
@@ -16,6 +16,7 @@ public class BaseControllerServices: IBaseControllerServices
     public IAppLogger logger { get; }
     public ISmtpService smtpService { get; }
     public IAttributeValidationBase validator { get; }
+    public IHostCache hostCache { get; }
 
     public string getMessage(Base.Models.MultiLanguageModels.MessagesEnum? stack)
         => this.loggedUser.message.GetMessage(stack);
@@ -25,7 +26,8 @@ public class BaseControllerServices: IBaseControllerServices
         IJwtService jwtService,
         IAppLogger logger,
         ISmtpService smtpService,
-        IAttributeValidationBase validator
+        IAttributeValidationBase validator,
+        IHostCache hostCache
     )
     {
         this.logger = logger;
@@ -33,5 +35,6 @@ public class BaseControllerServices: IBaseControllerServices
         this.jwtService = jwtService;
         this.smtpService = smtpService;
         this.validator = validator;
+        this.hostCache = hostCache;
     }
 }
