@@ -28,7 +28,19 @@
         <path d="M21.2778 21.0142L16.9278 16.6642" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 
-    <svg v-else></svg>
+    <svg v-else-if="isMenu" :width="(width || 25)" :height="(height || 25)" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10.25 3.875H3.25V10.875H10.25V3.875Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.25 3.875H14.25V10.875H21.25V3.875Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21.25 14.875H14.25V21.875H21.25V14.875Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10.25 14.875H3.25V21.875H10.25V14.875Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <svg v-else-if="isClose" :width="(width || 24)" :height="(height || 24)" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 6L18 18" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <div v-else></div>
 </template>
 
 <script src="@/components/Svg/Svg.ts" lang="ts"></script>

@@ -2,7 +2,7 @@
   <div class="main">
     <login-page 
       v-if="!auth" 
-      @singIn="(token) => { this.auth = token }"
+      @singIn="SingIn"
     />
 
     <router-view v-else />

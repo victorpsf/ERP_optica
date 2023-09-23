@@ -19,9 +19,11 @@ import { Options, Vue } from 'vue-class-component'
     },
 
     computed: {
-        isOpenEye(): boolean { return (this.name || '').toUpperCase() == 'OPEN-EYE'; },
-        isCloseEye(): boolean { return (this.name || '').toUpperCase() == 'CLOSE-EYE'; },
-        isSearch(): boolean { return (this.name || '').toUpperCase() == 'SEARCH'; }
+        isOpenEye(): boolean { return (this.name || '').toUpperCase() === 'OPEN-EYE'; },
+        isCloseEye(): boolean { return (this.name || '').toUpperCase() === 'CLOSE-EYE'; },
+        isSearch(): boolean { return (this.name || '').toUpperCase() === 'SEARCH'; },
+        isMenu(): boolean { return (this.name || '').toUpperCase() === 'MENU'; },
+        isClose(): boolean { return (this.name ||'').toUpperCase() === 'CLOSE' }
     }
 })
 
