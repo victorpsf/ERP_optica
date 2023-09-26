@@ -21,8 +21,8 @@
                         :key="index"
                         class="main-application-menu-item"
                     >
-                        <svg-img :name="screen.image" width="25" height="25" />
-                        <div class="name">
+                        <svg-img class="main-application-menu-item-icon" :name="screen.image" width="50" height="50" />
+                        <div class="main-application-menu-item-name">
                             <router-link :to="screen.route">{{ screen.name }}</router-link>
                         </div>
                     </div>
@@ -33,3 +33,4 @@
 </template>
 
 <script src="@/components/Views/Main/Menu/Menu.ts" lang="ts"></script>
+<style src="@/components/Views/Main/Menu/Menu.scss" lang="scss"></style>

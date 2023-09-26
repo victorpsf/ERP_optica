@@ -2,135 +2,67 @@
 using Application.Dtos;
 using Application.Exceptions;
 using Application.Interfaces.Connections;
+using Application.Services;
 using Authentication.Service.Repositories.Rules;
 
 namespace Authentication.Service.Repositories.Services;
 
-public class AuthenticateRepoService
+public class AuthenticateRepoService: BaseRepoService<IAuthenticateDatabase>
 {
-    private IAuthenticateDatabase db;
     private AuthenticateRepository repository;
 
-    public AuthenticateRepoService(IAuthenticateDatabase db)
-    {
-        this.db = db;
-        this.repository = new AuthenticateRepository(db);
-    }
+    public AuthenticateRepoService(IAuthenticateDatabase db) : base (db)
+    { this.repository = new AuthenticateRepository(this.db); }
 
     public AccountDtos.UserDto? Find(AuthenticateRules.SingInRule rule)
     {
-        AccountDtos.UserDto? user = null; 
-
-        try
-        { this.db.Connect(); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        { user = this.repository.Find(rule); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
-
-        try
-        { this.db.Disconnect(); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+        AccountDtos.UserDto? user = this.ExecuteQuery(
+            this.repository.Find, 
+            rule, 
+            false
+        );
 
         return user;
     }
 
     public AccountDtos.CodeDto Create(AuthenticateRules.CodeRule rule)
     {
-        AccountDtos.CodeDto code;
-
-        try { this.db.Connect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        { 
-            code = this.repository.Create(rule);
-            this.db.Commit();
-        }
-        catch (Exception ex)
-        {
-            this.db.Rollback();
-            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); 
-        }
-
-        try { this.db.Disconnect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+        AccountDtos.CodeDto code = this.ExecuteQuery(
+            this.repository.Create,
+            rule,
+            true
+        );
 
         return code;
     }
 
     public AccountDtos.CodeDto? Find(AuthenticateRules.CodeRule rule)
     {
-        AccountDtos.CodeDto? code = null;
-
-        try { this.db.Connect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        { code = this.repository.Find(rule); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
-
-        try { this.db.Disconnect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+        AccountDtos.CodeDto? code = this.ExecuteQuery(
+            this.repository.Find,
+            rule,
+            false
+        );
 
         return code;
     }
 
     public void Delete(AuthenticateRules.CodeRule rule)
     {
-        Exception? err = null;
-
-        try { this.db.Connect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        {
-            this.repository.Delete(rule);
-            this.db.Commit();
-        }
-        catch (Exception ex)
-        {
-            this.db.Rollback();
-            err = ex;
-        }
-
-        try { this.db.Disconnect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-        if (err is not null)
-            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, err);
+        this.ExecuteQuery(
+            this.repository.Delete,
+            rule,
+            true
+        );
     }
 
     public AccountDtos.ResendDto? Find(AuthenticateRules.ResendCodeRule rule)
     {
-        AccountDtos.ResendDto? code = null;
-
-        try { this.db.Connect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        { code = this.repository.Find(rule); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
-
-        try { this.db.Disconnect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+        AccountDtos.ResendDto? code = this.ExecuteQuery(
+            this.repository.Find,
+            rule,
+            true
+        );
 
         return code;
     }
@@ -139,18 +71,13 @@ public class AuthenticateRepoService
     {
         List<AccountDtos.EnterpriseDto> enterprises = new List<AccountDtos.EnterpriseDto>();
 
-        try { this.db.Connect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        { enterprises.AddRange(this.repository.Get(rule)); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
-
-        try { this.db.Disconnect(); }
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+        enterprises.AddRange(
+            this.ExecuteQuery(
+                this.repository.Get,
+                rule,
+                true
+            )
+        );
 
         return enterprises;
     }

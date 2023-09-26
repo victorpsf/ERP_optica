@@ -29,7 +29,7 @@ public class StartupCore
     public string? prefix;
     public bool disableCors = false;
     public string? origin;
-    public AppBackgroundJob backgroundJob;
+    public AppBackgroundJob? backgroundJob;
 
     private string Prefix { get => this.prefix is not null ? this.prefix : "api"; }
     private string Pattern { get => (this.Prefix == "api" ? "/api" : $"/{this.Prefix}") + "/{controller}/{action}"; }
@@ -48,7 +48,6 @@ public class StartupCore
     { 
         this.configuration = configuration;
         this.configuationManager = AppConfigurationManager.GetInstance(configuration);
-        this.backgroundJob = new AppBackgroundJob();
     }
 
     public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames): this(configuration)
@@ -154,6 +153,7 @@ public class StartupCore
         services.AddSingleton(temporaryCache);
         services.AddScoped<IHostCache, HostCache>();
 
+        this.backgroundJob = new AppBackgroundJob(new AppLogger());
         this.backgroundJob.RegistryJob(() => temporaryCache.UnsetValue());
         this.backgroundJob.On(1000);
 

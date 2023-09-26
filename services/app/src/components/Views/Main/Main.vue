@@ -3,6 +3,7 @@
         <menu-app />
 
         <div class="main-application-content">
+            <slot />
         </div>
     </div>
 </template>

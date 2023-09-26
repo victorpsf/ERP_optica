@@ -18,7 +18,6 @@ public static class AccountDtos
 
     public class CodeDto
     {
-        public int CodeId { get; set; }
         public int AuthId { get; set; }
         public string Code { get; set; } = string.Empty;
         public CodeTypeEnum CodeType { get; set; }

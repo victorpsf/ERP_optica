@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Base.Models\Application.Base.Models.csproj" />
+    <ProjectReference Include="..\Application.Exceptions\Application.Exceptions.csproj" />
     <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
     <ProjectReference Include="..\Application.Messages\Application.Messages.csproj" />
     <ProjectReference Include="..\Application.Security\Application.Security.csproj" />

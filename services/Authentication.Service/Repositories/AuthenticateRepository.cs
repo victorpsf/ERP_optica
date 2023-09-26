@@ -46,20 +46,19 @@ public class AuthenticateRepository
 
     public AccountDtos.CodeDto Create(AuthenticateRules.CodeRule rule)
     {
-        var codeId = this.db.Execute<int>(new BancoExecuteArgument
+        this.db.Execute(new BancoExecuteArgument
         {
             Sql = AuthenticateQueries.CreateCodeSql,
             Parameter = ParameterCollection.GetInstance()
                 .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
-                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input),
-            Output = "@CODEID"
+                .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
         });
 
         var code = this.db.Find<AccountDtos.CodeDto>(new BancoArgument
         {
             Sql = AuthenticateQueries.FindCodeWithKeySql,
             Parameter = ParameterCollection.GetInstance()
-                .Add("@CODEID", codeId, ParameterDirection.Input)
+                .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
                 .Add("@CODETYPE", rule.CodeType, ParameterDirection.Input)
         });
 
@@ -70,7 +69,7 @@ public class AuthenticateRepository
     }
 
     public void Delete(AuthenticateRules.CodeRule rule)
-        => this.db.Execute(new BancoArgument
+        => this.db.Execute(new BancoExecuteArgument
         {
             Sql = AuthenticateQueries.DeleteCodeSql,
             Parameter = ParameterCollection.GetInstance()

@@ -3,44 +3,23 @@ using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Application.Interfaces.RepoServices;
 using Application.Interfaces.Repositories;
+using Application.Services;
 using static Application.Business.Rules.AppAuthorizationRepoServiceModels;
 
 namespace Application.Repositories.Services;
 
-public class AppAuthorizationRepoService: IAppAuthorizationRepoService
+public class AppAuthorizationRepoService: BaseRepoService<IAuthorizationDatabase>, IAppAuthorizationRepoService
 {
-    private IAuthorizationDatabase db;
     public IAppAuthorizationRepository AppAuthorizationRepository { get; }
 
-    public AppAuthorizationRepoService(IAuthorizationDatabase db)
+    public AppAuthorizationRepoService(IAuthorizationDatabase db): base(db)
     {
-        this.db = db;
         this.AppAuthorizationRepository = new AppAuthorizationRepository(db);
     }
 
-    public bool VerifyPermission(VerifyPermissionRule rule)
-    {
-        int count = 0;
-
-        try
-        { this.db.Connect(); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-
-        try
-        { count = this.AppAuthorizationRepository.CountPermission(rule); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex); }
-
-        try
-        { this.db.Disconnect(); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-        return count > 0;
-    }
+    public bool VerifyPermission(VerifyPermissionRule rule) => this.ExecuteQuery(
+            this.AppAuthorizationRepository.CountPermission,
+            rule,
+            false
+        ) > 0;
 }

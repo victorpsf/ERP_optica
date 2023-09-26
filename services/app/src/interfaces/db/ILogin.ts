@@ -1,18 +1,18 @@
-export interface ISingInCode {
+export interface IValidateCode {
     Code?: string;
 }
 
-export interface ISingInInput extends ISingInCode {
+export interface ISingIn {
     Name?: string;
     Password?: string;
     EnterpriseId?: number;
 }
 
-export interface ISingIn extends ISingInInput {
+export interface ISingInResult {
+    codeSended: boolean;
 }
 
-export interface ISingInResult {
+export interface ISingInAuthenticated {
     expire?: string;
     token?: string;
-    codeSended: boolean;
 }

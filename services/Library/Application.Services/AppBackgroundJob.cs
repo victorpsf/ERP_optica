@@ -1,14 +1,18 @@
-﻿namespace Application.Services;
+﻿using System.Timers;
+
+namespace Application.Services;
 
 public delegate void JobCaller();
 
 public class AppBackgroundJob
 {
+    private AppLogger logger;
     private Dictionary<string, JobCaller> jobs;
     private System.Timers.Timer? listen;
 
-    public AppBackgroundJob()
+    public AppBackgroundJob(AppLogger logger)
     {
+        this.logger = logger;
         this.jobs = new Dictionary<string, JobCaller>();
     }
 
@@ -23,7 +27,7 @@ public class AppBackgroundJob
                 try
                 { this.jobs[key].Invoke(); }
                 catch (Exception ex)
-                { Console.WriteLine($"JOB EXCEPTION: {key}: {ex.Message}"); }
+                { this.logger.PrintsTackTrace($"JOB EXCEPTION: {key}", ex);  }
             this.listen.Enabled = true;
         };
 

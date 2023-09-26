@@ -14,4 +14,8 @@ public class AppLogger: IAppLogger
     public void Error(string Message, Exception error) => Log.Error($"{Message} :: {error.Message}");
 
     public void PrintsTackTrace(Exception error) => Log.Error(error.Message);
+    public void PrintsTackTrace(string message, Exception error) { 
+        this.Error(message);
+        this.PrintsTackTrace(error);
+    }
 }

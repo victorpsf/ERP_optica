@@ -48,7 +48,6 @@ public sealed class AppHostTemporaryCache
         foreach (string host in this.GetKeys())
             foreach (string key in this.cache[host].GetKeys())
             {
-                Console.WriteLine($"{host} {key}");
                 var value = this.cache[host].Get(key);
 
                 if (value is null) continue;

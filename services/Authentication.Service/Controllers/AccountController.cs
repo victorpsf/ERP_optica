@@ -27,7 +27,7 @@ public partial class AccountController: ControllerBase
 
     private AccountResultModels.ValidateInputResult ValidateInput<T> (AccountModels.SingInInput data, ControllerBaseModels.RequestResult<T> output)
     {
-        var user = this.service.Find(new AuthenticateRules.SingInRule { Login = data.Name, EnterpriseId = data.EnterpriseId ?? default });
+        var user = this.service.Find(new AuthenticateRules.SingInRule { Login = data.Name ?? string.Empty, EnterpriseId = data.EnterpriseId ?? default });
 
         if (user is null)
         {
@@ -208,14 +208,14 @@ public partial class AccountController: ControllerBase
         }
 
         catch (BusinessException ex) 
-        { }
+        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
 
-        catch (AppDbException ex) 
-        { }
+        catch (AppDbException ex)
+        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
 
-        catch (Exception ex) 
-        { }
+        catch (Exception ex)
+        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
 
-        return output.Failed ? BadRequest(output) : Ok(output);
+        return Ok(output);
     }
 }

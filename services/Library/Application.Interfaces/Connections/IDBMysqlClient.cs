@@ -12,6 +12,6 @@ public interface IDBMysqlClient
     public void Rollback();
     public IEnumerable<T> ExecuteReader<T>(BancoArgument args);
     public T? Find<T>(BancoArgument args);
-    public void Execute(BancoArgument args);
-    public T? Execute<T>(BancoExecuteArgument args);
+    public void Execute(BancoExecuteArgument args);
+    public T? Execute<T>(BancoExecuteScalarArgument args);
 }

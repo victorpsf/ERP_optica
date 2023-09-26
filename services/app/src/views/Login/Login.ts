@@ -2,13 +2,13 @@ import { Options, Vue } from 'vue-class-component'
 import { ILoginPageData } from '@/interfaces/views/ILogin';
 import { FieldPaths } from '@/db/base/Paths';
 
-import { SingIn } from "@/db/Login"
-import { ISingIn, ISingInCode, ISingInInput } from '@/interfaces/db/ILogin';
+import { SingIn, ValidateCode } from "@/db/Login"
+import { ISingIn, IValidateCode } from '@/interfaces/db/ILogin';
 import { IFormListenEvent } from '@/interfaces/components/IView';
 import { get, set } from '@/lib/tree-navigation';
 
 @Options({
-    data: (): ILoginPageData<ISingInInput, ISingInCode> => ({
+    data: (): ILoginPageData<ISingIn, IValidateCode> => ({
         Failures: [],
         Login: {
             fields: [
@@ -37,19 +37,27 @@ import { get, set } from '@/lib/tree-navigation';
 
     methods: {
         formLoginSubmit(argument: IFormListenEvent) {
-            if (this.isPageCode) argument.values = { Code: argument.values?.Code || '0' };
-            return this.SingIn(argument.values);
+            this.SingIn(argument.values);
+        },
+
+        formCodeSubmit(argument: IFormListenEvent) {
+            this.ValidateCode(argument.values);
         },
 
         async SingIn(values: ISingIn): Promise<void> {
             this.Failures = [];
-            this.Values = { ...this.Values, ...values };
-
-            const { result, errors } = await SingIn(this.Values);
+            const { result, errors } = await SingIn(values);
 
             if (result?.codeSended) this.Page = 'code';
-            else if (result?.token) this.$emit('singIn', result?.token);
             else if ((errors || []).length > 0) this.Failures = errors;
+        },
+
+        async ValidateCode(values: IValidateCode): Promise<void> {
+            this.Failures = [];
+            const { result, errors } = await ValidateCode(values);
+
+            if (result?.token) this.$emit('singIn', result?.token);
+            else if ((errors ?? []).length > 0) this.Failures = errors;
         }
     }
 })

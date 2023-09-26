@@ -74,6 +74,13 @@ public static class DatabaseModels
         public string Sql { get; set; } = string.Empty;
         public ParameterCollection Parameter { get; set; } = new ParameterCollection();
         public int CmdType { get; set; }
+    }
+
+    public class BancoExecuteScalarArgument
+    {
+        public string Sql { get; set; } = string.Empty;
+        public ParameterCollection Parameter { get; set; } = new ParameterCollection();
+        public int CmdType { get; set; }
         public string Output { get; set; } = string.Empty;
     }
 }

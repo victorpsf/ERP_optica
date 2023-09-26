@@ -92,7 +92,7 @@ VALUES
         return result.FirstOrDefault();
     }
 
-    public void Execute(BancoArgument args)
+    public void Execute(BancoExecuteArgument args)
     {
         this.Connection.Execute(
             sql: args.Sql,
@@ -103,12 +103,12 @@ VALUES
         );
     }
 
-    public T? Execute<T>(BancoExecuteArgument args)
+    public T? Execute<T>(BancoExecuteScalarArgument args)
     {
         DynamicParameters outputparameter = new DynamicParameters();
         outputparameter.Add(name: args.Output, direction: ParameterDirection.Output);
 
-        this.Execute(args: new BancoArgument { Sql = args.Sql, Parameter = args.Parameter, CmdType = args.CmdType });
+        this.Execute(args: new BancoExecuteArgument { Sql = args.Sql, Parameter = args.Parameter, CmdType = args.CmdType });
         return this.Find<T>(
             new BancoArgument
             {

@@ -35,7 +35,6 @@ WHERE
 
     public static string FindCodeSql = @"
 SELECT 
-    C1.CODEID       AS CODEID,
     C1.AUTHID       AS AUTHID,
     C1.CODE         AS CODE,
     C1.CODETYPE     AS CODETYPE,
@@ -48,7 +47,6 @@ WHERE
 
     public static string FindCodeWithKeySql = @"
 SELECT 
-    C1.CODEID       AS CODEID,
     C1.AUTHID       AS AUTHID,
     C1.CODE         AS CODE,
     C1.CODETYPE     AS CODETYPE,
@@ -56,7 +54,7 @@ SELECT
 FROM 
     CODE AS C1
 WHERE
-        C1.CODEID = @CODEID
+        C1.AUTHID = @AUTHID
 ";
 
     public static string CreateCodeSql = @"
