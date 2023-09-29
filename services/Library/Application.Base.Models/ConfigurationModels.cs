@@ -7,5 +7,6 @@ public static class ConfigurationModels
         AUTHENTICATION,
         AUTHORIZATION,
         AUTHENTICATE,
+        PERSONAL
     }
 }

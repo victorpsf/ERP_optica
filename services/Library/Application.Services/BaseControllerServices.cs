@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Middleware;
 using Application.Interfaces.Security;
 using Application.Interfaces.Services;
+using Application.Interfaces.Utils;
 using Application.Security;
 using static Application.Base.Models.SecurityModels;
 
@@ -17,9 +18,13 @@ public class BaseControllerServices: IBaseControllerServices
     public ISmtpService smtpService { get; }
     public IAttributeValidationBase validator { get; }
     public IHostCache hostCache { get; }
+    public IPrimitiveConverter primitiveConverter { get; }
 
     public string getMessage(Base.Models.MultiLanguageModels.MessagesEnum? stack)
         => this.loggedUser.message.GetMessage(stack);
+
+    public T decodeQueryString<T>(string queryString) where T: class, new()
+        => QueryStringReader<T>.GetInstance(this.primitiveConverter, queryString).Decode();
 
     public BaseControllerServices(
         ILoggedUser loggedUser,
@@ -27,7 +32,8 @@ public class BaseControllerServices: IBaseControllerServices
         IAppLogger logger,
         ISmtpService smtpService,
         IAttributeValidationBase validator,
-        IHostCache hostCache
+        IHostCache hostCache,
+        IPrimitiveConverter primitiveConverter
     )
     {
         this.logger = logger;
@@ -36,5 +42,6 @@ public class BaseControllerServices: IBaseControllerServices
         this.smtpService = smtpService;
         this.validator = validator;
         this.hostCache = hostCache;
+        this.primitiveConverter = primitiveConverter;
     }
 }

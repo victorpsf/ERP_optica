@@ -27,6 +27,13 @@ public class JwtService: IJwtService
         }
     }
 
+    private string ValidIssuer
+    { get => this.appConfigurationManager.GetProperty("Security", "Jwt", "Issuer"); }
+
+    private string ValidAudience
+    { get => this.appConfigurationManager.GetProperty("Security", "Jwt", "Audience"); }
+
+
     private int Minutes
     {
         get
@@ -46,8 +53,11 @@ public class JwtService: IJwtService
         {
             Subject = new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.NameIdentifier, $"{claim.UserId}:{claim.EnterpriseId}") }),
             Expires = output.Expire,
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(this.Secret), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(this.Secret), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = this.ValidIssuer,
+            Audience = this.ValidAudience
         };
+
         JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
         output.Token = handler.WriteToken(handler.CreateToken(descriptor));
     }
@@ -62,7 +72,9 @@ public class JwtService: IJwtService
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(this.Secret),
                 ValidateIssuer = false,
-                ValidateAudience = false
+                ValidateAudience = false,
+                ValidIssuer = this.ValidIssuer,
+                ValidAudience = this.ValidAudience
             }, out SecurityToken validatedToken);
 
             JwtSecurityToken jwt = (JwtSecurityToken)validatedToken;

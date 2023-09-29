@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Middleware;
 using Application.Interfaces.Security;
+using Application.Interfaces.Utils;
 using static Application.Base.Models.SecurityModels;
 namespace Application.Interfaces.Services;
 
@@ -14,6 +15,8 @@ public interface IBaseControllerServices
     public ISmtpService smtpService { get; }
     public IAttributeValidationBase validator { get; }
     public IHostCache hostCache { get; }
+    public IPrimitiveConverter primitiveConverter { get; }
 
     public string getMessage(Base.Models.MultiLanguageModels.MessagesEnum? stack);
+    public T decodeQueryString<T>(string queryString) where T : class, new();
 }

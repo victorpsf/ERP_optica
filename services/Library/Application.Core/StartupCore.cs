@@ -15,7 +15,6 @@ using Application.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System.Security;
 using static Application.Base.Models.ConfigurationModels;
 
 namespace Application.Core;
@@ -44,13 +43,19 @@ public class StartupCore
         }
     }
 
+    private string ValidIssuer
+    { get => this.configuationManager.GetProperty("Security", "Jwt", "Issuer"); }
+
+    private string ValidAudience
+    { get => this.configuationManager.GetProperty("Security", "Jwt", "Audience"); }
+
     public StartupCore(IConfiguration configuration)
-    { 
+    {
         this.configuration = configuration;
         this.configuationManager = AppConfigurationManager.GetInstance(configuration);
     }
 
-    public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames): this(configuration)
+    public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames) : this(configuration)
     { this.databaseNames = databaseNames; }
 
     public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames, string prefix) : this(configuration, databaseNames)
@@ -59,7 +64,7 @@ public class StartupCore
     public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames, string prefix, bool disableCors) : this(configuration, databaseNames, prefix)
     { this.disableCors = disableCors; }
 
-    public StartupCore(IConfiguration configuration,  List<DatabaseName> databaseNames, string prefix, bool disableCors, string origin) : this(configuration, databaseNames, prefix, disableCors)
+    public StartupCore(IConfiguration configuration, List<DatabaseName> databaseNames, string prefix, bool disableCors, string origin) : this(configuration, databaseNames, prefix, disableCors)
     { this.origin = origin; }
 
     public virtual void ConfigureAnotherServices(IServiceCollection services, IAppConfigurationManager configuration, StartupCore context)
@@ -67,38 +72,32 @@ public class StartupCore
 
     private void configureDatabases(IServiceCollection services)
     {
-        foreach (DatabaseName databaseName in this.databaseNames)
-        {
-            var factory = DatabaseFactory.GetInstance(this.configuationManager);
-            switch (databaseName)
-            {
-                case DatabaseName.AUTHENTICATION:
-                    services.AddScoped<IAuthenticationDatabase, AuthenticationDatabase>(options => factory.AuthenticationDatabaseConnection());
-                    services.AddScoped<IAppAuthenticationRepository, AppAuthenticationRepository>();
-                    services.AddScoped<IAppAuthenticationRepoService, AppAuthenticationRepoService>();
-                    break;
-                case DatabaseName.AUTHORIZATION:
-                    services.AddScoped<IAuthorizationDatabase, AuthorizationDatabase>(options => factory.AuthorizationDatabaseConnection());
-                    services.AddScoped<IAppAuthorizationRepository, AppAuthorizationRepository>();
-                    services.AddScoped<IAppAuthorizationRepoService, AppAuthorizationRepoService>();
-                    break;
-                case DatabaseName.AUTHENTICATE:
-                    services.AddScoped<IAuthenticateDatabase, AuthenticateDatabase>(options => factory.AuthenticateDatabaseConnection());
-                    break;
-            }
+        var factory = DatabaseFactory.GetInstance(this.configuationManager);
 
+        foreach (DatabaseName databaseName in this.databaseNames) switch (databaseName)
+        {
+            case DatabaseName.AUTHENTICATION:
+                services.AddScoped<IAuthenticationDatabase, AuthenticationDatabase>(options => factory.AuthenticationDatabaseConnection());
+                services.AddScoped<IAppAuthenticationRepository, AppAuthenticationRepository>();
+                services.AddScoped<IAppAuthenticationRepoService, AppAuthenticationRepoService>();
+                break;
+            case DatabaseName.AUTHORIZATION:
+                services.AddScoped<IAuthorizationDatabase, AuthorizationDatabase>(options => factory.AuthorizationDatabaseConnection());
+                services.AddScoped<IAppAuthorizationRepository, AppAuthorizationRepository>();
+                services.AddScoped<IAppAuthorizationRepoService, AppAuthorizationRepoService>();
+                break;
+            case DatabaseName.AUTHENTICATE:
+                services.AddScoped<IAuthenticateDatabase, AuthenticateDatabase>(options => factory.AuthenticateDatabaseConnection());
+                break;
+            case DatabaseName.PERSONAL:
+                services.AddScoped<IPersonalDatabase, PersonalDatabase>(options => factory.PersonalDatabaseConnection());
+                break;
         }
     }
 
     private void configureAuthentication(IServiceCollection services)
     {
-        services.AddAuthentication(
-                x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                }
-            ).AddJwtBearer(
+        services.AddAuthentication("Bearer").AddJwtBearer(
                 x =>
                 {
                     x.RequireHttpsMetadata = false;
@@ -108,7 +107,10 @@ public class StartupCore
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(this.Secret),
                         ValidateIssuer = true,
-                        ValidateAudience = true
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = this.ValidIssuer,
+                        ValidAudience = this.ValidAudience
                     };
                 }
             );
@@ -144,6 +146,7 @@ public class StartupCore
         services.AddHttpContextAccessor();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<IAppConfigurationManager, AppConfigurationManager>();
+        services.AddScoped<IPrimitiveConverter, PrimitiveConverter>();
         services.AddScoped<IAppLogger, AppLogger>();
         services.AddScoped<ISmtpService, SmtpService>();
         services.AddScoped<IJwtService, JwtService>();
