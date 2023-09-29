@@ -97,7 +97,12 @@ public class StartupCore
 
     private void configureAuthentication(IServiceCollection services)
     {
-        services.AddAuthentication("Bearer").AddJwtBearer(
+        services.AddAuthentication(
+                x => {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                }
+            ).AddJwtBearer(
                 x =>
                 {
                     x.RequireHttpsMetadata = false;
