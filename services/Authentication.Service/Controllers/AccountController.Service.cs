@@ -1,4 +1,6 @@
 ﻿using Application.Dtos;
+using Serilog;
+using static Application.Base.Models.SmtpServiceModels;
 
 namespace Authentication.Service.Controllers;
 
@@ -62,7 +64,7 @@ public partial class AccountController
         { this.baseControllerServices.smtpService.Send(new SmtpSenderModel { To = send, Subject = subject, Message = body, isHtml = true }); }
 
         catch (Exception error)
-        { Log.Error(string.Format("AccountController.sendEmail :: {0}", error.Message)); }
+        { this.baseControllerServices.logger.PrintsTackTrace("AccountController.sendEmail", error); }
 #endif
 
         return Task.CompletedTask;

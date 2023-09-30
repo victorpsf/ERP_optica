@@ -1,0 +1,1 @@
+docker build /c/Users/victo/source/repos/ERP_optica/services -f "dockerfile.auth" --tag "auth" --no-cache=true

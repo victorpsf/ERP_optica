@@ -7,4 +7,5 @@ public interface IAppLogger
     void Error(string Message);
     void Error(string Message, Exception error);
     void PrintsTackTrace(Exception error);
+    public void PrintsTackTrace(string message, Exception error);
 }

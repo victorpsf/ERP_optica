@@ -29,11 +29,11 @@ public class AppConfigurationManager: IAppConfigurationManager
 #if DEBUG
                     return x;
 #elif RELEASE
-                    return $"{x.Substring(0, 1).ToUpperInvariant()}${x.Substring(1).ToLowerInvariant()}";
+                    return $"{x.Substring(0, 1).ToUpperInvariant()}{x.Substring(1).ToLowerInvariant()}";
 #endif
                 })
             );
 
-    public string GetProperty(params string[] path) 
-        => this.configuration.GetValue<string>(this.GetPathName(path)) ?? string.Empty;
+    public string GetProperty(params string[] path)
+         => this.configuration.GetValue<string>(this.GetPathName(path)) ?? string.Empty;
 }
