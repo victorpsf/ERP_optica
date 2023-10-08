@@ -1,14 +1,12 @@
 ﻿using Application.Base.Models;
+using Application.Dtos;
+using Application.Extensions;
 using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Personal.Service.Controllers.Models;
 
 namespace Personal.Service.Controllers;
-
-public class Teste
-{
-
-}
 
 [Authorize(Policy = nameof(PermissionModels.PersonPhysicalPermission.AccessPersonPhysical))]
 public class PhysicalController : ControllerBase
@@ -21,9 +19,29 @@ public class PhysicalController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Index([FromQuery] object body)
+    public IActionResult Index()
     {
-        var queryString = this.baseControllerServices.decodeQueryString<Teste>(HttpContext.Request.QueryString.ToString() ?? string.Empty);
-        return Ok(new { queryString });
+        //var queryString = this.baseControllerServices.decodeQueryString<Teste>(HttpContext.Request.QueryString.ToString() ?? string.Empty);
+
+
+        return Ok();
+    }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] PersonModels.PersonPhysicalInput input)
+    {
+        var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonPhysical>();
+
+        try
+        {
+            if (!this.baseControllerServices.validator.validate(input, output))
+                throw new ControllerEmptyException();
+
+            return Ok(output);
+        }
+
+        catch { }
+
+        return Ok(output);
     }
 }

@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application.Dtos\Application.Dtos.csproj" />
     <ProjectReference Include="..\Library\Application.Core\Application.Core.csproj" />
+    <ProjectReference Include="..\Library\Application.Validations\Application.Validations.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\Rules\" />
+    <Folder Include="Repositories\Queries\" />
+    <Folder Include="Repositories\Services\" />
   </ItemGroup>
 
 </Project>

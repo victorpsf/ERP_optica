@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Utils", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Personal.Service", "Personal.Service\Personal.Service.csproj", "{94187183-FD89-483D-97E9-62F44831B706}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Dtos", "Application.Dtos\Application.Dtos.csproj", "{AAB8128A-2A20-4457-8D72-37776DC86783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Validations", "Library\Application.Validations\Application.Validations.csproj", "{64DE7AFB-2528-4450-A32C-09C150BBBA9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,14 @@ Global
 		{94187183-FD89-483D-97E9-62F44831B706}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94187183-FD89-483D-97E9-62F44831B706}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94187183-FD89-483D-97E9-62F44831B706}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB8128A-2A20-4457-8D72-37776DC86783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB8128A-2A20-4457-8D72-37776DC86783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB8128A-2A20-4457-8D72-37776DC86783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB8128A-2A20-4457-8D72-37776DC86783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64DE7AFB-2528-4450-A32C-09C150BBBA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64DE7AFB-2528-4450-A32C-09C150BBBA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64DE7AFB-2528-4450-A32C-09C150BBBA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64DE7AFB-2528-4450-A32C-09C150BBBA9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{75AA6E5D-174D-4ECC-9770-D5E89A6EB0E6} = {AC848CEE-0EF5-46FB-8AFD-79F6D7F5DA3E}
@@ -78,5 +90,6 @@ Global
 		{8421DF0F-7BCA-4F98-B238-33F4C6A94F8E} = {AC848CEE-0EF5-46FB-8AFD-79F6D7F5DA3E}
 		{5919D9A4-B152-485A-AC21-746A67ADBCB4} = {AC848CEE-0EF5-46FB-8AFD-79F6D7F5DA3E}
 		{334137AD-7BC8-4036-9CB3-6762100E0838} = {AC848CEE-0EF5-46FB-8AFD-79F6D7F5DA3E}
+		{64DE7AFB-2528-4450-A32C-09C150BBBA9F} = {AC848CEE-0EF5-46FB-8AFD-79F6D7F5DA3E}
 	EndGlobalSection
 EndGlobal

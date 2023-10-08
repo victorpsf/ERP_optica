@@ -35,7 +35,18 @@ public class QueryStringReader<T> where T: class, new()
 
     private T GetInstanceModel()
     {
-        return new T();
+        var model = new T();
+
+        foreach (string key in this.readedData.Keys)
+        {
+            var propertie = model.GetType().GetProperties().Where(a => a.Name.ToUpperInvariant() == key.ToUpperInvariant()).FirstOrDefault();
+            if (propertie is null) 
+                continue;
+
+            propertie.SetValue(model, this.primitiveConverter.ToType(propertie.PropertyType, this.readedData[key]));
+        }
+
+        return model;
     }
 
     public T Decode ()
