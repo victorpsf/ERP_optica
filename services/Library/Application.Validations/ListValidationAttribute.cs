@@ -3,7 +3,7 @@
 namespace Application.Validations;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-public sealed class ListValidationAttribute : ValidationAttribute
+public sealed class ListValidationAttribute<T> : ValidationAttribute where T: class
 {
     public long Min { get; set; }
     public long Max { get; set; }
@@ -14,7 +14,10 @@ public sealed class ListValidationAttribute : ValidationAttribute
         if (value is null)
             return this.Required ? false : true;
 
-        var data = ((List<object?>)value).Where(a => a is not null).ToList();
+        var data = value as List<T>;
+        if (data is null)
+            return this.Required ? false : true;
+        data = data.Where(a => a is not null).ToList();
 
 
         if (Min > 0 && data.Count < Min)

@@ -12,7 +12,7 @@ public static class PersonDtos
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public PersonType personType { get; set; }
+        public PersonType PersonType { get; set; }
         public string CallName { get; set; } = string.Empty;
         public int EnterpriseId { get; set; }
         public int Version { get; set; }

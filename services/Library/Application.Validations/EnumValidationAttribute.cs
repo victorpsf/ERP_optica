@@ -22,7 +22,7 @@ public sealed class EnumValidationAttribute: ValidationAttribute
 
         foreach (var v in values) enumerables.Add(Convert.ToInt32(v));
 
-        return enumerables.Contains(data);
+        return enumerables.Where(x => x == data).Any();
     }
 
     public override string FormatErrorMessage(string name) => this.ErrorMessage ?? string.Empty;

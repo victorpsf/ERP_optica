@@ -16,7 +16,13 @@ public sealed class StringValidationAttribute: ValidationAttribute
 
         var data = (string)value;
 
-        return data.Length >= this.MinLength && data.Length < this.MaxLength;
+        if (this.MinLength != 0 && data.Length < this.MinLength) 
+            return false;
+
+        if (this.MaxLength != 0 && data.Length >= this.MaxLength)
+            return false;
+
+        return true;
     }
 
     public override string FormatErrorMessage(string name) => this.ErrorMessage ?? string.Empty;

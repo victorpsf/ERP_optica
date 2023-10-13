@@ -31,6 +31,14 @@ public class AttributeValidationBase: IAttributeValidationBase
 
             catch { }
 
-        return !output.Failed;
+        return output.Failed;
+    }
+
+    public bool validate<T, B>(List<T> models, ControllerBaseModels.RequestResult<B> output) where T : class, new()
+    {
+        foreach (var item in models)
+            validate(item, output);
+
+        return output.Failed;
     }
 }

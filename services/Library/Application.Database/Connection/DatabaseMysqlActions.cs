@@ -42,7 +42,7 @@ public class DatabaseMysqlActions
         this.Transaction = null;
     }
 
-    public void ControlData(BancoCommitArgument argument)
+    public void ControlData<T>(BancoCommitArgument<T> argument)
     {
         DynamicParameters parameters = new DynamicParameters();
         parameters.Add(name: "@DmlType", value: (int)argument.Control, direction: ParameterDirection.Input);
@@ -63,7 +63,7 @@ VALUES
         );
     }
 
-    public void CommitAndSave(BancoCommitArgument argument)
+    public void CommitAndSave<T>(BancoCommitArgument<T> argument)
     {
         this.ControlData(argument);
         this.Commit();

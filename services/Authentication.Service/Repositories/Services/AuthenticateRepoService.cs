@@ -1,6 +1,4 @@
-﻿using Application.Base.Models;
-using Application.Dtos;
-using Application.Exceptions;
+﻿using Application.Dtos;
 using Application.Interfaces.Connections;
 using Application.Services;
 using Authentication.Service.Repositories.Rules;

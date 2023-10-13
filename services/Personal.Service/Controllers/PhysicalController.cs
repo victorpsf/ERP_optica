@@ -5,17 +5,20 @@ using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personal.Service.Controllers.Models;
+using Personal.Service.Repositories.Services;
 
 namespace Personal.Service.Controllers;
 
 [Authorize(Policy = nameof(PermissionModels.PersonPhysicalPermission.AccessPersonPhysical))]
-public class PhysicalController : ControllerBase
+public partial class PhysicalController : ControllerBase
 {
     private readonly IBaseControllerServices baseControllerServices;
+    private readonly PersonRepoService personRepoService;
 
-    public PhysicalController(IBaseControllerServices baseControllerServices)
+    public PhysicalController(IBaseControllerServices baseControllerServices, PersonRepoService personRepoService)
     {
         this.baseControllerServices = baseControllerServices;
+        this.personRepoService = personRepoService;
     }
 
     [HttpGet]
@@ -34,14 +37,26 @@ public class PhysicalController : ControllerBase
 
         try
         {
-            if (!this.baseControllerServices.validator.validate(input, output))
+            if (this.baseControllerServices.validator.validate(input, output))
+                throw new ControllerEmptyException();
+            if (this.baseControllerServices.validator.validate(input.Documents, output))
                 throw new ControllerEmptyException();
 
-            return Ok(output);
+            var person = this.personRepoService.Create(new Repositories.Rules.PersonRules.CreatePersonRule
+            {
+                EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
+                UserId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
+                Input = input
+            });
+
+            if (person is null) 
+                throw new ControllerEmptyException();
+
+            return Ok(output.addResult(person));
         }
 
         catch { }
 
-        return Ok(output);
+        return BadRequest(output);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Application.Validations;
-using System.ComponentModel.DataAnnotations;
+using static Personal.Service.Controllers.Models.DocumentModels;
 
 namespace Personal.Service.Controllers.Models;
 
@@ -13,11 +13,11 @@ public static class PersonModels
         [StringValidation(Required = true, MinLength = 10, MaxLength = 500, ErrorMessage = "")]
         public string CallName { get; set; } = string.Empty;
 
-        [IntegerValidation(Min = 1, Required = true, ErrorMessage = "")]
-        public int EnterpriseId { get; set; }
-
         [DateTimeValidation(Required = true, MinRange = -120, MaxRange = 0, ErrorMessage = "")]
         public DateTime BirthDate { get; set; }
+
+        [ListValidation<DocumentInput>(Required = true, Min = 1)]
+        public List<DocumentInput> Documents { get; set; } = new List<DocumentInput>();
     }
 
     public class PersonJuridicalInput
@@ -27,9 +27,6 @@ public static class PersonModels
 
         [StringValidation(Required = true, MinLength = 10, MaxLength = 500, ErrorMessage = "")]
         public string CallName { get; set; } = string.Empty;
-
-        [IntegerValidation(Min = 1, Required = true, ErrorMessage = "")]
-        public int EnterpriseId { get; set; }
 
         [DateTimeValidation(Required = true, MinRange = -220, MaxRange = 0, ErrorMessage = "")]
         public DateTime Fundation { get; set; }

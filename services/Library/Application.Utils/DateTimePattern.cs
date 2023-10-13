@@ -9,7 +9,7 @@ public class PatternData
 
 public class DateTimePattern
 {
-    private static RegexOptions option = option;
+    private static RegexOptions option = RegexOptions.ECMAScript | RegexOptions.IgnoreCase;
 
     public static List<PatternData> getPatterns() => new List<PatternData>()
     {

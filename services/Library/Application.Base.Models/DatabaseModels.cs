@@ -34,11 +34,11 @@ public static class DatabaseModels
         public int EnterpreiseId { get; set; }
     }
 
-    public class BancoCommitArgument
+    public class BancoCommitArgument<T>
     {
         public DmlType Control { get; set; }
         public EntityType Entity { get; set; }
-        public int EntityId { get; set; }
+        public T EntityId { get; set; } =  default(T);
         public int UserId { get; set; }
         public int EnterpriseId { get; set; }
     }

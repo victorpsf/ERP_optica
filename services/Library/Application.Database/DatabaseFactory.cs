@@ -38,7 +38,7 @@ public class DatabaseFactory
         => new AuthenticateDatabase(this.GetConnectionString("AuthenticateDatabase"), this.GetTimeout("AuthenticateDatabase"));
 
     public PersonalDatabase PersonalDatabaseConnection()
-        => new PersonalDatabase(this.GetConnectionString("AuthenticateDatabase"), this.GetTimeout("PersonalDatabase"));
+        => new PersonalDatabase(this.GetConnectionString("PersonalDatabase"), this.GetTimeout("PersonalDatabase"));
 
     public static DatabaseFactory GetInstance(IAppConfigurationManager appConfigurationManager) 
         => new DatabaseFactory(appConfigurationManager);

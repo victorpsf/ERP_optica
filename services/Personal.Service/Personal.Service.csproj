@@ -18,10 +18,4 @@
     <ProjectReference Include="..\Library\Application.Validations\Application.Validations.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Rules\" />
-    <Folder Include="Repositories\Queries\" />
-    <Folder Include="Repositories\Services\" />
-  </ItemGroup>
-
 </Project>
