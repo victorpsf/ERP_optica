@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Base.Models\Application.Base.Models.csproj" />
+    <ProjectReference Include="..\Application.Extensions\Application.Extensions.csproj" />
     <ProjectReference Include="..\Application.Interfaces\Application.Interfaces.csproj" />
   </ItemGroup>
 

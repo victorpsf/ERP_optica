@@ -1,8 +1,5 @@
 using Application.Core;
-using Application.Utils;
-using Microsoft.AspNetCore.Hosting;
 using Serilog;
-using System.Globalization;
 
 namespace Personal.Service;
 
