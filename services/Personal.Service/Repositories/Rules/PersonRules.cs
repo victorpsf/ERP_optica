@@ -5,26 +5,39 @@ namespace Personal.Service.Repositories.Rules;
 
 public static class PersonRules
 {
-    public class CreatePersonRule
+    public class FindPersonPhysicalRule
+    {
+        public int UserId { get; set; }
+        public int EnterpriseId { get; set; }
+        public PersonModels.FindPersonPhysicalInput Input { get; set; } = new PersonModels.FindPersonPhysicalInput();
+    }
+
+    public class PersistPersonPhysicalRule
     {
         public int UserId { get; set; }
         public int EnterpriseId { get; set; }
         public PersonModels.PersonPhysicalInput Input { get; set; } = new PersonModels.PersonPhysicalInput();
-    }
 
-    public class PersistPersonPhysicalRule: PersonDtos.PersonPhysical
-    {
-        public static PersistPersonPhysicalRule ByCreatePersonRule(CreatePersonRule rule) => new PersistPersonPhysicalRule
+        public FindPersonPhysicalRule FindById() => new FindPersonPhysicalRule
         {
-            Name = rule.Input.Name,
-            CallName = rule.Input.CallName,
-            PersonType = PersonDtos.PersonType.Physical,
-            BirthDate = rule.Input.BirthDate,
-            EnterpriseId = rule.EnterpriseId,
-            Version = 0
+            UserId = this.UserId,
+            EnterpriseId = this.EnterpriseId,
+            Input = new PersonModels.FindPersonPhysicalInput
+            { Id = this.Input.Id  }
         };
 
-        public PersonDtos.PersonPhysical toDto()
-        { return (PersonDtos.PersonPhysical)this; }
+        public FindPersonPhysicalRule ToFind() => new FindPersonPhysicalRule
+        {
+            UserId = this.UserId,
+            EnterpriseId = this.EnterpriseId,
+            Input = new PersonModels.FindPersonPhysicalInput
+            {
+                Id = this.Input.Id,
+                Name = this.Input.Name,
+                CallName = this.Input.CallName,
+                BirthDate = this.Input.BirthDate,
+                Version = this.Input.Version
+            }
+        };
     }
 }

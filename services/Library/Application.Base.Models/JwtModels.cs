@@ -14,13 +14,12 @@ public static class JwtModels
         public int EnterpriseIdInt()
         { return Convert.ToInt32(EnterpriseId); }
 
-        public static ClaimIdentifier Create(string claim, string token)
+        public static ClaimIdentifier Create(string PrimarySid, string Sid, string token)
         {
-            var claims = claim.Split(":").ToArray();
             return new ClaimIdentifier
             {
-                UserId = claims.FirstOrDefault() ?? string.Empty,
-                EnterpriseId = claims.LastOrDefault() ?? string.Empty,
+                UserId = PrimarySid,
+                EnterpriseId = Sid,
                 Token = token
             };
         }

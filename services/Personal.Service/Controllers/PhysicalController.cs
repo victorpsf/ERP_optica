@@ -1,7 +1,9 @@
 ﻿using Application.Base.Models;
 using Application.Dtos;
+using Application.Exceptions;
 using Application.Extensions;
 using Application.Interfaces.Services;
+using Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personal.Service.Controllers.Models;
@@ -21,15 +23,6 @@ public partial class PhysicalController : ControllerBase
         this.personRepoService = personRepoService;
     }
 
-    [HttpGet]
-    public IActionResult Index()
-    {
-        //var queryString = this.baseControllerServices.decodeQueryString<Teste>(HttpContext.Request.QueryString.ToString() ?? string.Empty);
-
-
-        return Ok();
-    }
-
     [HttpPost]
     public IActionResult Create([FromBody] PersonModels.PersonPhysicalInput input)
     {
@@ -39,10 +32,8 @@ public partial class PhysicalController : ControllerBase
         {
             if (this.baseControllerServices.validator.validate(input, output))
                 throw new ControllerEmptyException();
-            if (this.baseControllerServices.validator.validate(input.Documents, output))
-                throw new ControllerEmptyException();
 
-            var person = this.personRepoService.Create(new Repositories.Rules.PersonRules.CreatePersonRule
+            var person = this.personRepoService.Create(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
             {
                 EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 UserId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,

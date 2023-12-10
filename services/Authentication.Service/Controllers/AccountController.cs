@@ -60,7 +60,7 @@ public partial class AccountController: ControllerBase
 
         try
         {
-            if (!this.baseControllerServices.validator.validate(data, output))
+            if (this.baseControllerServices.validator.validate(data, output))
                 throw new ControllerEmptyException();
 
             data.Name = this.baseControllerServices.NewHash(SecurityModels.AppHashAlgorithm.SHA512)
@@ -106,7 +106,7 @@ public partial class AccountController: ControllerBase
 
         try
         {
-            if (!this.baseControllerServices.validator.validate(data, output))
+            if (this.baseControllerServices.validator.validate(data, output))
                 throw new ControllerEmptyException();
 
             var cache = this.baseControllerServices.hostCache.Get<AccountModels.SingInInput>("try:login");
@@ -131,7 +131,7 @@ public partial class AccountController: ControllerBase
             this.baseControllerServices.hostCache.Unset("try:login");
             this.service.Delete(result.Rule);
             this.SendAuthenticatedEmail(result.Code, result.User);
-            this.baseControllerServices.jwtService.Write(new JwtModels.ClaimIdentifier { UserId = result.User.UserId.ToString(), EnterpriseId = result.User.EnterpriseId.ToString() }, out TokenCreated generated);
+            this.baseControllerServices.jwtService.Write(new ClaimIdentifier { UserId = result.User.UserId.ToString(), EnterpriseId = result.User.EnterpriseId.ToString() }, out TokenCreated generated);
             output.addResult(new AccountModels.ValidateCodeOutput { Expire = generated.Expire, Token = generated.Token });
         }
 
@@ -171,7 +171,7 @@ public partial class AccountController: ControllerBase
 
             var result = this.ValidateInput(cache, output);
 
-            if (!this.baseControllerServices.validator.validate(data, output))
+            if (this.baseControllerServices.validator.validate(data, output))
                 return BadRequest(output);
 
             if (result.Code is not null)

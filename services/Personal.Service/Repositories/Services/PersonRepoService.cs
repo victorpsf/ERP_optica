@@ -4,19 +4,21 @@ using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Application.Services;
 using Personal.Service.Repositories.Rules;
+using static Application.Dtos.PersonDtos;
 
 namespace Personal.Service.Repositories.Services;
 
-public class PersonRepoService: BaseRepoService<IPersonalDatabase>
+public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
 {
     private PersonRepository personRepository;
 
     public PersonRepoService(IPersonalDatabase db): base(db) 
     { this.personRepository = new PersonRepository(db); }
 
-    public PersonDtos.PersonPhysical? Create(PersonRules.CreatePersonRule rule)
+    public List<PersonPhysical> List(PersonRules.FindPersonPhysicalRule rule)
     {
-        PersonDtos.PersonPhysical? person = null;
+        this.Build(rule, out DatabaseModels.ParameterCollection Parameters, out string Sql);
+        List<PersonPhysical> results = new List<PersonPhysical>();
 
         try
         { this.db.Connect(); }
@@ -25,21 +27,39 @@ public class PersonRepoService: BaseRepoService<IPersonalDatabase>
 
         try
         {
-            person = this.personRepository.Save(
-                PersonRules.PersistPersonPhysicalRule.ByCreatePersonRule(rule)
+            results.AddRange(
+                this.personRepository.FindByQuery(Sql, Parameters)
             );
+        }
 
-            if (person.Id == 0) 
-                throw new Exception("Person don't perssisted");
+        catch (Exception ex)
+        {
+            this.db.Rollback();
+            this.db.Disconnect();
+            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex);
+        }
 
-            this.db.ControlData(new DatabaseModels.BancoCommitArgument<int>
-            {
-                Control = DatabaseModels.DmlType.Insert,
-                EnterpriseId = rule.EnterpriseId,
-                UserId = rule.UserId,
-                Entity = DatabaseModels.EntityType.PersonPhysical,
-                EntityId = person.Id
-            });
+        try
+        { this.db.Disconnect(); }
+
+        catch (Exception ex)
+        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+
+        return results;
+    } 
+
+    public PersonPhysical? Create(PersonRules.PersistPersonPhysicalRule rule)
+    {
+        PersonPhysical? person = null;
+
+        try
+        { this.db.Connect(); }
+
+        catch (Exception ex) { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
+
+        try
+        {
+            person = this.personRepository.Save(rule);
             this.db.Commit();
         }
 

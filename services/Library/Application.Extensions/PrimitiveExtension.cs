@@ -30,4 +30,20 @@ public static class PrimitiveExtension
 
         return values.Skip(start).Take(count).ToArray();
     }
+
+    public static string ToLikeSql(this string value)
+    {
+        if (value is null) 
+            return string.Empty;
+
+        return string.Join("%", value.Split(" ").Select(a => Regex.Replace(a, "/([^a-zA-Z]*)", "%")).ToArray());
+    }
+
+    public static Boolean BeforeRange(this DateTime value, int min) => DateTime.UtcNow.AddYears(min) >= value;
+    public static Boolean AfterRange(this DateTime value, int max) => DateTime.UtcNow.AddYears(max) <= value;
+
+    public static Boolean InRange(this DateTime value, int min, int max)
+    {
+        return BeforeRange(value, min) && AfterRange(value, max);
+    }
 }

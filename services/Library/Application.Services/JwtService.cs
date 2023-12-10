@@ -51,7 +51,10 @@ public class JwtService: IJwtService
 
         SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.NameIdentifier, $"{claim.UserId}:{claim.EnterpriseId}") }),
+            Subject = new ClaimsIdentity(new Claim[] { 
+                new Claim("UserId", claim.UserId), 
+                new Claim("EnterpriseId", claim.EnterpriseId) 
+            }),
             Expires = output.Expire,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(this.Secret), SecurityAlgorithms.HmacSha256Signature),
             Issuer = this.ValidIssuer,
@@ -79,7 +82,8 @@ public class JwtService: IJwtService
 
             JwtSecurityToken jwt = (JwtSecurityToken)validatedToken;
             claim = ClaimIdentifier.Create(
-                jwt.Claims.Where(a => a.Type == "nameid").FirstOrDefault()?.Value ?? string.Empty, 
+                jwt.Claims.Where(a => a.Type.ToUpperInvariant() == "USERID").FirstOrDefault()?.Value ?? string.Empty,
+                jwt.Claims.Where(a => a.Type.ToUpperInvariant() == "ENTERPRISEID").FirstOrDefault()?.Value ?? string.Empty,
                 token
             );
         }
