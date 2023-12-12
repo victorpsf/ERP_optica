@@ -1,6 +1,6 @@
 import { ICode } from "../../interfaces/entity/ICode";
 import { IHttpResponse } from "../../interfaces/entity/IHttp";
-import { IEnterprise, ILogin, ISignInResult, IValidateTokenResult } from "../../interfaces/entity/ILogin";
+import { IEnterprise, ILogin, IResendCodeResult, ISignInResult, IValidateTokenResult } from "../../interfaces/entity/ILogin";
 import HttpClient from "../http-client";
 
 export const SigIn = async function (values: ILogin): Promise<IHttpResponse<ISignInResult>> {
@@ -18,6 +18,17 @@ export const ValidateCode = async function (values: ICode): Promise<IHttpRespons
     const request = HttpClient();
     try {
         const { data } = await request.post<IHttpResponse<IValidateTokenResult>>('/auth/Account/ValidateCode', values);
+        return data;
+    }
+
+    catch(ex) 
+    { throw ex; }
+}
+
+export const ResendCode = async function (): Promise<IHttpResponse<IResendCodeResult>> {
+    const request = HttpClient();
+    try {
+        const { data } = await request.post<IHttpResponse<IResendCodeResult>>('/auth/Account/ResendCode');
         return data;
     }
 

@@ -9,9 +9,26 @@ export default function StringInput (props: IStringInputProps): JSX.Element {
             return { position: 'absolute', padding: 1, fontSize: 12, top: 8, left: 8, transition: 'ease', transitionDuration: '0.5s' }
     }
 
+    const getInputElement = function (element: HTMLDivElement): HTMLInputElement | null {
+        const elements: ChildNode[] = Array.from(element.childNodes ?? [], (a) => a);
+        for (const el of elements)
+            if (el.nodeName === 'INPUT') return el as HTMLInputElement
+        return null;
+    }
+
+    const onLabelClick = function (event: React.MouseEvent<HTMLDivElement>) {
+        const target = event.target as HTMLDivElement
+
+        const elements: HTMLDivElement[] = Array.from(target.parentNode?.childNodes ?? [], (a) => a as HTMLDivElement);
+        for (const el of elements) {
+            const input = getInputElement(el);
+            if (input) input.select();
+        }
+    }
+
     return (
         <div className="relative p-1 m-1 locktext">
-            <div style={getLabelStyle()}>{props.label}</div>
+            <div className="cursor-text" style={getLabelStyle()} onClick={(event) => onLabelClick(event)}>{props.label}</div>
             <div className="w-full">
                 <input 
                     type={props.type}

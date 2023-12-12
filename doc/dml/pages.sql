@@ -1,0 +1,9 @@
+INSERT INTO `PAGES`
+	( `PAGEID`, `NAME`, `PATH`, `ICON`, `LOGGED`, `INDEX`)
+VALUES 
+	(NULL, 'LABEL_HOME_PAGE', '/', 'HOME', NULL, 1),
+	(NULL, 'LABEL_LOGIN_PAGE', '/login', 'LOGIN', 0, 1),
+	(NULL, 'LABEL_FORGOTTEM_PAGE', '/forgottem', 'FORGOTTEM', 0, 1),
+	(NULL, 'LABEL_CODE_PAGE', '/code', 'CODE', 0, 1),
+	(NULL, 'LABEL_CLIENT_PAGE', '/page/client', 'CLIENT', 1, 1)
+;

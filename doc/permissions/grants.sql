@@ -29,3 +29,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ERP_OPTICA.PERSONADDRESS        TO 'Pers
 GRANT SELECT, INSERT, UPDATE, DELETE ON ERP_OPTICA.PERSONDOCUMENT       TO 'PersonalUser'@'%';
 GRANT SELECT                         ON ERP_OPTICA.ENTERPRISE           TO 'PersonalUser'@'%';
 GRANT INSERT                         ON ERP_OPTICA.CONTROL              TO 'PersonalUser'@'%';
+
+GRANT SELECT                         ON ERP_OPTICA.PAGES                TO 'PageUser'@'%';

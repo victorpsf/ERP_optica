@@ -15,6 +15,7 @@ using Application.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using static Application.Base.Models.ConfigurationModels;
 
 namespace Application.Core;
@@ -117,6 +118,11 @@ public class StartupCore
                         ValidIssuer = this.ValidIssuer,
                         ValidAudience = this.ValidAudience
                     };
+
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = UnauthorizedHandlerError.InvokeAsync
+                    };
                 }
             );
     }
@@ -181,6 +187,9 @@ public class StartupCore
             app.UseCors("_myAllowSpecificOrigins");
         else
             app.UseCors(a => a.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+        app.UseMiddleware<AppErrorHandler>();
+        app.UseStatusCodePages(StatusCodeHandleError.InvokeAsync);
         app.UseAuthentication();
         app.UseAuthorization();
 

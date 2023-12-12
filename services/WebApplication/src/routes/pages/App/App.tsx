@@ -12,11 +12,18 @@ function App() {
   const storage = AppStorage();
 
   React.useEffect(() => {
-    const token = storage.get('auth.token', undefined);
+    const { token, expire } = storage.get('auth', { token: undefined, expire: undefined });
+
     if (!token && !/\/login|\/code|\/forgotten/g.test(location.pathname)) {
       navigate('/login')
       window.location.reload();
     }
+
+    if (new Date() >= new Date(expire)) {
+      storage.clear();
+      window.location.reload();
+    }
+
     setLogged(!!token);
   }, [logged])
 
