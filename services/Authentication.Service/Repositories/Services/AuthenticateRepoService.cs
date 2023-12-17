@@ -5,65 +5,47 @@ using Authentication.Service.Repositories.Rules;
 
 namespace Authentication.Service.Repositories.Services;
 
-public class AuthenticateRepoService: BaseRepoService<IAuthenticateDatabase>
+public class AuthenticateRepoService : BaseRepoService<IAuthenticateDatabase>
 {
     private AuthenticateRepository repository;
 
-    public AuthenticateRepoService(IAuthenticateDatabase db) : base (db)
+    public AuthenticateRepoService(IAuthenticateDatabase db) : base(db)
     { this.repository = new AuthenticateRepository(this.db); }
 
     public AccountDtos.UserDto? Find(AuthenticateRules.SingInRule rule)
-    {
-        AccountDtos.UserDto? user = this.ExecuteQuery(
-            this.repository.Find, 
-            rule, 
+        => this.ExecuteQuery(
+            this.repository.Find,
+            rule,
             false
         );
 
-        return user;
-    }
-
     public AccountDtos.CodeDto Create(AuthenticateRules.CodeRule rule)
-    {
-        AccountDtos.CodeDto code = this.ExecuteQuery(
+        => this.ExecuteQuery(
             this.repository.Create,
             rule,
             true
         );
 
-        return code;
-    }
-
     public AccountDtos.CodeDto? Find(AuthenticateRules.CodeRule rule)
-    {
-        AccountDtos.CodeDto? code = this.ExecuteQuery(
+        => this.ExecuteQuery(
             this.repository.Find,
             rule,
             false
         );
 
-        return code;
-    }
-
     public void Delete(AuthenticateRules.CodeRule rule)
-    {
-        this.ExecuteQuery(
+        => this.ExecuteQuery(
             this.repository.Delete,
             rule,
             true
         );
-    }
 
     public AccountDtos.ResendDto? Find(AuthenticateRules.ResendCodeRule rule)
-    {
-        AccountDtos.ResendDto? code = this.ExecuteQuery(
+        => this.ExecuteQuery(
             this.repository.Find,
             rule,
             true
         );
-
-        return code;
-    }
 
     public List<AccountDtos.EnterpriseDto> getEnterprises(AuthenticateRules.EnterpriseRule rule)
     {
@@ -79,4 +61,18 @@ public class AuthenticateRepoService: BaseRepoService<IAuthenticateDatabase>
 
         return enterprises;
     }
+
+    public AccountDtos.ForgottenDto? Find(AuthenticateRules.ForgottenRule rule)
+        => this.ExecuteQuery(
+            this.repository.Find,
+            rule,
+            false
+        );
+
+    public void Save(AuthenticateRules.ForgottenChangePassphraseRule rule)
+        => this.ExecuteQuery(
+            this.repository.Save,
+            rule,
+            true
+        );
 }

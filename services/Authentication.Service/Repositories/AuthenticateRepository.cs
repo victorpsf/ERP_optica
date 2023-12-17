@@ -4,6 +4,7 @@ using Authentication.Service.Repositories.Rules;
 using static Application.Base.Models.DatabaseModels;
 using System.Data;
 using Authentication.Service.Repositories.Queries;
+using Application.Extensions;
 
 namespace Authentication.Service.Repositories;
 
@@ -79,4 +80,23 @@ public class AuthenticateRepository
 
     public List<AccountDtos.EnterpriseDto> Get(AuthenticateRules.EnterpriseRule rule)
         => this.db.ExecuteReader<AccountDtos.EnterpriseDto>(new BancoArgument { Sql = AuthenticateQueries.EnterprisesSql }).ToList();
+
+    public AccountDtos.ForgottenDto? Find(AuthenticateRules.ForgottenRule rule)
+        => this.db.Find<AccountDtos.ForgottenDto>(new BancoArgument
+        {
+            Sql = AuthenticateQueries.ForgottenSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@CONTACTTYPE", ContactDtos.ContactType.EMAIL.intValue(), ParameterDirection.Input)
+                .Add("@NAME", rule.Name, ParameterDirection.Input)
+                .Add("@EMAIL", rule.Email, ParameterDirection.Input)
+        });
+
+    public void Save(AuthenticateRules.ForgottenChangePassphraseRule rule)
+        => this.db.Execute(new BancoExecuteArgument
+        {
+            Sql = AuthenticateQueries.ForgottenChangePassphraseSql,
+            Parameter = ParameterCollection.GetInstance()
+                .Add("@AUTHID", rule.AuthId, ParameterDirection.Input)
+                .Add("@PASSPHRASE", rule.Passphrase, ParameterDirection.Input)
+        });
 }

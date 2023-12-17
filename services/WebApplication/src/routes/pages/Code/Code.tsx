@@ -3,7 +3,7 @@ import ActionableButton from '../../components/actions/ActionableButton'
 import { ICodeState } from '../../../interfaces/entity/ICode'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { codeConstants } from '../../../constants';
-import { ResendCode, ValidateCode } from '../../../db/external/AccountDb';
+import { ForgottenResendCode, SignInResendCode, SignInValidateCode } from '../../../db/external/AccountDb';
 import AppStorage from '../../../db/app-storage';
 
 export default function Code (): JSX.Element {
@@ -28,7 +28,7 @@ export default function Code (): JSX.Element {
 
     const SignIn = async function() {
         try {
-            const { result } = await ValidateCode({ Code: state.Code.join('') });
+            const { result } = await SignInValidateCode({ Code: state.Code.join('') });
 
             if (result) {
                 storage.set('auth.expire', result.expire)
@@ -41,9 +41,14 @@ export default function Code (): JSX.Element {
         catch(ex) { console.error(ex); }
     }
 
-    const resendCode = async function () {
+    const resendCode = async function (type: 'auth' | 'forgotten') {
         try {
-            await ResendCode();
+            if (type == 'auth')
+                await SignInResendCode();
+            else if (type == 'forgotten') {
+                await ForgottenResendCode();
+            }
+
         }
 
         catch(ex) { console.error(ex); }
@@ -89,16 +94,33 @@ export default function Code (): JSX.Element {
                     <div className='px-2 py-0 m-0 w-full text-left break-words'>
                         <p className='p-2 break-words w-full' style={{ fontSize: 8, maxWidth: 300 }}>
                             {'E-mail contendo código de acesso foi enviado, acesse seu e-mail para obter e utilizar. caso não tenha recebido'}
-                            <span className='ml-1 underline cursor-pointer' style={{ fontSize: 8 }} onClick={(event) => resendCode()}>{'clique aqui para reenviar código'}</span>
+                            <span className='ml-1 underline cursor-pointer' style={{ fontSize: 8 }} onClick={(event) => resendCode('auth')}>{'clique aqui para reenviar código'}</span>
                             {'.'}
                         </p>
                     </div>
-                    
+                )}
+
+                {ref === codeConstants.forgotten && (
+                    <div className='px-2 py-0 m-0 w-full text-left break-words'>
+                        <p className='p-2 break-words w-full' style={{ fontSize: 8, maxWidth: 300 }}>
+                            {'E-mail contendo código para mudança foi enviado, acesse seu e-mail para obter e utilizar. caso não tenha recebido'}
+                            <span className='ml-1 underline cursor-pointer' style={{ fontSize: 8 }} onClick={(event) => resendCode('forgotten')}>{'clique aqui para reenviar código'}</span>
+                            {'.'}
+                        </p>
+                    </div>
                 )}
 
                 {ref === codeConstants.login && (
                     <ActionableButton 
                         label={'Logar'} 
+                        disabled={(getCodeArray().length === 0)}
+                        onPress={() => SignIn()} 
+                    />
+                )}
+
+                {ref === codeConstants.forgotten && (
+                    <ActionableButton 
+                        label={'Solicitar'} 
                         disabled={(getCodeArray().length === 0)}
                         onPress={() => SignIn()} 
                     />

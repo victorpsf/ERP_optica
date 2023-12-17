@@ -32,7 +32,7 @@ public class StartupCore
     public AppBackgroundJob? backgroundJob;
 
     private string Prefix { get => this.prefix is not null ? this.prefix : "api"; }
-    private string Pattern { get => (this.Prefix == "api" ? "/api" : $"/{this.Prefix}") + "/{controller}/{action}"; }
+    private string Pattern { get => (this.Prefix == "api" ? "/api" : $"/{this.Prefix}") + "/{controller}/{action=Index}"; }
     private bool EnableCors { get => !this.disableCors && this.origin is not null; }
 
     private byte[] Secret

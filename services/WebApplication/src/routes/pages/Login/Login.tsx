@@ -5,7 +5,7 @@ import ActionableButton from '../../components/actions/ActionableButton'
 import BooleanInput from '../../components/inputs/BooleanInput'
 import { useNavigate } from 'react-router-dom'
 import { codeConstants } from '../../../constants'
-import { GetEnterprises, SigIn } from '../../../db/external/AccountDb'
+import { SignInGetEnterprises, SigIn } from '../../../db/external/AccountDb'
 import SelectInput from '../../components/inputs/SelectInput'
 import AppStorage from '../../../db/app-storage'
 
@@ -25,7 +25,7 @@ export default function Login (): JSX.Element {
 
     React.useEffect(() => { 
         let ignore = false;
-        GetEnterprises()
+        SignInGetEnterprises()
             .then(({ result = [] }) => {
                 if (ignore) return;
                 setEnterprises((result ?? []))

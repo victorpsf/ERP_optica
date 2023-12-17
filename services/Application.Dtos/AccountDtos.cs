@@ -42,4 +42,11 @@ public static class AccountDtos
         public int Value { get; set; }
         public string Label { get; set; } = string.Empty;
     }
+
+    public class ForgottenDto
+    {
+        public int UserId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+    }
 }

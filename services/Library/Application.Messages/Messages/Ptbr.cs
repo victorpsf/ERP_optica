@@ -14,5 +14,8 @@ public class Ptbr: MultiLanguage
     public string ERROR_USER_DONT_FOUND                         { get; set; } = "'usuário' ou 'senha' incorreta";
     public string ERROR_PASSWORD_INCORRECT                      { get; set; } = "'usuário' ou 'senha' incorreta";
     public string ERROR_CODE_INVALID                            { get; set; } = "'código' informado não esta válido";
+
+    public string ERROR_FORGOTTEN_NAME_OUT_OF_RANGE             { get; set; } = "'usuário' contém mais de 255 caracteres";
+    public string ERROR_FORGOTTEN_EMAIL_OUT_OF_RANGE            { get; set; } = "'e-mail' contém mais de 255 caracteres";
     #endregion
 }

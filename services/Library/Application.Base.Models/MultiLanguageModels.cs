@@ -31,6 +31,11 @@ public static class MultiLanguageModels
         ERROR_USER_DONT_FOUND,
         ERROR_PASSWORD_INCORRECT,
         ERROR_CODE_INVALID,
+
+        ERROR_FORGOTTEN_NAME_OUT_OF_RANGE,
+        ERROR_FORGOTTEN_NAME_IS_NOT_INFORMED,
+        ERROR_FORGOTTEN_EMAIL_OUT_OF_RANGE,
+        ERROR_FORGOTTEN_EMAIL_IS_NOT_INFORMED,
         #endregion
 
         #region person

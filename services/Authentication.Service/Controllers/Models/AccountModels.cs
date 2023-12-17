@@ -43,4 +43,46 @@ public static class AccountModels
     {
         public DateTime sended { get; set; }
     }
+
+    public class ForgottenInput
+    {
+        [MaxLength(255, ErrorMessage = "ERROR_FORGOTTEN_NAME_OUT_OF_RANGE")]
+        public string? Name { get; set; }
+
+        [MaxLength(255, ErrorMessage = "ERROR_FORGOTTEN_EMAIL_OUT_OF_RANGE")]
+        public string? Email { get; set; }
+    }
+
+    public class ForgottenOutput
+    {
+        public bool CodeSended { get; set; }
+    }
+
+    public class ForgottenValidateCodeInput
+    {
+        [Required(ErrorMessage = "ERROR_FORGOTTEN_CODE_IS_NOT_INFORMED")]
+        [MaxLength(9, ErrorMessage = "ERROR_FORGOTTEN_CODE_OUT_OF_RANGE")]
+        public string? Code { get; set; }
+    }
+
+    public class ForgottenValidateCodeOutput
+    {
+        public bool Sucess { get; set; }
+    }
+
+    public class ForgottenChangePassphraseInput
+    {
+        [Required(ErrorMessage = "ERROR_FORGOTTEN_PASSPHRASE_IS_NOT_INFORMED")]
+        [MinLength(8, ErrorMessage = "ERROR_FORGOTTEN_PASSPHRASE_OUT_OF_RANGE")]
+        public string? Passphrase { get; set; }
+
+        [Required(ErrorMessage = "ERROR_FORGOTTEN_PASSPHRASE_IS_NOT_INFORMED")]
+        [MinLength(8, ErrorMessage = "ERROR_FORGOTTEN_PASSPHRASE_OUT_OF_RANGE")]
+        public string? Confirm { get; set; }
+    }
+
+    public class ForgottenChangePassphraseOutput
+    {
+        public bool Sucess { get; set; }
+    }
 }

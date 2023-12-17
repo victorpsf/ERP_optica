@@ -25,4 +25,16 @@ public static class AuthenticateRules
     {
 
     }
+
+    public class ForgottenRule
+    {
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+    }
+
+    public class ForgottenChangePassphraseRule
+    {
+        public int AuthId { get; set; }
+        public string Passphrase { get; set; } = string.Empty;
+    }
 }
