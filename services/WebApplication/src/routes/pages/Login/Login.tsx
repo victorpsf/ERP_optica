@@ -5,7 +5,7 @@ import ActionableButton from '../../components/actions/ActionableButton'
 import BooleanInput from '../../components/inputs/BooleanInput'
 import { useNavigate } from 'react-router-dom'
 import { codeConstants } from '../../../constants'
-import { SignInGetEnterprises, SigIn } from '../../../db/external/AccountDb'
+import { GetEnterprises, SigIn } from '../../../db/external/AccountDb'
 import SelectInput from '../../components/inputs/SelectInput'
 import AppStorage from '../../../db/app-storage'
 
@@ -25,7 +25,7 @@ export default function Login (): JSX.Element {
 
     React.useEffect(() => { 
         let ignore = false;
-        SignInGetEnterprises()
+        GetEnterprises()
             .then(({ result = [] }) => {
                 if (ignore) return;
                 setEnterprises((result ?? []))
@@ -53,7 +53,7 @@ export default function Login (): JSX.Element {
 
     return (
         <div className='w-full h-full flex justify-center items-center' style={{ backgroundColor: '#323232' }}>
-            <div className='p-3' style={{ backgroundColor: '#fff', borderRadius: 3 }}>
+            <div className='p-3 w-full max-w-screen-sm' style={{ backgroundColor: '#fff', borderRadius: 3 }}>
                 <StringInput 
                     label={'Usuário'}
                     value={state.input.Name}

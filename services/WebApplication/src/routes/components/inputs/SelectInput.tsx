@@ -17,7 +17,7 @@ export default function SelectInput ({ label, value, options, onValueChange }: I
 
     const getSelectedElement = (item: ISelectInputOption): JSX.Element => {
         return (
-            <div className="m-1 px-1 flex items-center" key={item.value} style={{ background: "#aaa", borderRadius: 3 }}>
+            <div className="p-1 flex items-center" key={item.value} style={{ background: "#aaa", borderRadius: 3 }}>
                 <div className="text-xs" style={{ color: '#fff' }}>{item.label}</div>
                 <div className="pl-1"><Svg name={'close'} stroke="white" width={12} height={12} onPress={() => onClickSelectedElement(item)} /></div>
             </div>
@@ -50,7 +50,7 @@ export default function SelectInput ({ label, value, options, onValueChange }: I
     }
 
     return (
-        <div className="relative p-1 m-1 locktext">
+        <div className="relative w-full p-1 m-1 locktext">
             <div className="cursor-pointer" onClick={() => setOpen(!open)} style={getLabelStyle()}>{label}</div>
 
             <div 
@@ -66,7 +66,7 @@ export default function SelectInput ({ label, value, options, onValueChange }: I
 
             {open && getOptions().length > 0 && (
                 <div 
-                    className="p-1 text-xs" 
+                    className="p-1 w-full text-xs" 
                     style={{ 
                         marginTop: 0.5,
                         border: '1px solid #aaa',

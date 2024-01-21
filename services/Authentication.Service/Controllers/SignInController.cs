@@ -199,27 +199,4 @@ public partial class SignInController: ControllerBase
 
         return output.Failed ? BadRequest(output) : Ok(output);
     }
-
-    [HttpGet]
-    [AllowAnonymous]
-    public IActionResult GetEnterprises([FromQuery] object data)
-    {
-        var output = new ControllerBaseModels.RequestResult<List<AccountDtos.EnterpriseOptionDto>>();
-
-        try
-        {
-            output.addResult(this.service.getEnterprises(new AuthenticateRules.EnterpriseRule { }).Select(a => new AccountDtos.EnterpriseOptionDto { Value = a.EnterpriseId, Label = a.Name }).ToList());
-        }
-
-        catch (BusinessException ex)
-        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
-
-        catch (AppDbException ex)
-        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
-
-        catch (Exception ex)
-        { this.baseControllerServices.logger.PrintsTackTrace(ex); }
-
-        return Ok(output);
-    }
 }

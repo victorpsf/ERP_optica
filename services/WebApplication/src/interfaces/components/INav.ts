@@ -5,4 +5,5 @@ export interface INavProps {
 
 export interface INavState {
     logged: boolean;
+    opened: boolean;
 }

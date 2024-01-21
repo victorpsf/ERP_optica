@@ -37,10 +37,10 @@ export const SignInResendCode = async function (): Promise<IHttpResponse<IResend
     { throw ex; }
 }
 
-export const SignInGetEnterprises = async function (): Promise<IHttpResponse<IEnterprise[]>> {
+export const GetEnterprises = async function (): Promise<IHttpResponse<IEnterprise[]>> {
     const request = HttpClient();
     try {
-        const { data } = await request.get<IHttpResponse<IEnterprise[]>>('/auth/SignIn/GetEnterprises');
+        const { data } = await request.get<IHttpResponse<IEnterprise[]>>('/auth/Enterprise');
         return data;
     }
 

@@ -1,23 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { INavProps, INavState } from '../../interfaces/components/INav'
 import Svg from './Svg'
 import { useNavigate } from 'react-router-dom'
 
 import { RouteList } from '../index'
 import Storage from '../../db/app-storage'
+import { IRoute } from '../../interfaces/IRoute'
 
 export default function Nav(props: INavProps): JSX.Element {
     const navigate = useNavigate();
-    const [state, setState] = useState<INavState>({ logged: false })
+    const [state, setState] = React.useState<INavState>({ logged: false, opened: false })
     const storage = Storage();
 
-    useEffect(() => {
+    React.useEffect(() => {
         const token = storage.get('auth.token', null);
-        setState(() => ({ logged: !!token }));
+        setState((values) => ({ ...values, logged: !!token }));
     }, [state.logged]);
 
-    const openMenu = function (event: MouseEvent): void {
-        console.log(event)
+    const onMenuButtonClick = function (event: MouseEvent): void {
+        setState((values) => ({ ...values, opened: !values.opened }));
+    }
+
+    const getRoutes = function (): JSX.Element[] {
+        const routes = RouteList.filter(a => a.logged === undefined || a.logged === state.logged);
+
+        return routes.map(a => <div key={a.name}></div>);
+    }
+
+    const getOpenedMenuContent = function (): JSX.Element {
+        return (
+            <div className='absolute inset-x-0 inset-y-0' style={{ backgroundColor: 'rgba(0,0,0,0.7)' }}>
+                <div >
+                    <div className='w-full p-3 flex items-center justify-center'>
+                        <Svg name='close' stroke='white' onPress={onMenuButtonClick} />
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <div>
+
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -28,11 +53,10 @@ export default function Nav(props: INavProps): JSX.Element {
                 height={20}
                 name='menu'
                 stroke='white'
-                onPress={openMenu}
+                onPress={onMenuButtonClick}
             />
 
-            <div>
-            </div>
+            {state.opened && (getOpenedMenuContent())}
         </div>
     )
 }

@@ -27,12 +27,12 @@ export default function StringInput (props: IStringInputProps): JSX.Element {
     }
 
     return (
-        <div className="relative p-1 m-1 locktext">
+        <div className="relative w-full p-1 m-1 locktext">
             <div className="cursor-text" style={getLabelStyle()} onClick={(event) => onLabelClick(event)}>{props.label}</div>
-            <div className="w-full">
+            <div className="w-full p-1">
                 <input 
                     type={props.type}
-                    className="px-1 py-0.5"
+                    className="w-full"
                     style={{ outline: 0, borderBottomWidth: 1, borderBottomColor: '#000', borderRadius: 3 }}
                     minLength={props.rule?.length?.min}
                     maxLength={props.rule?.length?.max}

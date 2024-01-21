@@ -2,8 +2,9 @@ import React from 'react';
 import '../../../css/App.css';
 
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import { getFiltredRoutes } from '../../index'
+import { registredRoutes } from '../../index'
 import AppStorage from '../../../db/app-storage';
+import { IRoute, IRoutePath } from '../../../interfaces/IRoute';
 
 function App() {
   const navigate = useNavigate();
@@ -27,21 +28,17 @@ function App() {
     setLogged(!!token);
   }, [logged])
 
+  const mapRoute = (route: IRoutePath): JSX.Element => (<Route 
+    key={route.path} 
+    index={route.main} 
+    Component={route.element}
+    path={route.path}
+  />)
 
   return (
     <div className='w-full h-full'>
       <Routes>
-        {
-          getFiltredRoutes(logged)
-            .map(route => (
-              <Route 
-                key={route.name} 
-                index={route.index} 
-                Component={route.element}
-                path={route.path}
-              />
-            ))
-        }
+        {registredRoutes.map((route: IRoutePath) => mapRoute(route))}
       </Routes>
     </div>
   );

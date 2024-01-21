@@ -6,7 +6,7 @@ type CompleteCaller = <T = any, R = AxiosResponse<T>, D = any>(url: string, data
 
 const HttpClient = function () {
     const storage = AppStorage();
-    const client = Axios.create({ baseURL: `https://localhost:7249` });
+    const client = Axios.create({ baseURL: `http://localhost:5297` });
     var token: string | undefined = undefined;
 
     const tokenPrefix = (): string | undefined => token ? `Bearer ${token}`: undefined;

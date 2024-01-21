@@ -43,12 +43,11 @@ export default function Code (): JSX.Element {
 
     const resendCode = async function (type: 'auth' | 'forgotten') {
         try {
-            if (type == 'auth')
-                await SignInResendCode();
-            else if (type == 'forgotten') {
-                await ForgottenResendCode();
+            switch (type) {
+                case 'auth': return await SignInResendCode();
+                case 'forgotten': return await ForgottenResendCode();
+                default: break;
             }
-
         }
 
         catch(ex) { console.error(ex); }

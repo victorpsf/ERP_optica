@@ -1,8 +1,13 @@
 export interface IRoute {
-    index?: boolean;
-    element: any;
-    path: string;
-    icon?: string;
     name: string;
     logged?: boolean;
+    icon: string;
+    group?: IRoute[];
+    path?: string;
+}
+
+export interface IRoutePath {
+    main?: boolean;
+    element: any;
+    path: string;
 }

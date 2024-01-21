@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState } from 'react'
+import React from 'react'
 
 import Nav from './Nav'
 import { IPageProps } from '../../interfaces/components/IPage'
