@@ -32,3 +32,18 @@ public static class ControllerBaseModels
         }
     }
 }
+
+public class PaginationInput<T> where T: class, new()
+{
+    private int PerPage { get; set; }
+    private int Page {  get; set; }
+    private T Search {  get; set; } = new T();
+}
+
+public class PaginationOutput<T> where T : class, new()
+{
+    private int PerPage { get; set; }
+    private int Page { get; set; }
+    private int Total { get; set; }
+    private T Search { get; set; } = new T();
+}

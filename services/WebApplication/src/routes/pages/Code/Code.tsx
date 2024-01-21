@@ -3,7 +3,8 @@ import ActionableButton from '../../components/actions/ActionableButton'
 import { ICodeState } from '../../../interfaces/entity/ICode'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { codeConstants } from '../../../constants';
-import { ForgottenResendCode, SignInResendCode, SignInValidateCode } from '../../../db/external/AccountDb';
+import { SignInResendCode, SignInValidateCode } from '../../../db/external/AccountDb';
+import { ForgottenResendCode, ForgottenValidateCode } from '../../../db/external/ForgottenDb';
 import AppStorage from '../../../db/app-storage';
 
 export default function Code (): JSX.Element {
@@ -39,6 +40,15 @@ export default function Code (): JSX.Element {
         }
 
         catch(ex) { console.error(ex); }
+    }
+
+    const Forgotten = async function (): Promise<void> {
+        try {
+            const { result } = await ForgottenValidateCode({ Code: state.Code.join('') })
+            if (result?.success) navigate('/Forgotten/change');
+        }
+
+        catch(ex) { console.error(ex) }
     }
 
     const resendCode = async function (type: 'auth' | 'forgotten') {
@@ -121,7 +131,7 @@ export default function Code (): JSX.Element {
                     <ActionableButton 
                         label={'Solicitar'} 
                         disabled={(getCodeArray().length === 0)}
-                        onPress={() => SignIn()} 
+                        onPress={() => Forgotten()} 
                     />
                 )}
             </div>

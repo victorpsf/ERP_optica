@@ -24,6 +24,12 @@ public partial class PhysicalController : ControllerBase
     }
 
     [HttpPost]
+    public IActionResult Index([FromBody] PaginationInput<PersonDtos.PersonPhysical> input)
+    {
+        return Ok();
+    }
+
+    [HttpPost]
     public IActionResult Create([FromBody] PersonModels.PersonPhysicalInput input)
     {
         var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonPhysical>();

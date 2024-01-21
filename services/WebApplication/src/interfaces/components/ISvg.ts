@@ -1,4 +1,4 @@
-export type ISvgName = 'arrow-right' | 'arrow-left' | 'close' | 'menu'
+export type ISvgName = 'arrow-right' | 'arrow-left' | 'close' | 'menu' | 'search' | 'person' | '';
 
 export interface ISvgProps {
     name: ISvgName;

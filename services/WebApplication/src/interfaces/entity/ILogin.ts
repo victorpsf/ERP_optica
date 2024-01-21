@@ -19,7 +19,6 @@ export interface IResendCodeResult {
     sended: string;
 }
 
-export interface IEnterprise extends ISelectInputOption { }
 export interface ILoginState {
     input: ILogin;
     remenber: boolean;

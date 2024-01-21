@@ -67,7 +67,7 @@ public static class AccountModels
 
     public class ForgottenValidateCodeOutput
     {
-        public bool Sucess { get; set; }
+        public bool Success { get; set; }
     }
 
     public class ForgottenChangePassphraseInput
@@ -83,6 +83,6 @@ public static class AccountModels
 
     public class ForgottenChangePassphraseOutput
     {
-        public bool Sucess { get; set; }
+        public bool Success { get; set; }
     }
 }

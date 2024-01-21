@@ -2,7 +2,7 @@ import React from 'react'
 import StringInput from '../../components/inputs/StringInput'
 import { IForgottenState } from '../../../interfaces/entity/IForgotten'
 import ActionableButton from '../../components/actions/ActionableButton'
-import { Forgotten as ForgottenPassword } from '../../../db/external/AccountDb'
+import { Forgotten as ForgottenPassword } from '../../../db/external/ForgottenDb'
 import { useNavigate } from 'react-router-dom'
 import { codeConstants } from '../../../constants'
 
@@ -11,13 +11,12 @@ export default function Forgotten (): JSX.Element {
     const navigate = useNavigate();
 
     const forgotten = async () => {
-        // const { result } = await ForgottenPassword({
-        //     userName: state.userName,
-        //     email: state.email
-        // });
+        const { result } = await ForgottenPassword({
+            Name: state.Name,
+            Email: state.Email
+        });
 
-        // if (result && result.codeSended)
-        navigate(`/code?ref=${codeConstants.forgotten}`)
+        if (result && result.codeSended) navigate(`/code?ref=${codeConstants.forgotten}`)
     }
 
     return (
@@ -25,19 +24,19 @@ export default function Forgotten (): JSX.Element {
             <div className='p-3' style={{ backgroundColor: '#fff', borderRadius: 3 }}>
                 <StringInput 
                     label='Usuário'
-                    value={state.userName ?? ''}
+                    value={state.Name ?? ''}
                     type='text'
-                    onTextChange={(text) => setState((values) => ({ ...values, userName: text }))}
+                    onTextChange={(text) => setState((values) => ({ ...values, Name: text }))}
                 />
                 <StringInput 
                     label='E-mail'
-                    value={state.email ?? ''}
+                    value={state.Email ?? ''}
                     type='text'
-                    onTextChange={(text) => setState((values) => ({ ...values, email: text }))}
+                    onTextChange={(text) => setState((values) => ({ ...values, Email: text }))}
                 />
                 <ActionableButton 
                     label='Solicitar'
-                    disabled={(!state.email && !state.userName)}
+                    disabled={(!state.Email && !state.Name)}
                     onPress={() => forgotten()}
                 />
             </div>

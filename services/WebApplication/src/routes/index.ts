@@ -5,6 +5,7 @@ import Forgotten from "./pages/Forgotten/Forgotten";
 
 import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
 
 export const registredRoutes: IRoutePath[] = [
     {
@@ -21,6 +22,10 @@ export const registredRoutes: IRoutePath[] = [
         element: Forgotten
     },
     {
+        path: "/Forgotten/change",
+        element: ChangePassword
+    },
+    {
         path: "/code",
         element: Code
     },
@@ -33,17 +38,16 @@ export const registredRoutes: IRoutePath[] = [
 export const RouteList: IRoute[] = [
     {
         name: "APP_MENU_PERSON",
-        icon: "PERSON-ICON",
         logged: true,
         group: [
             {
                 name: "APP_MENU_PERSON_PHYSICAL",
-                icon: "PERSON-PHYSICAL-ICON",
+                icon: "person",
                 path: "/person?mode=physical"
             },
             {
                 name: "APP_MENU_PERSON_JURIDICAL",
-                icon: "PERSON-JURIDICAL-ICON",
+                icon: "person",
                 path: "/person?mode=juridical"
             }
         ]

@@ -4,7 +4,7 @@ import '../../../css/App.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { registredRoutes } from '../../index'
 import AppStorage from '../../../db/app-storage';
-import { IRoute, IRoutePath } from '../../../interfaces/IRoute';
+import { IRoutePath } from '../../../interfaces/IRoute';
 
 function App() {
   const navigate = useNavigate();

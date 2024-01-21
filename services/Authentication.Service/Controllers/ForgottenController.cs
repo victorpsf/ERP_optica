@@ -101,7 +101,7 @@ public partial class ForgottenController: ControllerBase
             {
                 output.Result = new ForgottenValidateCodeOutput
                 {
-                    Sucess = false
+                    Success = false
                 };
                 throw new ControllerEmptyException();
             }
@@ -113,7 +113,7 @@ public partial class ForgottenController: ControllerBase
             {
                 output.Result = new ForgottenValidateCodeOutput
                 {
-                    Sucess = false
+                    Success = false
                 };
                 throw new ControllerEmptyException();
             }
@@ -122,7 +122,7 @@ public partial class ForgottenController: ControllerBase
             this.baseControllerServices.hostCache.Set("try:forgotten:code", code, 240);
             output.Result = new ForgottenValidateCodeOutput
             {
-                Sucess = true
+                Success = true
             };
         }
 
@@ -144,7 +144,7 @@ public partial class ForgottenController: ControllerBase
     [AllowAnonymous]
     public IActionResult ChangePassword([FromBody] ForgottenChangePassphraseInput input)
     {
-        var output = new ControllerBaseModels.RequestResult<ForgottenValidateCodeOutput>();
+        var output = new ControllerBaseModels.RequestResult<ForgottenChangePassphraseOutput>();
 
         try
         {
@@ -156,9 +156,9 @@ public partial class ForgottenController: ControllerBase
 
             if (user is null || code is null || input.Passphrase != input.Confirm)
             {
-                output.Result = new ForgottenValidateCodeOutput
+                output.Result = new ForgottenChangePassphraseOutput
                 {
-                    Sucess = false
+                    Success = false
                 };
                 throw new ControllerEmptyException();
             }
@@ -178,7 +178,7 @@ public partial class ForgottenController: ControllerBase
             this.service.Delete(rule);
             this.baseControllerServices.hostCache.Unset("try:forgotten");
             this.baseControllerServices.hostCache.Unset("try:forgotten:code");
-            output.Result = new ForgottenValidateCodeOutput { Sucess = true };
+            output.Result = new ForgottenChangePassphraseOutput { Success = true };
         }
 
         catch (ControllerEmptyException) { }

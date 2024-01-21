@@ -1,12 +1,17 @@
 import { IStringInputProps } from "../../../interfaces/components/inputs/IStringInput";
-import React, { CSSProperties, useState } from "react";
+import React from "react";
+import Svg from '../Svg'
 
 export default function StringInput (props: IStringInputProps): JSX.Element {
-    const getLabelStyle = function (): CSSProperties {
+    const getLabelStyle = function (): React.CSSProperties {
         if (props.value)
             return { position: 'absolute', padding: 1, fontSize: 7, top: 0, transition: 'ease', transitionDuration: '0.5s' }
         else 
-            return { position: 'absolute', padding: 1, fontSize: 12, top: 8, left: 8, transition: 'ease', transitionDuration: '0.5s' }
+            return { position: 'absolute', padding: 1, fontSize: 12, top: 12, left: 12, transition: 'ease', transitionDuration: '0.5s' }
+    }
+
+    const getIconStyle = function (): React.CSSProperties {
+        return { position: 'absolute', padding: 1, fontSize: 12, top: 10, right: 16, transition: 'ease', transitionDuration: '0.5s' }
     }
 
     const getInputElement = function (element: HTMLDivElement): HTMLInputElement | null {
@@ -26,19 +31,40 @@ export default function StringInput (props: IStringInputProps): JSX.Element {
         }
     }
 
+    const getStyle = function (): React.CSSProperties {
+        if (!props.icon)
+            return {
+                padding: 2.5,
+                width: 'calc(100% - 5px)',
+                outline: 0, 
+                borderBottomWidth: 1, 
+                borderBottomColor: '#000', 
+                borderRadius: 3
+            }
+        else 
+            return {
+                padding: 2.5,
+                width: 'calc(100% - 5px)',
+                outline: 0, 
+                borderBottomWidth: 1, 
+                borderBottomColor: '#000', 
+                borderRadius: 3
+            }
+    }
+
     return (
         <div className="relative w-full p-1 m-1 locktext">
             <div className="cursor-text" style={getLabelStyle()} onClick={(event) => onLabelClick(event)}>{props.label}</div>
             <div className="w-full p-1">
                 <input 
                     type={props.type}
-                    className="w-full"
-                    style={{ outline: 0, borderBottomWidth: 1, borderBottomColor: '#000', borderRadius: 3 }}
+                    style={getStyle()}
                     minLength={props.rule?.length?.min}
                     maxLength={props.rule?.length?.max}
                     value={props.value} 
                     onChange={(event) => props.onTextChange(event.target.value)}
                 />
+                {props.icon && <div className="absolute" style={getIconStyle()}><Svg name={props.icon ?? ''} /></div>}
             </div>
         </div>
     )

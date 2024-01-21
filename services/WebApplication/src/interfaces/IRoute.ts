@@ -1,7 +1,9 @@
+import { ISvgName } from "./components/ISvg";
+
 export interface IRoute {
     name: string;
     logged?: boolean;
-    icon: string;
+    icon?: ISvgName;
     group?: IRoute[];
     path?: string;
 }

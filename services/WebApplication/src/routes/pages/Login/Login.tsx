@@ -1,13 +1,15 @@
 import React from 'react'
-import { IEnterprise, ILoginState } from '../../../interfaces/entity/ILogin'
+import { ILoginState } from '../../../interfaces/entity/ILogin'
 import StringInput from '../../components/inputs/StringInput'
 import ActionableButton from '../../components/actions/ActionableButton'
 import BooleanInput from '../../components/inputs/BooleanInput'
 import { useNavigate } from 'react-router-dom'
 import { codeConstants } from '../../../constants'
-import { GetEnterprises, SigIn } from '../../../db/external/AccountDb'
+import { SigIn } from '../../../db/external/AccountDb'
 import SelectInput from '../../components/inputs/SelectInput'
 import AppStorage from '../../../db/app-storage'
+import { IEnterprise } from '../../../interfaces/entity/IEnterprise'
+import { GetEnterprises } from '../../../db/external/EnterpriseDb'
 
 export default function Login (): JSX.Element {
     const navigate = useNavigate();
@@ -80,7 +82,7 @@ export default function Login (): JSX.Element {
                     onValueChange={(value) => setState((values) => ({ ...values, remenber: value }))}
                 />
                 <div className='px-2 py-0 m-0 w-full text-right' style={{ height: 10 }}>
-                    <p className='underline cursor-pointer' style={{ fontSize: 8 }} onClick={(event) => navigate('/forgottem')}>
+                    <p className='underline cursor-pointer' style={{ fontSize: 8 }} onClick={(event) => navigate('/forgotten')}>
                         {'Esqueçi a senha'}
                     </p>
                 </div>
