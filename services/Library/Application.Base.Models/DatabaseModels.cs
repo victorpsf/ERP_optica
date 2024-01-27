@@ -55,6 +55,8 @@ public static class DatabaseModels
         public List<Parameter> parameters { get; } = new List<Parameter>();
 
         public static ParameterCollection GetInstance() => new ParameterCollection();
+        public ParameterCollection Add(string field, object? value)
+            => Add(field, value, ParameterDirection.Input);
         public ParameterCollection Add(string field, object? value, ParameterDirection direction)
         {
             this.parameters.Add(new Parameter { Field = field, Value = value, Direction = direction });

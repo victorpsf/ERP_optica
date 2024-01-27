@@ -24,7 +24,7 @@ public static class PersonModels
         public string CallName { get; set; } = string.Empty;
 
         [DateTimeValidation(Required = true, MinRange = -120, MaxRange = 0, ErrorMessage = "")]
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthDate { get; set; } = DateTime.UtcNow;
         public int Version { get; set; }
 
         //[ListValidation<DocumentInput>(Required = true, Min = 1)]

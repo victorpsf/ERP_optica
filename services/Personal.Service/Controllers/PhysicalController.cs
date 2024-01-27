@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personal.Service.Controllers.Models;
 using Personal.Service.Repositories.Services;
+using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Controllers;
 
@@ -24,9 +25,34 @@ public partial class PhysicalController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Index([FromBody] PaginationInput<PersonDtos.PersonPhysical> input)
+    public IActionResult Index([FromBody] PaginationInput<PersonPhysicalInput> input)
     {
-        return Ok();
+        var output = new ControllerBaseModels.RequestResult<PaginationOutput<PersonPhysicalInput, PersonDtos.PersonPhysical>>();
+
+        try
+        {
+            output.Result = this.personRepoService.Get(
+                new Repositories.Rules.PersonRules.FindPersonPhysicalWithPaginationRule
+                {
+                    IntelligentSearch = input.IntelligentSearch,
+                    EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
+                    UserId = this.baseControllerServices.loggedUser.Identifier.UserId,
+                    Input = input
+                }
+            );;
+        }
+
+        catch (ControllerEmptyException) { }
+        catch (BusinessException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (AppDbException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (Exception ex)
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+        }
+
+        return output.Failed ? BadRequest(output): Ok(output);
     }
 
     [HttpPost]
@@ -52,8 +78,16 @@ public partial class PhysicalController : ControllerBase
             return Ok(output.addResult(person));
         }
 
-        catch { }
+        catch (ControllerEmptyException) { }
+        catch (BusinessException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (AppDbException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (Exception ex)
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+        }
 
-        return BadRequest(output);
+        return output.Failed ? BadRequest(output): Ok(output);
     }
 }

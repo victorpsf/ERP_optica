@@ -1,23 +1,43 @@
-﻿using Application.Dtos;
-using Application.Interfaces.Connections;
+﻿using Application.Interfaces.Connections;
 using Personal.Service.Repositories.Rules;
 using static Application.Base.Models.DatabaseModels;
 using System.Data;
 using Personal.Service.Repositories.Queries;
 using static Application.Dtos.PersonDtos;
 using Application.Extensions;
-using Application.Exceptions;
-using Application.Base.Models;
+using Application.Dtos;
 
 namespace Personal.Service.Repositories;
 
-public class PersonRepository: PersonQuery
+public partial class PersonRepository: PersonQuery
 {
     private readonly IPersonalDatabase db;
     
     public PersonRepository(IPersonalDatabase db)
     {
         this.db = db;
+    }
+
+    public PaginationDtos.PaginationDto? Pagination(PersonRules.FindPersonPhysicalWithPaginationRule rule)
+    {
+        this.Build(rule, false, out ParameterCollection Parameters, out string Complement);
+
+        return this.db.Find<PaginationDtos.PaginationDto>(new BancoArgument
+        {
+            Sql = string.Format(PersonPhysicalQuery.FindInfoPaginationSql, Complement),
+            Parameter = Parameters
+        });
+    }
+
+    public List<PersonPhysical> ListPerPagination(PersonRules.FindPersonPhysicalWithPaginationRule rule)
+    {
+        this.Build(rule, true, out ParameterCollection Parameters, out string Complement);
+
+        return this.db.ExecuteReader<PersonPhysical>(new BancoArgument
+        {
+            Sql = string.Format(PersonPhysicalQuery.FindPersonUsingPagination, Complement),
+            Parameter = Parameters
+        }).ToList();
     }
 
     public List<PersonPhysical> FindByQuery(string Sql, ParameterCollection Parameters)

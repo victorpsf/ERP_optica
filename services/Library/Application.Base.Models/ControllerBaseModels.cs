@@ -35,15 +35,21 @@ public static class ControllerBaseModels
 
 public class PaginationInput<T> where T: class, new()
 {
-    private int PerPage { get; set; }
-    private int Page {  get; set; }
-    private T Search {  get; set; } = new T();
+    public int PerPage { get; set; }
+    public int Page {  get; set; }
+    public T Search {  get; set; } = new T();
+    public bool IntelligentSearch { get; set; }
+
 }
 
-public class PaginationOutput<T> where T : class, new()
+public class PaginationOutput<B, T> 
+    where B : class, new()
+    where T : class, new()
 {
-    private int PerPage { get; set; }
-    private int Page { get; set; }
-    private int Total { get; set; }
-    private T Search { get; set; } = new T();
+    public long PerPage { get; set; }
+    public long TotalPages { get; set; }
+    public long Page { get; set; }
+    public long Total { get; set; }
+    public B Search { get; set; } = new B();
+    public List<T> Values {  get; set; } = new List<T>();
 }
