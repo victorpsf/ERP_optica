@@ -39,67 +39,33 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
         };
     }
 
-    //public List<PersonPhysical> List(PersonRules.FindPersonPhysicalRule rule)
-    //{
-    //    this.Build(rule, out DatabaseModels.ParameterCollection Parameters, out string Sql);
-    //    List<PersonPhysical> results = new List<PersonPhysical>();
-
-    //    try
-    //    { this.db.Connect(); }
-
-    //    catch (Exception ex) { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-    //    try
-    //    {
-    //        results.AddRange(
-    //            this.personRepository.FindByQuery(Sql, Parameters)
-    //        );
-    //    }
-
-    //    catch (Exception ex)
-    //    {
-    //        this.db.Rollback();
-    //        this.db.Disconnect();
-    //        throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex);
-    //    }
-
-    //    try
-    //    { this.db.Disconnect(); }
-
-    //    catch (Exception ex)
-    //    { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-    //    return results;
-    //} 
-
-    public PersonPhysical? Create(PersonRules.PersistPersonPhysicalRule rule)
+    public PersonPhysical? Save(PersonRules.PersistPersonPhysicalRule rule)
     {
-        PersonPhysical? person = null;
+        PersonPhysical? person = rule.Input.Id > 0 ? this.ExecuteQuery(
+            this.personRepository.FindById,
+            rule.Input.Id,
+            false
+        ) : null;
 
-        try
-        { this.db.Connect(); }
+        // [TODO]: adicionar stack de erro
+        if (
+            person is not null && 
+            (
+                person.Version != rule.Input.Version || 
+                person.EnterpriseId != rule.EnterpriseId || 
+                person.PersonType != PersonType.Physical
+            )
+        ) throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PERSON_REQUIRED_DOCUMENT_NOT_INFORMED);
 
-        catch (Exception ex) { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        {
-            person = this.personRepository.Save(rule);
-            this.db.Commit();
-        }
-
-        catch (Exception ex)
-        {
-            this.db.Rollback();
-            this.db.Disconnect();
-            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex);
-        }
-
-        try
-        { this.db.Disconnect(); }
-
-        catch (Exception ex)
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-        return person;
+        return this.ExecuteQuery(
+            this.personRepository.Save,
+            new PersonRules.PersistPersonPhysicalDtoRule
+            {
+                EnterpriseId = rule.EnterpriseId,
+                UserId = rule.UserId,
+                Input = rule.ToDto(person),
+            },
+            true
+        );
     }
 }

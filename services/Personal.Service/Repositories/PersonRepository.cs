@@ -55,25 +55,28 @@ public partial class PersonRepository: PersonQuery
                 .Add("@PERSONID", personId, ParameterDirection.Input)
         });
 
-    public PersonPhysical? Save(PersonRules.PersistPersonPhysicalRule rule)
+    public PersonPhysical? Save(PersonRules.PersistPersonPhysicalDtoRule rule)
     {
+        if (rule.Input is null)
+            throw new ArgumentNullException(nameof(rule));
+
+        var parameters = ParameterCollection.GetInstance();
+
+        if (rule.Input.Id > 0)
+            parameters.Add("@PERSONID", rule.Input.Id);
+        parameters.Add("@NAME", rule.Input.Name, ParameterDirection.Input);
+        parameters.Add("@PERSONTYPE", rule.Input.PersonType.intValue());
+        parameters.Add("@CALLNAME", rule.Input.CallName, ParameterDirection.Input);
+        parameters.Add("@CREATEDATE", rule.Input.BirthDate, ParameterDirection.Input);
+        parameters.Add("@ENTERPRISEID", rule.Input.EnterpriseId, ParameterDirection.Input);
+        parameters.Add("@VERSION", rule.Input.Version, ParameterDirection.Input);
+
         if (rule.Input.Id > 0)
         {
-            var person = this.FindById(rule.Input.Id);
-
-            if (person is null || person.Version != rule.Input.Version)
-                throw new Exception("ERROR_DB_EXECUTION_FAILED");
-
             this.db.Execute(new BancoExecuteArgument
             {
-                Sql = ChangePersonSql,
-                Parameter = ParameterCollection.GetInstance()
-                    .Add("@NAME", rule.Input.Name, ParameterDirection.Input)
-                    .Add("@CALLNAME", rule.Input.CallName, ParameterDirection.Input)
-                    .Add("@CREATEDATE", rule.Input.BirthDate, ParameterDirection.Input)
-                    .Add("@ENTERPRISEID", rule.EnterpriseId, ParameterDirection.Input)
-                    .Add("@VERSION", (person.Version + 1), ParameterDirection.Input)
-                    .Add("@PERSONID", person.Id, ParameterDirection.Input)
+                Sql = PersonPhysicalQuery.ChangePersonSql,
+                Parameter = parameters
             });
 
             this.db.ControlData(new BancoCommitArgument<int>
@@ -82,10 +85,8 @@ public partial class PersonRepository: PersonQuery
                 EnterpriseId = rule.EnterpriseId,
                 UserId = rule.UserId,
                 Entity = EntityType.PersonPhysical,
-                EntityId = person.Id
+                EntityId = rule.Input.Id
             });
-
-            return this.FindById(person.Id);
         }
 
         else
@@ -93,14 +94,8 @@ public partial class PersonRepository: PersonQuery
             int personId = this.db.Execute<int>(new BancoExecuteScalarArgument
             {
                 Output = "@PersonId",
-                Sql = CreatePersonSql,
-                Parameter = ParameterCollection.GetInstance()
-                    .Add("@NAME", rule.Input.Name, ParameterDirection.Input)
-                    .Add("@CALLNAME", rule.Input.CallName, ParameterDirection.Input)
-                    .Add("@PERSONTYPE", PersonType.Physical.intValue(), ParameterDirection.Input)
-                    .Add("@CREATEDATE", rule.Input.BirthDate, ParameterDirection.Input)
-                    .Add("@VERSION", 0, ParameterDirection.Input)
-                    .Add("@ENTERPRISEID", rule.EnterpriseId, ParameterDirection.Input)
+                Sql = PersonPhysicalQuery.CreatePersonSql,
+                Parameter = parameters
             });
 
             if (personId == 0)
@@ -114,8 +109,9 @@ public partial class PersonRepository: PersonQuery
                 Entity = EntityType.PersonPhysical,
                 EntityId = personId
             });
-
-            return this.FindById(personId);
+            rule.Input.Id = personId;
         }
+
+        return rule.Input;
     }
 }

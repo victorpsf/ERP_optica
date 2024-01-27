@@ -56,7 +56,7 @@ public partial class PhysicalController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] PersonModels.PersonPhysicalInput input)
+    public IActionResult Save([FromBody] PersonPhysicalInput input)
     {
         var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonPhysical>();
 
@@ -65,7 +65,7 @@ public partial class PhysicalController : ControllerBase
             if (this.baseControllerServices.validator.validate(input, output))
                 throw new ControllerEmptyException();
 
-            var person = this.personRepoService.Create(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
+            var person = this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
             {
                 EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 UserId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,

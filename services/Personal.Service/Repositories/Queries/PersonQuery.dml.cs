@@ -21,23 +21,4 @@ WHERE
 {BaseFindPersonSql}
 	AND `P`.`PERSONID` = @PERSONID
 ";
-
-    public static string CreatePersonSql = @"
-INSERT INTO `PERSON` 
-    (`NAME`, `PERSONTYPE`, `CALLNAME`, `CREATEDATE`, `ENTERPRISEID`, `VERSION`)
-VALUES
-    (@NAME, @PERSONTYPE, @CALLNAME, @CREATEDATE, @ENTERPRISEID, @VERSION)
-";
-
-	public static string ChangePersonSql = @"
-UPDATE `PERSON`
-	SET 
-		`NAME`			= @NAME,
-		`CALLNAME`		= @CALLNAME,
-		`CREATEDATE`	= @CREATEDATE,
-		`VERSION`		= @VERSION
-WHERE
-		`PERSONID`		= @PERSONID
-	AND `ENTERPRISEID`	= @ENTERPRISEID
-";
 }
