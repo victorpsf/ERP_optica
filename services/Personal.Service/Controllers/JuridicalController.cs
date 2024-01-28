@@ -3,41 +3,41 @@ using Application.Dtos;
 using Application.Exceptions;
 using Application.Extensions;
 using Application.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personal.Service.Repositories.Services;
 using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Controllers;
 
-[Authorize(Policy = nameof(PermissionModels.PersonPhysicalPermission.AccessPersonPhysical))]
-public partial class PhysicalController : ControllerBase
+public class JuridicalController: ControllerBase
 {
     private readonly IBaseControllerServices baseControllerServices;
     private readonly PersonRepoService personRepoService;
 
-    public PhysicalController(IBaseControllerServices baseControllerServices, PersonRepoService personRepoService)
-    {
+    public JuridicalController(
+        IBaseControllerServices baseControllerServices, 
+        PersonRepoService personRepoService
+    ) {
         this.baseControllerServices = baseControllerServices;
         this.personRepoService = personRepoService;
     }
 
     [HttpPost]
-    public IActionResult Index([FromBody] PaginationInput<PersonPhysicalInput> input)
+    public IActionResult Index([FromBody] PaginationInput<PersonJuridicalInput> input)
     {
-        var output = new ControllerBaseModels.RequestResult<PaginationOutput<PersonPhysicalInput, PersonDtos.PersonPhysical>>();
+        var output = new ControllerBaseModels.RequestResult<PaginationOutput<PersonJuridicalInput, PersonDtos.PersonJuridical>>();
 
         try
         {
             output.Result = this.personRepoService.Get(
-                new Repositories.Rules.PersonRules.FindPersonPhysicalWithPaginationRule
+                new Repositories.Rules.PersonRules.FindPersonJuridicalWithPaginationRule
                 {
                     IntelligentSearch = input.IntelligentSearch,
                     EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                     UserId = this.baseControllerServices.loggedUser.Identifier.UserId,
                     Input = input
                 }
-            );;
+            ); ;
         }
 
         catch (ControllerEmptyException) { }
@@ -50,27 +50,27 @@ public partial class PhysicalController : ControllerBase
             this.baseControllerServices.logger.PrintsTackTrace(ex);
         }
 
-        return output.Failed ? BadRequest(output): Ok(output);
+        return output.Failed ? BadRequest(output) : Ok(output);
     }
 
     [HttpPost]
-    public IActionResult Save([FromBody] PersonPhysicalInput input)
+    public IActionResult Save([FromBody] PersonJuridicalInput input)
     {
-        var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonPhysical>();
+        var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonJuridical>();
 
         try
         {
             if (this.baseControllerServices.validator.validate(input, output))
                 throw new ControllerEmptyException();
 
-            var person = this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
+            var person = this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonJuridicalRule
             {
                 EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 UserId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 Input = input
             });
 
-            if (person is null) 
+            if (person is null)
                 throw new ControllerEmptyException();
 
             return Ok(output.addResult(person));
@@ -86,6 +86,6 @@ public partial class PhysicalController : ControllerBase
             this.baseControllerServices.logger.PrintsTackTrace(ex);
         }
 
-        return output.Failed ? BadRequest(output): Ok(output);
+        return output.Failed ? BadRequest(output) : Ok(output);
     }
 }

@@ -1,13 +1,13 @@
 ﻿using Application.Base.Models;
 using Application.Dtos;
 using Application.Extensions;
-using Personal.Service.Controllers.Models;
 using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Repositories.Rules;
 
 public static class PersonRules
 {
+    #region DQL
     public class FindPersonPhysicalWithPaginationRule
     {
         public int UserId { get; set; }
@@ -18,13 +18,18 @@ public static class PersonRules
         public PersonPhysicalInput Search { get => this.Input.Search; }
     }
 
-    public class FindPersonPhysicalRule
+    public class FindPersonJuridicalWithPaginationRule
     {
         public int UserId { get; set; }
         public int EnterpriseId { get; set; }
-        public FindPersonPhysicalInput Input { get; set; } = new FindPersonPhysicalInput();
-    }
+        public bool IntelligentSearch { get; set; }
+        public PaginationInput<PersonJuridicalInput> Input { get; set; } = new PaginationInput<PersonJuridicalInput>();
 
+        public PersonJuridicalInput Search { get => this.Input.Search; }
+    }
+    #endregion
+
+    #region DML PERSON PHYSICAL
     public class PersistPersonPhysicalDtoRule
     {
         public int UserId { get; set; }
@@ -49,27 +54,34 @@ public static class PersonRules
                 EnterpriseId = dto is not null ? dto.EnterpriseId: this.EnterpriseId,
                 Version = dto is not null ? (dto.Version + 1) : this.Input.Version
             };
-
-        public FindPersonPhysicalRule FindById() => new FindPersonPhysicalRule
-        {
-            UserId = this.UserId,
-            EnterpriseId = this.EnterpriseId,
-            Input = new FindPersonPhysicalInput
-            { Id = this.Input.Id  }
-        };
-
-        public FindPersonPhysicalRule ToFind() => new FindPersonPhysicalRule
-        {
-            UserId = this.UserId,
-            EnterpriseId = this.EnterpriseId,
-            Input = new FindPersonPhysicalInput
-            {
-                Id = this.Input.Id,
-                Name = this.Input.Name,
-                CallName = this.Input.CallName,
-                BirthDate = this.Input.BirthDate,
-                Version = this.Input.Version
-            }
-        };
     }
+    #endregion
+
+    #region DML PERSON JURIDICAL
+    public class PersistPersonJuridicalRule
+    {
+        public int UserId { get; set; }
+        public int EnterpriseId { get; set; }
+        public PersonJuridicalInput Input { get; set; } = new PersonJuridicalInput();
+
+        public PersonDtos.PersonJuridical ToDto(PersonDtos.PersonJuridical? dto)
+            => new PersonDtos.PersonJuridical
+            {
+                Id = (dto is not null) ? dto.Id : this.Input.Id,
+                Name = (dto is not null && string.IsNullOrEmpty(this.Input.Name)) ? dto.Name : (this.Input.Name ?? string.Empty),
+                PersonType = dto is not null ? dto.PersonType : PersonDtos.PersonType.Juridical,
+                CallName = (dto is not null && string.IsNullOrEmpty(this.Input.CallName)) ? dto.CallName : (this.Input.CallName ?? string.Empty),
+                Fundation = (dto is not null && !this.Input.Fundation.InRange(-120, 0)) ? dto.Fundation : this.Input.Fundation,
+                EnterpriseId = dto is not null ? dto.EnterpriseId : this.EnterpriseId,
+                Version = dto is not null ? (dto.Version + 1) : this.Input.Version
+            };
+    }
+
+    public class PersistPersonJuridicalDtoRule
+    {
+        public int UserId { get; set; }
+        public int EnterpriseId { get; set; }
+        public PersonDtos.PersonJuridical? Input { get; set; }
+    }
+    #endregion
 }

@@ -1,7 +1,8 @@
 ﻿namespace Personal.Service.Repositories.Queries;
 
-public partial class PersonPhysicalQuery
+public partial class PersonJuridicalQuery
 {
+
     public static string ChangePersonSql = @"
 UPDATE `PERSON`
 	SET 

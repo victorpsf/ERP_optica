@@ -9,7 +9,7 @@ using Application.Dtos;
 
 namespace Personal.Service.Repositories;
 
-public partial class PersonRepository: PersonQuery
+public partial class PersonRepository
 {
     private readonly IPersonalDatabase db;
     
@@ -29,6 +29,17 @@ public partial class PersonRepository: PersonQuery
         });
     }
 
+    public PaginationDtos.PaginationDto? Pagination(PersonRules.FindPersonJuridicalWithPaginationRule rule)
+    {
+        this.Build(rule, false, out ParameterCollection Parameters, out string Complement);
+
+        return this.db.Find<PaginationDtos.PaginationDto>(new BancoArgument
+        {
+            Sql = string.Format(PersonJuridicalQuery.FindInfoPaginationSql, Complement),
+            Parameter = Parameters
+        });
+    }
+
     public List<PersonPhysical> ListPerPagination(PersonRules.FindPersonPhysicalWithPaginationRule rule)
     {
         this.Build(rule, true, out ParameterCollection Parameters, out string Complement);
@@ -40,6 +51,17 @@ public partial class PersonRepository: PersonQuery
         }).ToList();
     }
 
+    public List<PersonJuridical> ListPerPagination(PersonRules.FindPersonJuridicalWithPaginationRule rule)
+    {
+        this.Build(rule, true, out ParameterCollection Parameters, out string Complement);
+
+        return this.db.ExecuteReader<PersonJuridical>(new BancoArgument
+        {
+            Sql = string.Format(PersonJuridicalQuery.FindPersonUsingPagination, Complement),
+            Parameter = Parameters
+        }).ToList();
+    }
+
     public List<PersonPhysical> FindByQuery(string Sql, ParameterCollection Parameters)
         => this.db.ExecuteReader<PersonPhysical>(new BancoArgument
         {
@@ -47,13 +69,21 @@ public partial class PersonRepository: PersonQuery
             Parameter = Parameters
         }).ToList();
 
-    public PersonPhysical? FindById(int personId)
+    public PersonPhysical? FindPersonPhysicalById(int personId)
         => this.db.Find<PersonPhysical>(new BancoArgument
         {
-            Sql = FindByIdSql,
+            Sql = PersonPhysicalQuery.FindByIdSql,
             Parameter = ParameterCollection.GetInstance()
                 .Add("@PERSONID", personId, ParameterDirection.Input)
         });
+
+    public PersonJuridical? FindPersonJuridicalById(int personId)
+    => this.db.Find<PersonJuridical>(new BancoArgument
+    {
+        Sql = PersonJuridicalQuery.FindByIdSql,
+        Parameter = ParameterCollection.GetInstance()
+            .Add("@PERSONID", personId, ParameterDirection.Input)
+    });
 
     public PersonPhysical? Save(PersonRules.PersistPersonPhysicalDtoRule rule)
     {
@@ -107,6 +137,66 @@ public partial class PersonRepository: PersonQuery
                 EnterpriseId = rule.EnterpriseId,
                 UserId = rule.UserId,
                 Entity = EntityType.PersonPhysical,
+                EntityId = personId
+            });
+            rule.Input.Id = personId;
+        }
+
+        return rule.Input;
+    }
+
+    public PersonJuridical? Save(PersonRules.PersistPersonJuridicalDtoRule rule)
+    {
+        if (rule.Input is null)
+            throw new ArgumentNullException(nameof(rule));
+
+        var parameters = ParameterCollection.GetInstance();
+
+        if (rule.Input.Id > 0)
+            parameters.Add("@PERSONID", rule.Input.Id);
+        parameters.Add("@NAME", rule.Input.Name, ParameterDirection.Input);
+        parameters.Add("@PERSONTYPE", rule.Input.PersonType.intValue());
+        parameters.Add("@CALLNAME", rule.Input.CallName, ParameterDirection.Input);
+        parameters.Add("@CREATEDATE", rule.Input.Fundation, ParameterDirection.Input);
+        parameters.Add("@ENTERPRISEID", rule.Input.EnterpriseId, ParameterDirection.Input);
+        parameters.Add("@VERSION", rule.Input.Version, ParameterDirection.Input);
+
+        if (rule.Input.Id > 0)
+        {
+            this.db.Execute(new BancoExecuteArgument
+            {
+                Sql = PersonJuridicalQuery.ChangePersonSql,
+                Parameter = parameters
+            });
+
+            this.db.ControlData(new BancoCommitArgument<int>
+            {
+                Control = DmlType.Update,
+                EnterpriseId = rule.EnterpriseId,
+                UserId = rule.UserId,
+                Entity = EntityType.PersonJuridical,
+                EntityId = rule.Input.Id
+            });
+        }
+
+        else
+        {
+            int personId = this.db.Execute<int>(new BancoExecuteScalarArgument
+            {
+                Output = "@PersonId",
+                Sql = PersonJuridicalQuery.CreatePersonSql,
+                Parameter = parameters
+            });
+
+            if (personId == 0)
+                throw new Exception("Person don't perssisted");
+
+            this.db.ControlData(new BancoCommitArgument<int>
+            {
+                Control = DmlType.Insert,
+                EnterpriseId = rule.EnterpriseId,
+                UserId = rule.UserId,
+                Entity = EntityType.PersonJuridical,
                 EntityId = personId
             });
             rule.Input.Id = personId;
