@@ -73,7 +73,38 @@ public class JuridicalController: ControllerBase
             if (person is null)
                 throw new ControllerEmptyException();
 
-            return Ok(output.addResult(person));
+            output.addResult(person);
+        }
+
+        catch (ControllerEmptyException) { }
+        catch (BusinessException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (AppDbException ex)
+        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        catch (Exception ex)
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+        }
+
+        return output.Failed ? BadRequest(output) : Ok(output);
+    }
+
+    [HttpDelete]
+    public IActionResult Delete([FromBody] RemovePersonJuridicalInput input)
+    {
+        var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonJuridical>();
+
+        try
+        {
+            if (this.baseControllerServices.validator.validate(input, output))
+                throw new ControllerEmptyException();
+
+            output.Result = this.personRepoService.Remove(new Repositories.Rules.PersonRules.RemovePersonJuridicalRule
+            {
+                UserId = this.baseControllerServices.loggedUser.Identifier.UserId,
+                EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
+                Input = input
+            });
         }
 
         catch (ControllerEmptyException) { }

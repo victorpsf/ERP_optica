@@ -19,6 +19,15 @@ public static class PersonModels
         public int Version { get; set; }
     }
 
+    public class RemovePersonPhysicalInput
+    {
+        [IntegerValidation(Required = true, Min = 1, ErrorMessage = "")]
+        public int Id { get; set; }
+
+        [IntegerValidation(Required = true, ErrorMessage = "")]
+        public int Version { get; set; }
+    }
+
     public class PersonJuridicalInput
     {
         public int Id { get; set; }
@@ -30,6 +39,15 @@ public static class PersonModels
 
         [DateTimeValidation(Required = true, MinRange = -220, MaxRange = 0, ErrorMessage = "")]
         public DateTime Fundation { get; set; }
+        public int Version { get; set; }
+    }
+
+    public class RemovePersonJuridicalInput
+    {
+        [IntegerValidation(Required = true, Min = 1, ErrorMessage = "")]
+        public int Id { get; set; }
+
+        [IntegerValidation(Required = true, ErrorMessage = "")]
         public int Version { get; set; }
     }
 }

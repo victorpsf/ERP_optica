@@ -145,6 +145,30 @@ public partial class PersonRepository
         return rule.Input;
     }
 
+    public void Delete(PersonRules.RemovePersonPhysicalRule rule)
+    {
+        this.db.Execute(
+            new BancoExecuteArgument
+            {
+                Sql = PersonPhysicalQuery.RemovePersonSql,
+                Parameter = ParameterCollection.GetInstance()
+                    .Add("@PERSONID", rule.Input.Id)
+                    .Add("@ENTERPRISEID", rule.EnterpriseId)
+                    .Add("@VERSION", rule.Input.Version)
+                    .Add("@PERSONTYPE", PersonType.Physical.intValue())
+            }
+        );
+
+        this.db.ControlData(new BancoCommitArgument<int>
+        {
+            Control = DmlType.Delete,
+            EnterpriseId = rule.EnterpriseId,
+            UserId = rule.UserId,
+            Entity = EntityType.PersonPhysical,
+            EntityId = rule.Input.Id
+        });
+    }
+
     public PersonJuridical? Save(PersonRules.PersistPersonJuridicalDtoRule rule)
     {
         if (rule.Input is null)
@@ -203,5 +227,29 @@ public partial class PersonRepository
         }
 
         return rule.Input;
+    }
+
+    public void Delete(PersonRules.RemovePersonJuridicalRule rule)
+    {
+        this.db.Execute(
+            new BancoExecuteArgument
+            {
+                Sql = PersonJuridicalQuery.RemovePersonSql,
+                Parameter = ParameterCollection.GetInstance()
+                    .Add("@PERSONID", rule.Input.Id)
+                    .Add("@ENTERPRISEID", rule.EnterpriseId)
+                    .Add("@VERSION", rule.Input.Version)
+                    .Add("@PERSONTYPE", PersonType.Juridical.intValue())
+            }
+        );
+
+        this.db.ControlData(new BancoCommitArgument<int>
+        {
+            Control = DmlType.Delete,
+            EnterpriseId = rule.EnterpriseId,
+            UserId = rule.UserId,
+            Entity = EntityType.PersonJuridical,
+            EntityId = rule.Input.Id
+        });
     }
 }

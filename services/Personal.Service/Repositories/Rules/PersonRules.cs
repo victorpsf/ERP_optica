@@ -55,6 +55,13 @@ public static class PersonRules
                 Version = dto is not null ? (dto.Version + 1) : this.Input.Version
             };
     }
+
+    public class RemovePersonPhysicalRule
+    {
+        public int UserId { get; set; }
+        public int EnterpriseId { get; set; }
+        public RemovePersonPhysicalInput Input { get; set; } = new RemovePersonPhysicalInput();
+    }
     #endregion
 
     #region DML PERSON JURIDICAL
@@ -82,6 +89,13 @@ public static class PersonRules
         public int UserId { get; set; }
         public int EnterpriseId { get; set; }
         public PersonDtos.PersonJuridical? Input { get; set; }
+    }
+
+    public class RemovePersonJuridicalRule
+    {
+        public int UserId { get; set; }
+        public int EnterpriseId { get; set; }
+        public RemovePersonJuridicalInput Input { get; set; } = new RemovePersonJuridicalInput();
     }
     #endregion
 }

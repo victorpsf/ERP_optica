@@ -74,11 +74,14 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
 
         // [TODO]: adicionar stack de erro
         if (
-            person is not null && 
+            person is null ||
             (
-                person.Version != rule.Input.Version || 
-                person.EnterpriseId != rule.EnterpriseId || 
-                person.PersonType != PersonType.Physical
+                person is not null &&
+                (
+                    person.Version != rule.Input.Version ||
+                    person.EnterpriseId != rule.EnterpriseId ||
+                    person.PersonType != PersonType.Physical
+                )
             )
         ) throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PERSON_REQUIRED_DOCUMENT_NOT_INFORMED);
 
@@ -92,6 +95,36 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             },
             true
         );
+    }
+
+    public PersonPhysical? Remove(PersonRules.RemovePersonPhysicalRule rule)
+    {
+        PersonPhysical? person = rule.Input.Id > 0 ? this.ExecuteQuery(
+            this.personRepository.FindPersonPhysicalById,
+            rule.Input.Id,
+            false
+        ) : null;
+
+        // [TODO]: adicionar stack de erro
+        if (
+            person is null ||
+            (
+                person is not null &&
+                (
+                    person.Version != rule.Input.Version ||
+                    person.EnterpriseId != rule.EnterpriseId ||
+                    person.PersonType != PersonType.Physical
+                )
+            )
+        ) throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PERSON_REQUIRED_DOCUMENT_NOT_INFORMED);
+
+        this.ExecuteQuery(
+            this.personRepository.Delete,
+            rule,
+            true
+        );
+
+        return person;
     }
 
     public PersonJuridical? Save(PersonRules.PersistPersonJuridicalRule rule)
@@ -122,5 +155,35 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             },
             true
         );
+    }
+
+    public PersonJuridical? Remove(PersonRules.RemovePersonJuridicalRule rule)
+    {
+        PersonJuridical? person = rule.Input.Id > 0 ? this.ExecuteQuery(
+            this.personRepository.FindPersonJuridicalById,
+            rule.Input.Id,
+            false
+        ) : null;
+
+        // [TODO]: adicionar stack de erro
+        if (
+            person is null ||
+            (
+                person is not null &&
+                (
+                    person.Version != rule.Input.Version ||
+                    person.EnterpriseId != rule.EnterpriseId ||
+                    person.PersonType != PersonType.Juridical
+                )
+            )
+        ) throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PERSON_REQUIRED_DOCUMENT_NOT_INFORMED);
+
+        this.ExecuteQuery(
+            this.personRepository.Delete,
+            rule,
+            true
+        );
+
+        return person;
     }
 }
