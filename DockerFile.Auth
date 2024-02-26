@@ -1,0 +1,38 @@
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY services/Authentication.Service/                                       Authentication.Service/
+COPY services/Application.Dtos/                                             Application.Dtos/
+COPY services/Library/Application.Base.Models                               Library/Application.Base.Models/
+COPY services/Library/Application.Business.Rules                            Library/Application.Business.Rules/
+COPY services/Library/Application.Core                                      Library/Application.Core/
+COPY services/Library/Application.Database                                  Library/Application.Database/
+COPY services/Library/Application.Exceptions                                Library/Application.Exceptions/
+COPY services/Library/Application.Extensions                                Library/Application.Extensions/
+COPY services/Library/Application.Interfaces                                Library/Application.Interfaces/
+COPY services/Library/Application.Messages                                  Library/Application.Messages/
+COPY services/Library/Application.Middleware                                Library/Application.Middleware/
+COPY services/Library/Application.Repositories                              Library/Application.Repositories/
+COPY services/Library/Application.Repositories.Services                     Library/Application.Repositories.Services/
+COPY services/Library/Application.Security                                  Library/Application.Security/
+COPY services/Library/Application.Services                                  Library/Application.Services/
+COPY services/Library/Application.Utils                                     Library/Application.Utils/
+
+RUN dotnet restore "Authentication.Service/Authentication.Service.csproj"
+
+COPY . .
+WORKDIR "/src/Authentication.Service"
+RUN dotnet build "Authentication.Service.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "Authentication.Service.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Authentication.Service.dll"]

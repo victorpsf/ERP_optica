@@ -9,7 +9,7 @@ public class DocumentValidation
 
     public static bool ValidateCpf(string cpf)
     {
-        int[] digits = cpf.ToIntArray();
+        int[] digits = (string.IsNullOrEmpty(cpf) ? "" : cpf).ToIntArray();
 
         if (digits.Length != 11) 
             return false;
@@ -29,5 +29,50 @@ public class DocumentValidation
             calculated[1] += v2[x] * (11 - x);
 
         return validations.First() == ValidateCpfDigit(GetRest(calculated.First())) && validations.Last() == ValidateCpfDigit(GetRest(calculated.Last()));
+    }
+
+    private static int ValidateCnpjDigit(int calc)
+    {
+        return calc % 11 < 2 ? 0 : 11 - calc % 11;
+    }
+
+    /* [TODO]: Falta criar a lógica de validação */
+    public static bool validateCNPJ(string cnpj)
+    {
+        int[] cnpjArray = (string.IsNullOrEmpty(cnpj) ? "" : cnpj).ToIntArray();
+
+        if (cnpjArray.Length != 14)
+            return false;
+
+        var tamanhoTotal = cnpjArray.Length - 2;
+        var digitosVerificadores = cnpjArray.Slice(tamanhoTotal, 2);
+
+        var soma = 0;
+        var pos = tamanhoTotal - 7;
+        for (int i = tamanhoTotal; i >= 1; i--)
+        {
+            soma += cnpjArray[tamanhoTotal - i] * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+
+        if (ValidateCnpjDigit(soma) != digitosVerificadores[0])
+            return false;
+
+        tamanhoTotal = tamanhoTotal + 1;
+
+        soma = 0;
+        pos = tamanhoTotal - 7;
+        for (int i = tamanhoTotal; i >= 1; i--)
+        {
+            soma += cnpjArray[tamanhoTotal - i] * pos--;
+            if (pos < 2)
+                pos = 9;
+        }
+
+        if (ValidateCnpjDigit(soma) != digitosVerificadores[1])
+            return false;
+
+        return true;
     }
 }

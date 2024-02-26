@@ -7,10 +7,9 @@ public static class DocumentModels
 {
     public class DocumentInput
     {
-        [EnumValidation(Enumerable = typeof(DocumentType), Required = true)]
+        [EnumValidation(Required = true, Enumerable = typeof(DocumentType))]
         public DocumentType DocumentType { get; set; }
-
-        [StringValidation(Required = true)]
+        [StringValidation(Required = true, MinLength = 4, MaxLength = 250)]
         public string Value { get; set; } = string.Empty;
     }
 }

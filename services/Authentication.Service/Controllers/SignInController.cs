@@ -83,14 +83,20 @@ public partial class SignInController: ControllerBase
             else return Ok(output.addResult(new AccountModels.SingInOutput { CodeSended = true }));
         }
 
-        catch (ControllerEmptyException)
-        { }
+        catch (ControllerEmptyException e)
+        { this.baseControllerServices.logger.PrintsTackTrace(e); }
 
         catch (BusinessException ex)
-        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.getMessage(ex.Stack), null); 
+        }
 
         catch (AppDbException ex)
-        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.getMessage(ex.Stack), null);
+        }
 
         catch (Exception ex)
         {
@@ -139,14 +145,22 @@ public partial class SignInController: ControllerBase
             output.addResult(new AccountModels.ValidateCodeOutput { Expire = generated.Expire, Token = generated.Token });
         }
 
-        catch (ControllerEmptyException)
-        { }
+        catch (ControllerEmptyException e)
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(e);
+        }
 
         catch (BusinessException ex)
-        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.getMessage(ex.Stack), null); 
+        }
 
         catch (AppDbException ex)
-        { output.addError(this.baseControllerServices.getMessage(ex.Stack), null); }
+        {
+            this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.getMessage(ex.Stack), null); 
+        }
 
         catch (Exception ex)
         {

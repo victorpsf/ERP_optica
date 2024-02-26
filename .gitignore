@@ -2,3 +2,9 @@ docker
 .vs
 clients
 .fake
+
+authentication.secrets.json
+doc/migration.sh
+
+secrets/authentication.secrets.env
+secrets/db.secrets.env

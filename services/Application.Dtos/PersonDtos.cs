@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos;
+﻿using static Application.Base.Models.BasePatternsModels;
+
+namespace Application.Dtos;
 
 public static class PersonDtos
 {
@@ -8,7 +10,7 @@ public static class PersonDtos
     }
 
 
-    public class Person
+    public class Person: BaseDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -16,6 +18,8 @@ public static class PersonDtos
         public string CallName { get; set; } = string.Empty;
         public int EnterpriseId { get; set; }
         public int Version { get; set; }
+
+        public List<DocumentDtos.Document> Documents { get; set; } = new List<DocumentDtos.Document>();
     }
 
     public class PersonPhysical: Person

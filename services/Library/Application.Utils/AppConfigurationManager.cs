@@ -35,5 +35,5 @@ public class AppConfigurationManager: IAppConfigurationManager
             );
 
     public string GetProperty(params string[] path)
-         => this.configuration.GetValue<string>(this.GetPathName(path)) ?? string.Empty;
+        => this.configuration.GetValue<string>(this.GetPathName(path)) ?? string.Empty;
 }

@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  database:
+    build:
+      context: ./
+      dockerfile: DockerFile.Mysql
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    env_file:
+      - ./secrets/db.secrets.env
+    ports:
+      - 3306:3306
+
+  authentication:
+    build:
+      context: ./
+      dockerfile: DockerFile.Auth
+    env_file:
+      - ./secrets/authentication.secrets.env
+    ports:
+      - 8081:80
+    depends_on:
+      - database
+
+volumes:
+  my-datavolume:

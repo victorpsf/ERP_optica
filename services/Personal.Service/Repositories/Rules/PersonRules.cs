@@ -1,6 +1,7 @@
 ﻿using Application.Base.Models;
 using Application.Dtos;
 using Application.Extensions;
+using static Application.Base.Models.BasePatternsModels;
 using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Repositories.Rules;

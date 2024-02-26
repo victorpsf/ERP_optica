@@ -4,15 +4,19 @@ using Application.Interfaces.Connections;
 
 namespace Application.Services;
 
+public delegate T ExecuteAsync<T>();
+
 public partial class BaseRepoService<T> where T: IDBMysqlClient
 {
-    protected T db;
+    private Task CallerAsync(ExecuteAnyArgument argument)
+    {
+        if (argument.Caller is null) return Task.CompletedTask;
+        argument.Result = argument.Caller();
+        return Task.CompletedTask;
+    }
 
-    public BaseRepoService(T db)
-    { this.db = db; }
-
-    protected void ExecuteAny(bool executeCommit, params ExecuteAnyArgument[] arguments) {
-
+    protected Task ExecuteAnyAsync(bool executeCommit, params ExecuteAnyArgument[] arguments)
+    {
         try
         { this.db.Connect(); }
 
@@ -20,12 +24,11 @@ public partial class BaseRepoService<T> where T: IDBMysqlClient
 
         try
         {
+            List<Task> tasks = new List<Task>();
             foreach (ExecuteAnyArgument argument in arguments)
-            {
-                if (argument.Caller is null) continue;
-                argument.Result = argument.Caller();
-            }
+                tasks.Add(this.CallerAsync(argument));
 
+            Task.WaitAll(tasks.ToArray());
             if (executeCommit) this.db.Commit();
         }
 
@@ -43,19 +46,19 @@ public partial class BaseRepoService<T> where T: IDBMysqlClient
         { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
 
         foreach (ExecuteAnyArgument argument in arguments)
-        {
-            if (argument.ReturnType is null) continue;
-            argument.ReturnType(argument.Result);
-        }
+            if (argument.ReturnType is not null)
+                argument.ReturnType(argument.Result);
+
+        return Task.CompletedTask;
     }
 
-    protected ResultTypeClass ExecuteQuery<ResultTypeClass, RuleClass>(
-        ExecuteAndReturn<ResultTypeClass, RuleClass> caller,
-        RuleClass rule,
+    protected Task ExecuteQueryAsync<T>(
+        ExecuteAsync<T> caller,
+        ReturnType<T> results,
         bool executeCommit = false
     )
     {
-        ResultTypeClass result;
+        T values;
 
         try
         { this.db.Connect(); }
@@ -63,43 +66,7 @@ public partial class BaseRepoService<T> where T: IDBMysqlClient
         catch (Exception ex) { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
 
         try
-        { 
-            result = caller.Invoke(rule);
-            if (executeCommit) this.db.Commit();
-        }
-
-        catch(Exception ex)
-        {
-            if (executeCommit) this.db.Rollback();
-            this.db.Disconnect();
-            throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_EXECUTION_FAILED, ex);
-        }
-
-        try
-        { this.db.Disconnect(); }
-
-        catch(Exception ex) 
-        { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
-
-        return result;
-    }
-
-    protected void ExecuteQuery<RuleClass>(
-        Execute<RuleClass> caller,
-        RuleClass rule,
-        bool executeCommit = false
-    )
-    {
-        try
-        { this.db.Connect(); }
-
-        catch (Exception ex) { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_OPEN_CONNECTION, ex); }
-
-        try
-        {
-            caller.Invoke(rule);
-            if (executeCommit) this.db.Commit();
-        }
+        { values = caller.Invoke(); }
 
         catch (Exception ex)
         {
@@ -113,5 +80,8 @@ public partial class BaseRepoService<T> where T: IDBMysqlClient
 
         catch (Exception ex)
         { throw new AppDbException(MultiLanguageModels.MessagesEnum.ERROR_DB_CLOSE_CONNECTION, ex); }
+
+        results.Invoke(values);
+        return Task.CompletedTask;
     }
 }

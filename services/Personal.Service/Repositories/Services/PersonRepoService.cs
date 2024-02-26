@@ -1,22 +1,30 @@
 ﻿using Application.Base.Models;
+using Application.Dtos;
 using Application.Exceptions;
 using Application.Interfaces.Connections;
 using Application.Services;
+using Application.Utils;
 using Personal.Service.Repositories.Rules;
+using System.Data;
+using static Application.Base.Models.BasePatternsModels;
 using static Application.Dtos.PersonDtos;
 using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Repositories.Services;
 
 
-public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
+public partial class PersonRepoService : BaseRepoService<IPersonalDatabase>
 {
     private PersonRepository personRepository;
+    private DocumentRepository documentRepository;
 
-    public PersonRepoService(IPersonalDatabase db): base(db) 
-    { this.personRepository = new PersonRepository(db); }
+    public PersonRepoService(IPersonalDatabase db) : base(db)
+    {
+        this.personRepository = new PersonRepository(db);
+        this.documentRepository = new DocumentRepository(db);
+    }
 
-    public PaginationOutput<PersonPhysicalInput, PersonPhysical> Get(PersonRules.FindPersonPhysicalWithPaginationRule rule)
+    public async Task<PaginationOutput<PersonPhysicalInput, PersonPhysical>> Get(PersonRules.FindPersonPhysicalWithPaginationRule rule)
     {
         var pagination = this.ExecuteQuery(
             this.personRepository.Pagination,
@@ -24,11 +32,27 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             false
         );
 
-        var persons = this.ExecuteQuery<List<PersonPhysical>, PersonRules.FindPersonPhysicalWithPaginationRule>(
+        var persons = this.ExecuteQuery(
             this.personRepository.ListPerPagination,
             rule,
             false
         );
+
+        if (persons is not null)
+        {
+            List<DocumentDtos.Document> documents = new List<DocumentDtos.Document>();
+            await this.ExecuteQueryAsync(
+                () => this.documentRepository.ListByPersonIds(persons.Select(a => a.Id).ToList()),
+                (List<DocumentDtos.Document>? _documents) => 
+                {
+                    if (_documents is null) return;
+                    documents = _documents;
+                }
+            );
+            foreach (var person in persons)
+                person.Documents = documents.Where(a => a.PersonId == person.Id).ToList();
+        }
+
         return new PaginationOutput<PersonPhysicalInput, PersonPhysical>
         {
             Total = pagination?.Total ?? 0,
@@ -40,7 +64,7 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
         };
     }
 
-    public PaginationOutput<PersonJuridicalInput, PersonJuridical> Get(PersonRules.FindPersonJuridicalWithPaginationRule rule)
+    public Task<PaginationOutput<PersonJuridicalInput, PersonJuridical>> Get(PersonRules.FindPersonJuridicalWithPaginationRule rule)
     {
         var pagination = this.ExecuteQuery(
             this.personRepository.Pagination,
@@ -48,12 +72,13 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             false
         );
 
-        var persons = this.ExecuteQuery<List<PersonJuridical>, PersonRules.FindPersonJuridicalWithPaginationRule>(
+        var persons = this.ExecuteQuery(
             this.personRepository.ListPerPagination,
             rule,
             false
         );
-        return new PaginationOutput<PersonJuridicalInput, PersonJuridical>
+
+        return Task.FromResult(new PaginationOutput<PersonJuridicalInput, PersonJuridical>
         {
             Total = pagination?.Total ?? 0,
             Page = pagination?.Page ?? 0,
@@ -61,10 +86,10 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             TotalPages = pagination?.TotalPages ?? 0,
             Values = persons ?? new List<PersonJuridical>(),
             Search = rule.Search
-        };
+        });
     }
 
-    public PersonPhysical? Save(PersonRules.PersistPersonPhysicalRule rule)
+    public async Task<PersonPhysical?> Save(PersonRules.PersistPersonPhysicalRule rule)
     {
         PersonPhysical? person = rule.Input.Id > 0 ? this.ExecuteQuery(
             this.personRepository.FindPersonPhysicalById,
@@ -74,7 +99,7 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
 
         // [TODO]: adicionar stack de erro
         if (
-            person is null ||
+            (rule.Input.Id > 0 && person is null) ||
             (
                 person is not null &&
                 (
@@ -85,16 +110,46 @@ public partial class PersonRepoService: BaseRepoService<IPersonalDatabase>
             )
         ) throw new BusinessException(MultiLanguageModels.MessagesEnum.ERROR_PERSON_REQUIRED_DOCUMENT_NOT_INFORMED);
 
-        return this.ExecuteQuery(
-            this.personRepository.Save,
-            new PersonRules.PersistPersonPhysicalDtoRule
+        if (person is not null)
+            await TaskManager.GetInstance()
+                .Add(
+                    this.ExecuteQueryAsync<List<DocumentDtos.Document>>(
+                        () => this.documentRepository.ListByPersonId(person.Id),
+                        (List<DocumentDtos.Document>? values) =>
+                        {
+                            if (values is null) return;
+                            person.Documents = values;
+                        }
+                    )
+                ).AwaitAll();
+
+        PersonPhysical? createdPerson = null;
+        List<DocumentDtos.Document> documents = new List<DocumentDtos.Document>();
+
+        await this.ExecuteAnyAsync(
+            true,
+            new ExecuteAnyArgument
             {
-                EnterpriseId = rule.EnterpriseId,
-                UserId = rule.UserId,
-                Input = rule.ToDto(person),
-            },
-            true
+                Caller = () => this.personRepository.Save(new PersonRules.PersistPersonPhysicalDtoRule
+                {
+                    EnterpriseId = rule.EnterpriseId,
+                    UserId = rule.UserId,
+                    Input = rule.ToDto(person),
+                }),
+                ReturnType = (BaseDto? value) =>
+                {
+                    if (value is null) return;
+                    createdPerson = value as PersonPhysical;
+                }
+            }
         );
+
+        if (createdPerson is not null)
+        {
+            createdPerson.Documents = documents;
+        }
+
+        return createdPerson;
     }
 
     public PersonPhysical? Remove(PersonRules.RemovePersonPhysicalRule rule)

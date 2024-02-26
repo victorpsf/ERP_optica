@@ -6,6 +6,7 @@ public static class ControllerBaseModels
     {
         public string? Propertie { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public long? Index { get; set; }
     }
 
     public class RequestResult<T> {
@@ -17,11 +18,11 @@ public static class ControllerBaseModels
             get => this.Errors is not null && this.Errors.Any();
         }
 
-        public RequestResult<T> addError(string Message, string? Propertie)
+        public RequestResult<T> addError(string Message, string? Propertie, int? Index = null)
         {
             if (this.Errors is null)
                 this.Errors = new List<ValidationError>();
-            this.Errors.Add(new ValidationError { Message = Message, Propertie = Propertie });
+            this.Errors.Add(new ValidationError { Message = Message, Propertie = Propertie, Index = Index });
             return this;
         }
 

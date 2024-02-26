@@ -9,7 +9,7 @@ using static Personal.Service.Controllers.Models.PersonModels;
 
 namespace Personal.Service.Controllers;
 
-public class JuridicalController: ControllerBase
+public partial class JuridicalController: ControllerBase
 {
     private readonly IBaseControllerServices baseControllerServices;
     private readonly PersonRepoService personRepoService;
@@ -23,13 +23,13 @@ public class JuridicalController: ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Index([FromBody] PaginationInput<PersonJuridicalInput> input)
+    public async Task<IActionResult> Index([FromBody] PaginationInput<PersonJuridicalInput> input)
     {
         var output = new ControllerBaseModels.RequestResult<PaginationOutput<PersonJuridicalInput, PersonDtos.PersonJuridical>>();
 
         try
         {
-            output.Result = this.personRepoService.Get(
+            output.Result = await this.personRepoService.Get(
                 new Repositories.Rules.PersonRules.FindPersonJuridicalWithPaginationRule
                 {
                     IntelligentSearch = input.IntelligentSearch,
@@ -48,6 +48,7 @@ public class JuridicalController: ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
         return output.Failed ? BadRequest(output) : Ok(output);
@@ -60,8 +61,7 @@ public class JuridicalController: ControllerBase
 
         try
         {
-            if (this.baseControllerServices.validator.validate(input, output))
-                throw new ControllerEmptyException();
+            this.validate(input, output);
 
             var person = this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonJuridicalRule
             {
@@ -84,6 +84,7 @@ public class JuridicalController: ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
         return output.Failed ? BadRequest(output) : Ok(output);
@@ -115,6 +116,7 @@ public class JuridicalController: ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
         return output.Failed ? BadRequest(output) : Ok(output);

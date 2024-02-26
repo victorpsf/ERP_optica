@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos;
+﻿using static Application.Base.Models.BasePatternsModels;
+
+namespace Application.Dtos;
 
 public static class DocumentDtos
 {
@@ -13,7 +15,7 @@ public static class DocumentDtos
         MEI = 7
     }
 
-    public class Document
+    public class Document: BaseDto
     {
         public int Id { get; set; }
         public DocumentType DocumentType { get; set; }

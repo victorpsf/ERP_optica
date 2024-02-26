@@ -3,6 +3,7 @@ using Application.Dtos;
 using Application.Exceptions;
 using Application.Extensions;
 using Application.Interfaces.Services;
+using Application.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Personal.Service.Repositories.Services;
@@ -23,13 +24,13 @@ public partial class PhysicalController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Index([FromBody] PaginationInput<PersonPhysicalInput> input)
+    public async Task<IActionResult> Index([FromBody] PaginationInput<PersonPhysicalInput> input)
     {
         var output = new ControllerBaseModels.RequestResult<PaginationOutput<PersonPhysicalInput, PersonDtos.PersonPhysical>>();
 
         try
         {
-            output.Result = this.personRepoService.Get(
+            output.Result = await this.personRepoService.Get(
                 new Repositories.Rules.PersonRules.FindPersonPhysicalWithPaginationRule
                 {
                     IntelligentSearch = input.IntelligentSearch,
@@ -48,29 +49,29 @@ public partial class PhysicalController : ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
         return output.Failed ? BadRequest(output): Ok(output);
     }
 
     [HttpPost]
-    public IActionResult Save([FromBody] PersonPhysicalInput input)
+    public async Task<IActionResult> Save([FromBody] PersonPhysicalInput input)
     {
         var output = new ControllerBaseModels.RequestResult<PersonDtos.PersonPhysical>();
 
         try
         {
-            if (this.baseControllerServices.validator.validate(input, output))
-                throw new ControllerEmptyException();
+            this.validate(input, output);
 
-            var person = this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
+            var person = await this.personRepoService.Save(new Repositories.Rules.PersonRules.PersistPersonPhysicalRule
             {
                 EnterpriseId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 UserId = this.baseControllerServices.loggedUser.Identifier.EnterpriseId,
                 Input = input
             });
 
-            if (person is null) 
+            if (person is null)
                 throw new ControllerEmptyException();
 
             return Ok(output.addResult(person));
@@ -84,11 +85,11 @@ public partial class PhysicalController : ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
-        return output.Failed ? BadRequest(output): Ok(output);
+        return output.Failed ? BadRequest(output) : Ok(output);
     }
-
 
     [HttpDelete]
     public IActionResult Delete([FromBody] RemovePersonPhysicalInput input)
@@ -116,6 +117,7 @@ public partial class PhysicalController : ControllerBase
         catch (Exception ex)
         {
             this.baseControllerServices.logger.PrintsTackTrace(ex);
+            output.addError(this.baseControllerServices.loggedUser.message.GetMessage(""), null);
         }
 
         return output.Failed ? BadRequest(output) : Ok(output);

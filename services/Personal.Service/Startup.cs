@@ -24,6 +24,7 @@ namespace Personal.Service
         {
             services.AddScoped<PersonRepository>();
             services.AddScoped<PersonRepoService>();
+            services.AddScoped<DocumentRepoService>();
         }
     }
 }

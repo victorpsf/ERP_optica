@@ -1,4 +1,5 @@
 ﻿using Application.Base.Models;
+using Application.Extensions;
 using Application.Interfaces.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -14,10 +15,17 @@ public class AttributeValidationBase: IAttributeValidationBase
         this.loggedUser = loggedUser;
     }
 
-    public bool validate<T, B>(T model, ControllerBaseModels.RequestResult<B> output) where T : class, new()
+    public bool validate<T, B>(T model, ControllerBaseModels.RequestResult<B> output, int? Index = null) where T : class, new()
     {
-        foreach (PropertyInfo info in model.GetType().GetProperties())
-            try
+        try
+        {
+            if (model is null)
+            {
+                output.addError(this.loggedUser.message.GetMessage("ERROR_INPUT_NULLABLE"), "INPUT_ERROR");
+                throw new ValidationException();
+            }
+
+            foreach (PropertyInfo info in model.GetType().GetProperties())
             {
                 var results = new List<ValidationResult>();
                 Validator.TryValidateProperty(info.GetValue(model), new ValidationContext(model) { MemberName = info.Name }, results);
@@ -26,18 +34,19 @@ public class AttributeValidationBase: IAttributeValidationBase
                     continue;
 
                 foreach (ValidationResult result in results)
-                    output.addError(this.loggedUser.message.GetMessage(result.ErrorMessage ?? string.Empty), info.Name);
+                    output.addError(this.loggedUser.message.GetMessage(result.ErrorMessage ?? string.Empty), info.Name, Index);
             }
 
-            catch { }
+        }
+        catch { output.addError("Internal server error", ""); }
 
         return output.Failed;
     }
 
     public bool validate<T, B>(List<T> models, ControllerBaseModels.RequestResult<B> output) where T : class, new()
     {
-        foreach (var item in models)
-            validate(item, output);
+        for (int i = 0; i < models.Count; i++)
+            this.validate(models.Get(i), output, i);
 
         return output.Failed;
     }

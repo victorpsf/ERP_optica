@@ -8,23 +8,41 @@ namespace Personal.Service.Repositories;
 
 public partial class PersonRepository
 {
-    private void Calculate(PersonRules.FindPersonPhysicalWithPaginationRule rule, out long Limit, out long Offset)
+    private void Calculate(PersonRules.FindPersonPhysicalWithPaginationRule rule, bool calculateOffset, out long Limit, out long Offset)
     {
-        Limit = rule.Input.PerPage > 0 ? rule.Input.PerPage : 20;
-        Offset = (rule.Input.Page == 0) ? rule.Input.Page : Limit * rule.Input.Page;
+        if (calculateOffset)
+        {
+            Limit = rule.Input.PerPage > 0 ? rule.Input.PerPage : 20;
+            Offset = (rule.Input.Page == 0) ? rule.Input.Page : Limit * rule.Input.Page;
+        }
+
+        else
+        {
+            Limit = rule.Input.PerPage;
+            Offset = rule.Input.Page;
+        }
     }
 
-    private void Calculate(PersonRules.FindPersonJuridicalWithPaginationRule rule, out long Limit, out long Offset)
+    private void Calculate(PersonRules.FindPersonJuridicalWithPaginationRule rule, bool calculateOffset, out long Limit, out long Offset)
     {
-        Limit = rule.Input.PerPage > 0 ? rule.Input.PerPage : 20;
-        Offset = (rule.Input.Page == 0) ? rule.Input.Page : Limit * rule.Input.Page;
+        if (calculateOffset)
+        {
+            Limit = rule.Input.PerPage > 0 ? rule.Input.PerPage : 20;
+            Offset = (rule.Input.Page == 0) ? rule.Input.Page : Limit * rule.Input.Page;
+        }
+
+        else
+        {
+            Limit = rule.Input.PerPage;
+            Offset = rule.Input.Page;
+        }
     }
 
     private void Build(PersonRules.FindPersonPhysicalWithPaginationRule rule, bool calculateOffset, out ParameterCollection Parameters, out string Complement)
     {
         Parameters = new ParameterCollection();
         var where = new List<string>();
-        this.Calculate(rule, out long Limit, out long Offset);
+        this.Calculate(rule, calculateOffset, out long Limit, out long Offset);
 
         Parameters.Add("@ENTERPRISEID", rule.EnterpriseId);
         Parameters.Add("@PERSONTYPE", PersonDtos.PersonType.Physical.intValue());
@@ -71,7 +89,7 @@ public partial class PersonRepository
     {
         Parameters = new ParameterCollection();
         var where = new List<string>();
-        this.Calculate(rule, out long Limit, out long Offset);
+        this.Calculate(rule, calculateOffset, out long Limit, out long Offset);
 
         Parameters.Add("@ENTERPRISEID", rule.EnterpriseId);
         Parameters.Add("@PERSONTYPE", PersonDtos.PersonType.Juridical.intValue());

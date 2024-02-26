@@ -4,13 +4,15 @@ public partial class PersonPhysicalQuery
 {
     public static string FindInfoPaginationSql = @"
 SELECT 
-	T.TOTAL,
-	ROUND(T.TOTAL / @LIMIT) AS TOTALPAGES,
-	@LIMIT AS PERPAGE,
-	@OFFSET AS PAGE
+	T.TOTAL								AS TOTAL,
+	IFNULL(ROUND(T.TOTAL / @LIMIT), 0)	AS TOTALPAGES,
+	IFNULL(@LIMIT, 0)					AS PERPAGE,
+	IFNULL(@OFFSET, 0)					AS PAGE
 FROM (
-	SELECT COUNT(*) AS TOTAL
-	FROM PERSON AS P
+	SELECT	
+		COUNT(*) AS TOTAL
+	FROM
+		PERSON AS P
     WHERE 
 			P.DELETED_AT IS NULL
 		AND {0}
